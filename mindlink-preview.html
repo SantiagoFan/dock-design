@@ -91,6 +91,162 @@
     --dur-fast: 120ms;    /* 色彩、hover、switch */
     --dur-normal: 200ms;  /* 标准进入/离开 */
     --dur-slow: 320ms;    /* 模态、抽屉、展开 */
+
+    /* ─────────────────────────────────────────────
+       P0 · Token 系统补全（v2.0 · 2026-04-28）
+       覆盖：字号 / 字重 / 行高 / 间距 / 圆角 / 边框
+            控件尺寸 / 图标 / Z-index / 透明度 / 断点
+            状态层 / 数据可视化 / 组件级 Token
+       ───────────────────────────────────────────── */
+
+    /* ① Typography · 字号阶梯（8 档） */
+    --fs-xs: 12px;     /* 辅助 / 标签 */
+    --fs-sm: 13px;     /* 次要正文 */
+    --fs-base: 14px;   /* 默认正文 */
+    --fs-md: 16px;     /* 强调正文 */
+    --fs-lg: 18px;     /* 小标题 */
+    --fs-xl: 20px;     /* 标题 */
+    --fs-2xl: 24px;    /* 大标题 */
+    --fs-3xl: 32px;    /* Hero */
+
+    /* ② Typography · 字重（3 档，禁用 700+） */
+    --fw-regular: 400;
+    --fw-medium: 500;   /* 默认强调 */
+    --fw-semibold: 600; /* 标题最大值 */
+
+    /* ③ Typography · 行高（3 档，中文 ≥ 1.5） */
+    --lh-tight: 1.4;    /* 仅英文 / 数字 */
+    --lh-base: 1.6;     /* 中文正文默认 */
+    --lh-loose: 1.75;   /* 长文阅读 */
+
+    /* ④ Spacing · 4-base 栅格（11 档） */
+    --sp-0: 0;
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 12px;
+    --sp-4: 16px;
+    --sp-5: 20px;
+    --sp-6: 24px;
+    --sp-8: 32px;
+    --sp-10: 40px;
+    --sp-12: 48px;
+    --sp-16: 64px;
+
+    /* ⑤ Radius · 圆角（7 档） */
+    --radius-xs: 2px;     /* tag */
+    --radius-sm: 4px;     /* micro */
+    --radius-md: 6px;     /* icon-btn */
+    --radius-lg: 8px;     /* btn / input 默认 */
+    --radius-xl: 12px;    /* card */
+    --radius-2xl: 16px;   /* panel */
+    --radius-pill: 999px; /* 胶囊 */
+
+    /* ⑥ Border · 描边宽度（3 档） */
+    --bw-1: 1px;
+    --bw-2: 2px;
+    --bw-4: 4px;
+
+    /* ⑦ Sizing · 控件高度 + 图标尺寸 */
+    --h-sm: 28px;       /* 紧凑控件 */
+    --h-md: 32px;       /* 默认 btn / input */
+    --h-lg: 40px;       /* 大型控件 */
+    --h-xl: 48px;       /* 顶部导航 / 重点输入 */
+    --icon-xs: 12px;
+    --icon-sm: 14px;
+    --icon-md: 16px;    /* 默认 */
+    --icon-lg: 20px;
+    --icon-xl: 24px;
+
+    /* ⑧ Z-index · 层级栈 */
+    --z-base: 0;
+    --z-raised: 1;
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-drawer: 1030;
+    --z-modal: 1040;
+    --z-popover: 1050;
+    --z-toast: 1060;
+    --z-tooltip: 1070;
+
+    /* ⑨ Opacity · 状态档 */
+    --op-disabled: 0.4;
+    --op-muted: 0.6;
+    --op-backdrop: 0.5;
+
+    /* ⑩ Breakpoint · 响应式（语义引用，CSS 媒体查询请直接写 px） */
+    --bp-sm: 640px;
+    --bp-md: 768px;
+    --bp-lg: 1024px;
+    --bp-xl: 1280px;
+    --bp-2xl: 1536px;
+
+    /* ⑪ State Layer · 交互状态叠加 */
+    --state-hover-overlay: rgba(15,27,60,.04);
+    --state-active-overlay: rgba(15,27,60,.08);
+    --state-selected-bg: var(--brand-bg);
+    --state-disabled-fg: var(--text-4);
+    --state-disabled-bg: var(--page-bg);
+
+    /* ⑫ Chart · 数据可视化色板（与语义色解耦） */
+    --chart-1: #3662EC;   /* 主 */
+    --chart-2: #2DAC0C;   /* 增 */
+    --chart-3: #FF8F1F;   /* 警 */
+    --chart-4: #9B5BFF;   /* 紫 */
+    --chart-5: #00B8D4;   /* 青 */
+    --chart-6: #FF6B9C;   /* 粉 */
+    --chart-7: #FAC814;   /* 黄 */
+    --chart-8: #6B7A9C;   /* 灰 */
+    --chart-grid: var(--line-soft);
+    --chart-axis: var(--text-4);
+
+    /* ⑬ Component · 按钮 */
+    --btn-h-sm: var(--h-sm);
+    --btn-h-md: var(--h-md);
+    --btn-h-lg: var(--h-lg);
+    --btn-px-sm: var(--sp-3);
+    --btn-px-md: var(--sp-4);
+    --btn-px-lg: var(--sp-5);
+    --btn-radius: var(--radius-lg);
+    --btn-fs: var(--fs-base);
+    --btn-fw: var(--fw-medium);
+    --btn-gap: var(--sp-2);
+
+    /* ⑭ Component · 输入 / 卡片 / 标签 / 模态 / 提示 */
+    --input-h: var(--h-md);
+    --input-px: var(--sp-3);
+    --input-radius: var(--radius-lg);
+    --input-bd: var(--line);
+    --input-bd-hover: var(--text-4);
+    --input-bd-focus: var(--brand);
+    --input-bg: var(--card-bg);
+    --input-fs: var(--fs-base);
+
+    --card-radius: var(--radius-xl);
+    --card-p: var(--sp-5);
+    --card-bd: var(--line);
+    --card-sh: none;            /* Level 0 · Flat 默认（--card-bg 已在系统色块定义） */
+
+    --tag-h: 22px;
+    --tag-px: var(--sp-2);
+    --tag-radius: var(--radius-xs);
+    --tag-fs: var(--fs-xs);
+    --tag-fw: var(--fw-medium);
+
+    --modal-radius: var(--radius-xl);
+    --modal-p: var(--sp-6);
+    --modal-sh: var(--sh-xl);
+    --modal-backdrop: rgba(15,27,60,.5);
+
+    --toast-radius: var(--radius-lg);
+    --toast-p: var(--sp-3) var(--sp-4);
+    --toast-sh: var(--sh-lg);
+
+    --tooltip-radius: var(--radius-md);
+    --tooltip-px: var(--sp-2);
+    --tooltip-py: var(--sp-1);
+    --tooltip-fs: var(--fs-xs);
+    --tooltip-bg: var(--text-1);
+    --tooltip-fg: #FFFFFF;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -1977,6 +2133,23 @@
     --sh-lg: 0 12px 32px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.2);
     --sh-xl: 0 24px 56px rgba(0,0,0,.4), 0 10px 24px rgba(0,0,0,.25);
     --sh-focus: 0 0 0 3px rgba(74,116,240,.25);
+
+    /* P0 · 深色模式 Token 覆盖（仅写差异项） */
+    --state-hover-overlay: rgba(255,255,255,.06);
+    --state-active-overlay: rgba(255,255,255,.10);
+    --state-disabled-bg: var(--page-bg);
+    --modal-backdrop: rgba(0,0,0,.6);
+    --tooltip-bg: var(--text-1);
+    --tooltip-fg: var(--page-bg);
+    /* 数据可视化色板：深色环境下整体提亮 */
+    --chart-1: #6B8CF5;
+    --chart-2: #34C914;
+    --chart-3: #FFB061;
+    --chart-4: #B580FF;
+    --chart-5: #4DD0E1;
+    --chart-6: #FF8FB1;
+    --chart-7: #FCD442;
+    --chart-8: #9BA7C3;
   }
 
   /* ─── Dark Mode: component overrides ─── */
@@ -2380,6 +2553,315 @@
     .hero h1 { font-size: 32px; }
     .nav-links { display: none; }
     .section, .section-tint-inner, .section-deep-inner { padding: 48px 20px; }
+  }
+
+  /* ═════════════════════════════════════════════
+     P0 · Token v2.0 展示区（14 张新表可视化）
+     ═════════════════════════════════════════════ */
+  .tk-block { margin-top: var(--sp-8); }
+  .tk-block-title {
+    font-family: var(--font-zh);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--text-1);
+    margin-bottom: var(--sp-1);
+  }
+  .tk-block-desc {
+    font-size: var(--fs-sm);
+    color: var(--text-3);
+    margin-bottom: var(--sp-4);
+  }
+  .tk-grid {
+    display: grid;
+    gap: var(--sp-3);
+  }
+  .tk-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .tk-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .tk-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .tk-grid.cols-6 { grid-template-columns: repeat(6, 1fr); }
+  .tk-grid.cols-8 { grid-template-columns: repeat(8, 1fr); }
+  .tk-card {
+    background: var(--card-bg);
+    border: var(--bw-1) solid var(--line);
+    border-radius: var(--radius-xl);
+    padding: var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    min-height: 96px;
+    text-align: center;
+  }
+  .tk-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-2);
+    letter-spacing: 0.02em;
+  }
+  .tk-value {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-4);
+  }
+
+  /* ① 字号阶梯 */
+  .tk-fs-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-4);
+    padding: var(--sp-3) 0;
+    border-bottom: var(--bw-1) solid var(--line-soft);
+  }
+  .tk-fs-row:last-child { border-bottom: none; }
+  .tk-fs-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .tk-fs-sample {
+    font-family: var(--font-zh);
+    color: var(--text-1);
+    font-weight: var(--fw-medium);
+  }
+
+  /* ② 字重 */
+  .tk-fw-row { display: flex; gap: var(--sp-6); padding: var(--sp-3) 0; }
+  .tk-fw-item { flex: 1; }
+  .tk-fw-sample { font-size: var(--fs-xl); color: var(--text-1); margin-bottom: 4px; }
+
+  /* ③ 行高 */
+  .tk-lh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+  .tk-lh-card {
+    border: var(--bw-1) solid var(--line);
+    border-radius: var(--radius-xl);
+    padding: var(--sp-4);
+    background: var(--card-bg);
+  }
+  .tk-lh-text {
+    font-family: var(--font-zh);
+    font-size: var(--fs-base);
+    color: var(--text-2);
+    margin-top: var(--sp-2);
+  }
+
+  /* ④ 间距 */
+  .tk-sp-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+  }
+  .tk-sp-bar {
+    background: var(--brand);
+    height: 12px;
+    border-radius: var(--radius-xs);
+  }
+  .tk-sp-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    flex-shrink: 0;
+    width: 110px;
+  }
+
+  /* ⑤ 圆角 */
+  .tk-radius-box {
+    width: 64px;
+    height: 64px;
+    background: var(--brand-bg);
+    border: var(--bw-1) solid var(--brand);
+  }
+
+  /* ⑥ 边框 */
+  .tk-bw-box {
+    width: 64px;
+    height: 64px;
+    background: var(--card-bg);
+    border-color: var(--brand);
+    border-style: solid;
+    border-radius: var(--radius-md);
+  }
+
+  /* ⑦ 控件高度 / 图标 */
+  .tk-h-row { display: flex; align-items: flex-end; gap: var(--sp-3); padding: var(--sp-3) 0; flex-wrap: wrap; }
+  .tk-h-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--btn-px-md);
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    border-radius: var(--btn-radius);
+    font-family: var(--font-zh);
+    font-size: var(--fs-base);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-default);
+  }
+  .tk-h-btn:hover { background: var(--brand-hover); }
+  .tk-icon-row { display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-3) 0; }
+  .tk-icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand);
+  }
+
+  /* ⑧ Z-index */
+  .tk-z-stack {
+    position: relative;
+    height: 200px;
+    background: var(--page-bg);
+    border-radius: var(--radius-xl);
+    border: var(--bw-1) solid var(--line);
+    overflow: hidden;
+  }
+  .tk-z-layer {
+    position: absolute;
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--card-bg);
+    border: var(--bw-1) solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--sh);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-1);
+  }
+
+  /* ⑨ 透明度 */
+  .tk-op-card {
+    background: var(--brand);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: var(--sp-4);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+  }
+
+  /* ⑩ 断点 */
+  .tk-bp-ruler {
+    position: relative;
+    height: 56px;
+    background: var(--page-bg);
+    border-radius: var(--radius-md);
+    border: var(--bw-1) solid var(--line);
+    overflow: hidden;
+  }
+  .tk-bp-mark {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--brand);
+  }
+  .tk-bp-label {
+    position: absolute;
+    top: 6px;
+    transform: translateX(4px);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--brand);
+  }
+  .tk-bp-px {
+    position: absolute;
+    bottom: 6px;
+    transform: translateX(4px);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-4);
+  }
+
+  /* ⑪ 状态层 */
+  .tk-state-card {
+    background: var(--card-bg);
+    border: var(--bw-1) solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-4);
+    cursor: pointer;
+    text-align: center;
+    transition: all var(--dur-fast) var(--ease-default);
+    font-size: var(--fs-sm);
+    color: var(--text-1);
+    position: relative;
+  }
+  .tk-state-card.hover { background: var(--state-hover-overlay); }
+  .tk-state-card.active { background: var(--state-active-overlay); }
+  .tk-state-card.selected { background: var(--state-selected-bg); color: var(--brand); border-color: var(--brand); }
+  .tk-state-card.disabled { opacity: var(--op-disabled); cursor: not-allowed; }
+
+  /* ⑫ 图表色板 */
+  .tk-chart-chip {
+    height: 56px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: flex-end;
+    padding: var(--sp-2);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: var(--fw-medium);
+  }
+
+  /* ⑬⑭ 组件示例 */
+  .tk-demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); padding: var(--sp-3) 0; }
+  .tk-demo-input {
+    height: var(--input-h);
+    padding: 0 var(--input-px);
+    background: var(--input-bg);
+    border: var(--bw-1) solid var(--input-bd);
+    border-radius: var(--input-radius);
+    font-family: var(--font-zh);
+    font-size: var(--input-fs);
+    color: var(--text-1);
+    transition: border-color var(--dur-fast) var(--ease-default), box-shadow var(--dur-fast) var(--ease-default);
+    outline: none;
+    min-width: 200px;
+  }
+  .tk-demo-input:hover { border-color: var(--input-bd-hover); }
+  .tk-demo-input:focus { border-color: var(--input-bd-focus); box-shadow: var(--sh-focus); }
+  .tk-demo-tag {
+    display: inline-flex;
+    align-items: center;
+    height: var(--tag-h);
+    padding: 0 var(--tag-px);
+    background: var(--brand-bg);
+    color: var(--brand);
+    border-radius: var(--tag-radius);
+    font-size: var(--tag-fs);
+    font-weight: var(--tag-fw);
+  }
+  .tk-demo-toast {
+    background: var(--card-bg);
+    border: var(--bw-1) solid var(--line);
+    border-radius: var(--toast-radius);
+    padding: var(--toast-p);
+    box-shadow: var(--toast-sh);
+    font-size: var(--fs-sm);
+    color: var(--text-1);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .tk-demo-tooltip {
+    background: var(--tooltip-bg);
+    color: var(--tooltip-fg);
+    padding: var(--tooltip-py) var(--tooltip-px);
+    border-radius: var(--tooltip-radius);
+    font-size: var(--tooltip-fs);
+    display: inline-block;
+  }
+  .tk-demo-modal {
+    background: var(--card-bg);
+    border: var(--bw-1) solid var(--line);
+    border-radius: var(--modal-radius);
+    padding: var(--modal-p);
+    box-shadow: var(--modal-sh);
+    max-width: 360px;
   }
 </style>
 </head>
@@ -4119,6 +4601,251 @@
       <div class="anim-meta"><div class="anim-name">聚焦光晕</div><div class="anim-desc">focus-glow · ring 扩散 · 200ms</div></div>
     </div>
 
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- 22 TOKEN v2 -->
+<section class="section" id="token-v2">
+  <div class="section-label">22 / Token System v2.0</div>
+  <h2 class="section-title">Token 系统 v2.0</h2>
+  <p class="section-subtitle">14 张新表 · 字号 / 字重 / 行高 / 间距 / 圆角 / 边框 / 控件 / 图标 / 层级 / 透明度 / 断点 / 状态层 / 图表 / 组件</p>
+
+  <!-- ① 字号阶梯 -->
+  <div class="tk-block">
+    <div class="tk-block-title">① Typography · 字号阶梯（8 档）</div>
+    <div class="tk-block-desc">替代散落的 22 种硬编码字号，覆盖辅助 → Hero 全场景</div>
+    <div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-xs · 12</span><span class="tk-fs-sample" style="font-size: var(--fs-xs)">辅助文案 Auxiliary</span></div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-sm · 13</span><span class="tk-fs-sample" style="font-size: var(--fs-sm)">次要正文 Secondary</span></div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-base · 14</span><span class="tk-fs-sample" style="font-size: var(--fs-base)">默认正文 Body Default</span></div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-md · 16</span><span class="tk-fs-sample" style="font-size: var(--fs-md)">强调正文 Body Emphasis</span></div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-lg · 18</span><span class="tk-fs-sample" style="font-size: var(--fs-lg)">小标题 Subtitle</span></div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-xl · 20</span><span class="tk-fs-sample" style="font-size: var(--fs-xl)">标题 Title</span></div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-2xl · 24</span><span class="tk-fs-sample" style="font-size: var(--fs-2xl)">大标题 Heading</span></div>
+      <div class="tk-fs-row"><span class="tk-fs-tag">--fs-3xl · 32</span><span class="tk-fs-sample" style="font-size: var(--fs-3xl)">Hero 主标题</span></div>
+    </div>
+  </div>
+
+  <!-- ② 字重 -->
+  <div class="tk-block">
+    <div class="tk-block-title">② Typography · 字重（3 档，禁用 700+）</div>
+    <div class="tk-block-desc">中文超过 600 显笨重，标题最大值锁定 600</div>
+    <div class="tk-fw-row">
+      <div class="tk-fw-item">
+        <div class="tk-fw-sample" style="font-weight: var(--fw-regular)">规范文档 · Regular</div>
+        <span class="tk-name">--fw-regular · 400</span>
+      </div>
+      <div class="tk-fw-item">
+        <div class="tk-fw-sample" style="font-weight: var(--fw-medium)">规范文档 · Medium</div>
+        <span class="tk-name">--fw-medium · 500</span>
+      </div>
+      <div class="tk-fw-item">
+        <div class="tk-fw-sample" style="font-weight: var(--fw-semibold)">规范文档 · Semibold</div>
+        <span class="tk-name">--fw-semibold · 600</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 行高 -->
+  <div class="tk-block">
+    <div class="tk-block-title">③ Typography · 行高（中文 ≥ 1.5）</div>
+    <div class="tk-block-desc">中文段落最低 1.5，长文阅读用 1.75</div>
+    <div class="tk-lh-grid">
+      <div class="tk-lh-card">
+        <span class="tk-name">--lh-tight · 1.4</span>
+        <p class="tk-lh-text" style="line-height: var(--lh-tight)">仅适用于英文或纯数字场景。中文段落不允许低于 1.5，否则文字会显得过紧、可读性下降。</p>
+      </div>
+      <div class="tk-lh-card">
+        <span class="tk-name">--lh-base · 1.6</span>
+        <p class="tk-lh-text" style="line-height: var(--lh-base)">中文正文默认行高，平衡密度与呼吸感。卡片描述、列表条目均使用此值，是最常见的段落选择。</p>
+      </div>
+      <div class="tk-lh-card">
+        <span class="tk-name">--lh-loose · 1.75</span>
+        <p class="tk-lh-text" style="line-height: var(--lh-loose)">长文阅读场景，如帮助文档、知识库正文、协议条款等。降低眼动疲劳，提升连续阅读的舒适度。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ 间距 -->
+  <div class="tk-block">
+    <div class="tk-block-title">④ Spacing · 4-base 栅格（11 档）</div>
+    <div class="tk-block-desc">所有 padding / margin / gap 必须命中此表，禁用 10/14/18 等非 4 倍值</div>
+    <div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-1 · 4</span><div class="tk-sp-bar" style="width: var(--sp-1)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-2 · 8</span><div class="tk-sp-bar" style="width: var(--sp-2)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-3 · 12</span><div class="tk-sp-bar" style="width: var(--sp-3)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-4 · 16</span><div class="tk-sp-bar" style="width: var(--sp-4)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-5 · 20</span><div class="tk-sp-bar" style="width: var(--sp-5)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-6 · 24</span><div class="tk-sp-bar" style="width: var(--sp-6)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-8 · 32</span><div class="tk-sp-bar" style="width: var(--sp-8)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-10 · 40</span><div class="tk-sp-bar" style="width: var(--sp-10)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-12 · 48</span><div class="tk-sp-bar" style="width: var(--sp-12)"></div></div>
+      <div class="tk-sp-row"><span class="tk-sp-meta">--sp-16 · 64</span><div class="tk-sp-bar" style="width: var(--sp-16)"></div></div>
+    </div>
+  </div>
+
+  <!-- ⑤ 圆角 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑤ Radius · 圆角（7 档）</div>
+    <div class="tk-block-desc">从 Tag 到 Pill 的全套语义圆角，替代 166 处硬编码 px</div>
+    <div class="tk-grid cols-4">
+      <div class="tk-card"><div class="tk-radius-box" style="border-radius: var(--radius-xs)"></div><span class="tk-name">--radius-xs</span><span class="tk-value">2px · Tag</span></div>
+      <div class="tk-card"><div class="tk-radius-box" style="border-radius: var(--radius-sm)"></div><span class="tk-name">--radius-sm</span><span class="tk-value">4px · Micro</span></div>
+      <div class="tk-card"><div class="tk-radius-box" style="border-radius: var(--radius-md)"></div><span class="tk-name">--radius-md</span><span class="tk-value">6px · Icon-btn</span></div>
+      <div class="tk-card"><div class="tk-radius-box" style="border-radius: var(--radius-lg)"></div><span class="tk-name">--radius-lg</span><span class="tk-value">8px · Btn / Input</span></div>
+      <div class="tk-card"><div class="tk-radius-box" style="border-radius: var(--radius-xl)"></div><span class="tk-name">--radius-xl</span><span class="tk-value">12px · Card</span></div>
+      <div class="tk-card"><div class="tk-radius-box" style="border-radius: var(--radius-2xl)"></div><span class="tk-name">--radius-2xl</span><span class="tk-value">16px · Panel</span></div>
+      <div class="tk-card"><div class="tk-radius-box" style="border-radius: var(--radius-pill); width:96px"></div><span class="tk-name">--radius-pill</span><span class="tk-value">999px · Pill</span></div>
+    </div>
+  </div>
+
+  <!-- ⑥ 边框 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑥ Border Width · 描边宽度（3 档）</div>
+    <div class="tk-block-desc">默认 1px，强调 2px，装饰 4px</div>
+    <div class="tk-grid cols-3">
+      <div class="tk-card"><div class="tk-bw-box" style="border-width: var(--bw-1)"></div><span class="tk-name">--bw-1 · 1px</span></div>
+      <div class="tk-card"><div class="tk-bw-box" style="border-width: var(--bw-2)"></div><span class="tk-name">--bw-2 · 2px</span></div>
+      <div class="tk-card"><div class="tk-bw-box" style="border-width: var(--bw-4)"></div><span class="tk-name">--bw-4 · 4px</span></div>
+    </div>
+  </div>
+
+  <!-- ⑦ 控件高度 + 图标 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑦ Sizing · 控件高度 + 图标尺寸</div>
+    <div class="tk-block-desc">所有按钮、输入框统一收口到 sm/md/lg 三档；图标尺寸成 xs–xl 五档</div>
+    <div class="tk-h-row">
+      <button class="tk-h-btn" style="height: var(--h-sm); font-size: var(--fs-sm)">小型 28</button>
+      <button class="tk-h-btn" style="height: var(--h-md)">默认 32</button>
+      <button class="tk-h-btn" style="height: var(--h-lg); font-size: var(--fs-md)">大型 40</button>
+      <button class="tk-h-btn" style="height: var(--h-xl); font-size: var(--fs-md); padding: 0 var(--sp-6)">超大 48</button>
+    </div>
+    <div class="tk-icon-row">
+      <span class="tk-icon-box" style="width: var(--icon-xs); height: var(--icon-xs)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="100%" height="100%"><circle cx="12" cy="12" r="10"/></svg></span>
+      <span class="tk-icon-box" style="width: var(--icon-sm); height: var(--icon-sm)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="100%" height="100%"><circle cx="12" cy="12" r="10"/></svg></span>
+      <span class="tk-icon-box" style="width: var(--icon-md); height: var(--icon-md)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="100%" height="100%"><circle cx="12" cy="12" r="10"/></svg></span>
+      <span class="tk-icon-box" style="width: var(--icon-lg); height: var(--icon-lg)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="100%" height="100%"><circle cx="12" cy="12" r="10"/></svg></span>
+      <span class="tk-icon-box" style="width: var(--icon-xl); height: var(--icon-xl)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="100%" height="100%"><circle cx="12" cy="12" r="10"/></svg></span>
+      <span class="tk-name" style="margin-left: var(--sp-3)">12 · 14 · 16 · 20 · 24</span>
+    </div>
+  </div>
+
+  <!-- ⑧ Z-index -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑧ Z-index · 层级栈（9 档）</div>
+    <div class="tk-block-desc">为 dropdown / sticky / drawer / modal / popover / toast / tooltip 建立明确分层</div>
+    <div class="tk-z-stack">
+      <div class="tk-z-layer" style="left: 24px; top: 24px; z-index: var(--z-base)">--z-base · 0</div>
+      <div class="tk-z-layer" style="left: 56px; top: 44px; z-index: var(--z-raised)">--z-raised · 1</div>
+      <div class="tk-z-layer" style="left: 96px; top: 64px; z-index: var(--z-dropdown)">--z-dropdown · 1000</div>
+      <div class="tk-z-layer" style="left: 144px; top: 84px; z-index: var(--z-sticky)">--z-sticky · 1020</div>
+      <div class="tk-z-layer" style="left: 192px; top: 64px; z-index: var(--z-drawer)">--z-drawer · 1030</div>
+      <div class="tk-z-layer" style="left: 248px; top: 44px; z-index: var(--z-modal)">--z-modal · 1040</div>
+      <div class="tk-z-layer" style="left: 304px; top: 64px; z-index: var(--z-popover)">--z-popover · 1050</div>
+      <div class="tk-z-layer" style="left: 360px; top: 84px; z-index: var(--z-toast)">--z-toast · 1060</div>
+      <div class="tk-z-layer" style="left: 416px; top: 64px; z-index: var(--z-tooltip)">--z-tooltip · 1070</div>
+    </div>
+  </div>
+
+  <!-- ⑨ 透明度 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑨ Opacity · 状态档</div>
+    <div class="tk-block-desc">禁用、弱化、遮罩三种语义场景</div>
+    <div class="tk-grid cols-3">
+      <div class="tk-op-card" style="opacity: var(--op-disabled)">
+        <div>--op-disabled</div><div style="font-size:10px">0.4 · 禁用态</div>
+      </div>
+      <div class="tk-op-card" style="opacity: var(--op-muted)">
+        <div>--op-muted</div><div style="font-size:10px">0.6 · 弱化</div>
+      </div>
+      <div class="tk-op-card" style="opacity: var(--op-backdrop)">
+        <div>--op-backdrop</div><div style="font-size:10px">0.5 · 模态遮罩</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑩ 断点 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑩ Breakpoint · 响应式（5 档）</div>
+    <div class="tk-block-desc">sm 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536（标尺按比例缩放展示）</div>
+    <div class="tk-bp-ruler">
+      <div class="tk-bp-mark" style="left: 0%"></div><div class="tk-bp-label" style="left: 0%">0</div><div class="tk-bp-px" style="left: 0%">mobile</div>
+      <div class="tk-bp-mark" style="left: 25%"></div><div class="tk-bp-label" style="left: 25%">--bp-sm</div><div class="tk-bp-px" style="left: 25%">640</div>
+      <div class="tk-bp-mark" style="left: 35%"></div><div class="tk-bp-label" style="left: 35%">--bp-md</div><div class="tk-bp-px" style="left: 35%">768</div>
+      <div class="tk-bp-mark" style="left: 55%"></div><div class="tk-bp-label" style="left: 55%">--bp-lg</div><div class="tk-bp-px" style="left: 55%">1024</div>
+      <div class="tk-bp-mark" style="left: 75%"></div><div class="tk-bp-label" style="left: 75%">--bp-xl</div><div class="tk-bp-px" style="left: 75%">1280</div>
+      <div class="tk-bp-mark" style="left: 92%"></div><div class="tk-bp-label" style="left: 92%">--bp-2xl</div><div class="tk-bp-px" style="left: 92%">1536</div>
+    </div>
+  </div>
+
+  <!-- ⑪ 状态层 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑪ State Layer · 交互状态叠加</div>
+    <div class="tk-block-desc">Material/Chakra 风格的 hover/active overlay，统一所有组件的反馈语言</div>
+    <div class="tk-grid cols-4">
+      <div class="tk-state-card">默认 Default</div>
+      <div class="tk-state-card hover">悬停 Hover</div>
+      <div class="tk-state-card active">按下 Active</div>
+      <div class="tk-state-card selected">选中 Selected</div>
+      <div class="tk-state-card disabled">禁用 Disabled</div>
+    </div>
+  </div>
+
+  <!-- ⑫ 图表色板 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑫ Chart · 数据可视化色板（8 色）</div>
+    <div class="tk-block-desc">与语义色解耦，KPI 折线 / 柱状 / 饼图专用</div>
+    <div class="tk-grid cols-8">
+      <div class="tk-chart-chip" style="background: var(--chart-1)">chart-1</div>
+      <div class="tk-chart-chip" style="background: var(--chart-2)">chart-2</div>
+      <div class="tk-chart-chip" style="background: var(--chart-3)">chart-3</div>
+      <div class="tk-chart-chip" style="background: var(--chart-4)">chart-4</div>
+      <div class="tk-chart-chip" style="background: var(--chart-5)">chart-5</div>
+      <div class="tk-chart-chip" style="background: var(--chart-6)">chart-6</div>
+      <div class="tk-chart-chip" style="background: var(--chart-7)">chart-7</div>
+      <div class="tk-chart-chip" style="background: var(--chart-8)">chart-8</div>
+    </div>
+  </div>
+
+  <!-- ⑬ 组件 · Button -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑬ Component · Button Token</div>
+    <div class="tk-block-desc">--btn-h-sm/md/lg + --btn-px + --btn-radius + --btn-fs + --btn-fw 一站式</div>
+    <div class="tk-h-row">
+      <button class="tk-h-btn" style="height: var(--btn-h-sm); padding: 0 var(--btn-px-sm); font-size: var(--fs-sm)">Small</button>
+      <button class="tk-h-btn" style="height: var(--btn-h-md); padding: 0 var(--btn-px-md)">Medium 默认</button>
+      <button class="tk-h-btn" style="height: var(--btn-h-lg); padding: 0 var(--btn-px-lg); font-size: var(--fs-md)">Large</button>
+    </div>
+  </div>
+
+  <!-- ⑭ 组件 · 其他 -->
+  <div class="tk-block">
+    <div class="tk-block-title">⑭ Component · Input / Tag / Toast / Tooltip / Modal</div>
+    <div class="tk-block-desc">每个组件都有自己的 Token 簇，未来批量改"input 高度"只动一个变量</div>
+
+    <div class="tk-demo-row">
+      <input class="tk-demo-input" placeholder="--input-* 组件 Token">
+      <span class="tk-demo-tag">标签 Tag</span>
+      <span class="tk-demo-tag" style="background: var(--success-bg); color: var(--success)">已连接</span>
+      <span class="tk-demo-tooltip">Tooltip 提示</span>
+    </div>
+
+    <div class="tk-demo-row">
+      <div class="tk-demo-toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" width="16" height="16"><path d="M20 6L9 17l-5-5"/></svg>
+        <span>Toast · 操作成功</span>
+      </div>
+    </div>
+
+    <div class="tk-demo-row">
+      <div class="tk-demo-modal">
+        <div style="font-size: var(--fs-md); font-weight: var(--fw-semibold); color: var(--text-1); margin-bottom: var(--sp-2)">Modal 标题</div>
+        <div style="font-size: var(--fs-sm); color: var(--text-3); margin-bottom: var(--sp-4); line-height: var(--lh-base)">Modal 组件使用 --modal-radius / --modal-p / --modal-sh / --modal-backdrop 四个 Token，结构统一。</div>
+        <button class="tk-h-btn" style="height: var(--btn-h-md); padding: 0 var(--btn-px-md); font-size: var(--fs-base)">确定</button>
+      </div>
+    </div>
   </div>
 </section>
 

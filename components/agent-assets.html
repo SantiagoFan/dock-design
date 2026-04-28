@@ -506,16 +506,22 @@
   .asset-author {
     width: 22px; height: 22px;
     border-radius: 50%;
-    color: #fff;
-    font-size: 10px; font-weight: 600;
+    background: var(--page-bg);
+    color: var(--text-3);
+    font-size: 10px; font-weight: 500;
     display: inline-flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+    border: 1px solid var(--line-soft);
   }
-  .asset-author.g-1 { background: linear-gradient(135deg, #3662EC, #4A74F0); }
-  .asset-author.g-2 { background: linear-gradient(135deg, #4A74F0, #6B8AFE); }
-  .asset-author.g-3 { background: linear-gradient(135deg, #0A34AA, #3662EC); }
-  .asset-author.g-4 { background: linear-gradient(135deg, #2753D9, #4A74F0); }
-  .asset-author.g-5 { background: linear-gradient(135deg, #6B8AFE, #3662EC); }
+  /* g-* 渐变变体保留 class，但统一弱化为浅灰底，避免抢色 */
+  .asset-author.g-1,
+  .asset-author.g-2,
+  .asset-author.g-3,
+  .asset-author.g-4,
+  .asset-author.g-5 {
+    background: var(--page-bg);
+    color: var(--text-3);
+  }
 
   /* DRAWER */
   .drawer-overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity var(--dur-normal) var(--ease-default); z-index: 200; }

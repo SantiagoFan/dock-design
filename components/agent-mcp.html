@@ -212,7 +212,7 @@
   .mcp-card:hover { transform: translateY(-2px); box-shadow: var(--sh-lg); border-color: var(--line-brand); }
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  .mcp-head { padding: 18px 20px 12px; display: flex; align-items: flex-start; gap: 14px; }
+  .mcp-head { padding: 24px 20px 18px; display: flex; align-items: flex-start; gap: 14px; }
   .mcp-icon {
     width: 48px; height: 48px;
     border-radius: 12px;
@@ -255,13 +255,11 @@
 
   .mcp-status {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 10px; font-weight: 600;
+    font-size: 11px; font-weight: 500;
     padding: 3px 9px;
     border-radius: 999px;
-    font-family: var(--font-en);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     flex-shrink: 0;
+    letter-spacing: 0.02em;
   }
   .mcp-status .s-dot { width: 6px; height: 6px; border-radius: 50%; }
   .mcp-status.connected { background: var(--success-bg); color: var(--success); }
@@ -290,6 +288,7 @@
     padding: 0 20px 14px;
     display: flex; flex-wrap: wrap;
     gap: 6px;
+    margin-top: auto;
   }
   .tool-chip {
     display: inline-flex; align-items: center;
@@ -338,14 +337,14 @@
   .mcp-stats .stat svg { width: 11px; height: 11px; color: var(--text-4); }
   .mcp-acts { display: flex; gap: 4px; }
   .act-btn {
-    width: 28px; height: 28px;
-    border-radius: 6px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
     display: inline-flex; align-items: center; justify-content: center;
     color: var(--text-3);
     transition: all var(--dur-fast) var(--ease-default);
   }
   .act-btn:hover { background: var(--brand-bg); color: var(--brand); }
-  .act-btn svg { width: 14px; height: 14px; }
+  .act-btn svg { width: 16px; height: 16px; }
 
   /* DRAWER */
   .drawer-overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity var(--dur-normal) var(--ease-default); z-index: 200; }
@@ -628,14 +627,14 @@
         <!-- 1. 飞书 MCP -->
         <div class="mcp-card" data-source="official" data-id="feishu" style="animation-delay: 60ms;">
           <div class="mcp-head">
-            <div class="mcp-icon" style="background: linear-gradient(135deg, var(--brand), var(--brand-hover)); color: #fff;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            <div class="mcp-icon">
+              <svg viewBox="0 0 1024 1024" fill="currentColor"><path d="M634.825 142.875l10.585 6.928c13.029 8.529 26.576 22.982 38.379 37.507 12.619 15.53 26.083 34.706 38.644 55.731 15.786 26.425 31.466 57.971 41.654 90.436 54.884-9.621 118.466-4.248 190.139 27.292 30.367 13.364 36.232 54.071 10.769 75.436-7.114 5.969-25.61 24.499-40.74 57.28-1.762 3.819-3.706 8.141-5.838 12.88-11.273 25.066-27.777 61.761-50.256 96.935-65.104 119.198-206.186 272.371-457.796 278.116-72.046 1.645-142.937-15.42-199.215-37.094-28.28-10.891-53.596-23.222-74.207-35.555-19.662-11.765-38.18-25.372-49.934-39.791C79.804 760.138 77 749.888 77 740.79V372.895c0-38.27 49.429-63.131 78.603-29.304 36.635 42.478 106.051 109.181 195.939 168.337 27.62 18.177 56.936 35.486 87.611 51.113 8.002-4.991 19.791-13.227 34.919-25.418a658.577 658.577 0 0 0 19.777-16.614C396.053 355.214 286.08 273.578 221.374 225.77c-34.502-25.492-16.83-80.495 26.338-80.735l387.113-2.16z m-78.978 318.264l1.594-1.683c23.669-24.996 66.196-69.91 126.849-99.733-7.263-23.524-19.415-49.239-33.969-73.602-10.65-17.826-21.829-33.663-31.722-45.837-4.345-5.347-8.273-9.779-11.634-13.252l-246.926 1.377c59.468 51.879 129.922 125.497 195.808 232.73zM344.609 606.705a1043.927 1043.927 0 0 1-39.245-24.609c-56.193-36.981-105.114-76.752-144.364-113v254.79c4.534 3.503 10.799 7.848 19.072 12.799 16.024 9.587 36.94 19.881 61.267 29.25 48.933 18.845 108.747 32.835 167.109 31.503 104.728-2.391 186.493-34.617 249.157-78.915a99.11 99.11 0 0 1-4.599-0.941 68.711 68.711 0 0 1-3.377-0.87c-107.319-12.745-207.078-53.408-292.331-102.566l-15.009-6.395 2.32-1.046z m454.724-51.711c17.658-28.163 30.829-57.336 41.877-81.804 2.347-5.2 4.598-10.186 6.777-14.906 6.673-14.458 13.935-27.179 21.239-38.223-58.481-14.239-105.366-4.663-142.795 12.622-49.513 22.864-84.986 60.269-109.71 86.339l-0.676 0.713c-30.147 31.785-58.212 57.667-82.261 77.572 41.693 16.281 85.174 30.371 130.525 36.535 24.614 2.58 49.457-5.92 74.07-22.255 24.223-16.076 45.214-37.81 60.954-56.593z"/></svg>
             </div>
             <div class="mcp-meta">
               <div class="mcp-name">飞书 MCP <span class="mcp-version">v2.4.0</span></div>
               <span class="mcp-source">官方</span>
             </div>
-            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+            <span class="mcp-status connected"><span class="s-dot"></span>已连接</span>
           </div>
           <div class="mcp-desc">读写飞书文档、表格、多维表，发送群消息与日程提醒，支持 OAuth 多租户</div>
           <div class="mcp-tools">
@@ -651,7 +650,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -659,14 +658,14 @@
         <!-- 2. 钉钉 MCP -->
         <div class="mcp-card" data-source="official" data-id="dingtalk" style="animation-delay: 120ms;">
           <div class="mcp-head">
-            <div class="mcp-icon" style="background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: #fff;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <div class="mcp-icon">
+              <svg viewBox="0 0 1024 1024" fill="currentColor"><path d="M325.354667 92.501333l-94.4-40.746666-2.624-1.152a97.813333 97.813333 0 0 0-92.864 8.469333l-4.202667 2.986667a95.488 95.488 0 0 0-36.864 57.429333l-0.576 3.029333-1.024 6.4c-8.874667 62.506667 9.642667 137.429333 47.744 193.28l2.112 3.029334-0.469333 1.216a95.872 95.872 0 0 0-3.84 50.069333l1.194666 5.738667c12.586667 57.173333 51.690667 114.496 100.629334 151.850666l4.906666 3.669334v4.48c0.362667 13.482667 3.690667 27.349333 10.581334 40.96 4.928 9.813333 11.008 18.837333 18.346666 28.181333 3.029333 3.882667 6.250667 7.765333 9.642667 11.669333 3.882667 4.458667 7.68 8.618667 11.264 12.416l6.826667 7.061334 5.994666 5.909333 5.845334 5.461333c41.130667 37.376 85.76 55.978667 128.768 61.376l2.922666 0.298667-0.064 1.92a85.546667 85.546667 0 0 0 65.28 83.989333l1.024 0.213334-22.208 67.648c-29.354667 89.301333 86.144 153.493333 146.496 81.429333l212.352-253.589333 2.496-3.114667c32.106667-41.92 17.557333-98.602667-22.08-123.882667l-2.090666-1.301333 18.794666-30.570667 11.328-18.730666 9.898667-16.746667 8.448-14.698667 4.778667-8.597333 1.792-3.349333-1.898667 3.328c22.186667-36.693333 28.842667-84.906667 13.077333-126.186667-15.104-39.616-45.610667-67.797333-87.808-84.992l-8.981333-3.434667-81.493333-28.48-172.672-59.52a2523.52 2523.52 0 0 1-72.042667-26.24l-23.381333-9.002666-17.770667-6.954667a4668.373333 4668.373333 0 0 1-103.189333-42.218667z m-143.061334 37.973334a12.565333 12.565333 0 0 1 12.330667-1.493334l43.84 19.136 57.450667 24.576 44.288 18.432 34.176 13.866667 21.226666 8.469333 28.864 11.264 14.933334 5.717334c18.666667 7.104 37.482667 14.058667 56.042666 20.650666l245.418667 84.864 26.389333 9.344 1.706667 0.618667c24.874667 9.28 37.952 21.930667 44.010667 37.845333 5.610667 14.698667 2.922667 33.834667-4.437334 48.128l-7.488 13.589334-6.677333 11.626666-10.282667 17.450667-20.693333 34.133333-25.536 41.002667-59.029333 92.714667h103.893333L570.368 896l58.090667-176.853333-97.877334-0.64 32.853334-110.933334c-6.314667 2.88-15.210667 6.186667-24.704 9.386667l-11.562667 3.712-11.370667 3.370667c-9.173333 2.624-17.365333 4.650667-22.570666 5.546666l-2.816 0.448-3.584 0.448-4.309334 0.384-4.970666 0.277334-5.546667 0.064c-1.002667 0-1.984 0-3.008-0.042667l-6.4-0.32-6.890667-0.64c-23.68-2.858667-54.613333-12.437333-84.458666-39.210667l-5.205334-4.885333-7.104-7.168-6.485333-6.933333-4.693333-5.290667a239.68 239.68 0 0 1-2.368-2.773333l-4.565334-5.632a88.576 88.576 0 0 1-9.002666-13.589334 10.858667 10.858667 0 0 1 0.064-10.389333 11.562667 11.562667 0 0 1 8.341333-5.909333l202.389333-27.157334-65.749333-1.984-34.922667-1.408-30.08-1.493333-25.130666-1.557333-11.541334-0.853334-10.624-0.917333-9.493333-0.96-8.170667-1.024a146.090667 146.090667 0 0 1-6.677333-1.088c-49.621333-9.429333-107.349333-72.896-118.016-129.365333a11.157333 11.157333 0 0 1 3.008-9.770667c2.922667-2.837333 6.421333-3.84 10.666667-3.349333l71.381333 14.869333 231.509333 49.173333-88.32-29.290666-61.930666-21.098667-48.874667-17.109333-26.197333-9.450667-29.354667-10.965333-15.146667-5.952-8.853333-3.626667-7.701333-3.306667a277.589333 277.589333 0 0 1-3.413334-1.536l-5.802666-2.773333a42.944 42.944 0 0 1-7.317334-4.373333c-44.373333-36.778667-66.794667-114.496-57.984-164.821334a11.029333 11.029333 0 0 1 4.416-6.784z"/></svg>
             </div>
             <div class="mcp-meta">
               <div class="mcp-name">钉钉 MCP <span class="mcp-version">v1.8.2</span></div>
               <span class="mcp-source">官方</span>
             </div>
-            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+            <span class="mcp-status connected"><span class="s-dot"></span>已连接</span>
           </div>
           <div class="mcp-desc">待办、审批、群机器人、会议室预定等钉钉企业能力，OA 流程一站式接入</div>
           <div class="mcp-tools">
@@ -682,7 +681,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -697,7 +696,7 @@
               <div class="mcp-name">PostgreSQL MCP <span class="mcp-version">v3.0.1</span></div>
               <span class="mcp-source">官方</span>
             </div>
-            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+            <span class="mcp-status connected"><span class="s-dot"></span>已连接</span>
           </div>
           <div class="mcp-desc">SQL 查询执行、Schema 探索、安全只读模式，自动注入参数防 SQL 注入</div>
           <div class="mcp-tools">
@@ -713,7 +712,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -728,7 +727,7 @@
               <div class="mcp-name">GitHub MCP <span class="mcp-version">v1.4.0</span></div>
               <span class="mcp-source">官方</span>
             </div>
-            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+            <span class="mcp-status connected"><span class="s-dot"></span>已连接</span>
           </div>
           <div class="mcp-desc">Issue / PR 操作、代码搜索、commit 分析与 CI 状态读取，支持私库 token 鉴权</div>
           <div class="mcp-tools">
@@ -744,7 +743,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -759,7 +758,7 @@
               <div class="mcp-name">文件系统 MCP <span class="mcp-version">v2.1.0</span></div>
               <span class="mcp-source">官方</span>
             </div>
-            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+            <span class="mcp-status connected"><span class="s-dot"></span>已连接</span>
           </div>
           <div class="mcp-desc">读写本地文件、目录浏览、glob 搜索，沙箱隔离 + 路径白名单确保安全</div>
           <div class="mcp-tools">
@@ -775,7 +774,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -783,14 +782,14 @@
         <!-- 6. RAG 检索 MCP（自研） -->
         <div class="mcp-card" data-source="self" data-id="rag" style="animation-delay: 360ms;">
           <div class="mcp-head">
-            <div class="mcp-icon" style="background: linear-gradient(135deg, #3662EC, #4A74F0); color: #fff;">
+            <div class="mcp-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             </div>
             <div class="mcp-meta">
               <div class="mcp-name">RAG 检索 MCP <span class="mcp-version">v1.2.0</span></div>
               <span class="mcp-source" style="background: linear-gradient(135deg, var(--brand-bg), var(--success-bg)); color: var(--brand-deep);">自研</span>
             </div>
-            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+            <span class="mcp-status connected"><span class="s-dot"></span>已连接</span>
           </div>
           <div class="mcp-desc">向量召回 + BM25 + Cross-Encoder 三层检索，对接公司知识库，召回率 0.86</div>
           <div class="mcp-tools">
@@ -805,7 +804,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -820,7 +819,7 @@
               <div class="mcp-name">网页爬虫 MCP <span class="mcp-version">v0.9.4</span></div>
               <span class="mcp-source community">社区</span>
             </div>
-            <span class="mcp-status idle"><span class="s-dot"></span>IDLE</span>
+            <span class="mcp-status idle"><span class="s-dot"></span>空闲</span>
           </div>
           <div class="mcp-desc">基于 Playwright 的网页抓取与解析，支持反爬虫绕过、JavaScript 渲染等场景</div>
           <div class="mcp-tools">
@@ -835,7 +834,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="启用"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -850,7 +849,7 @@
               <div class="mcp-name">浏览器自动化 <span class="mcp-version">v0.6.1</span></div>
               <span class="mcp-source community">社区</span>
             </div>
-            <span class="mcp-status error"><span class="s-dot"></span>ERROR</span>
+            <span class="mcp-status error"><span class="s-dot"></span>错误</span>
           </div>
           <div class="mcp-desc">基于 Chromium 的网页操作自动化，登录态/表单提交/截图，因鉴权失败暂时离线</div>
           <div class="mcp-tools">
@@ -864,7 +863,7 @@
             </div>
             <div class="mcp-acts">
               <button class="act-btn" title="重新连接"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
-              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>
             </div>
           </div>
         </div>
@@ -881,7 +880,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
     </div>
     <div class="d-info">
-      <div class="d-name"><span id="dName">飞书 MCP</span> <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span></div>
+      <div class="d-name"><span id="dName">飞书 MCP</span> <span class="mcp-status connected"><span class="s-dot"></span>已连接</span></div>
       <div class="d-cat" id="dCat">v2.4.0 · 官方 · 7 个工具 · 平均延迟 148ms</div>
     </div>
     <button class="drawer-close" id="drawerClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
