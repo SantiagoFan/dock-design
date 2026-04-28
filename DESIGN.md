@@ -383,7 +383,7 @@ Tags: height 22px, padding 0 8px, radius 4px, font 11-12px weight 500。
   - 信息: 蓝底 + 铃铛 (stroke-width 2.5)
   - 成功: 绿底 + 勾选 (stroke-width 3.5)
   - 失败: 红底 + X 叉 (stroke-width 3.5)
-  - 警告: 橙底 + 感叹号 (stroke-width 3)
+  - 警告: 橙底 + 感叹号 (stroke-width 2.5)
 - 关闭: 14×14 X SVG, `--text-4`
 
 ### Alert（行内提示）
@@ -426,8 +426,11 @@ Tags: height 22px, padding 0 8px, radius 4px, font 11-12px weight 500。
 - Width 220px, bg `#FFFFFF`, border-right `1px solid --line`
 - Brand: 22×22 logo mark(渐变蓝圆角) + 14px 品牌名
 - Section label: 10px mono uppercase `--text-4`, letter-spacing 0.08em
-- Nav item: height 36px, padding 0 16px, 13px weight 400
-- Active: bg `--brand-bg`, text `--brand`, left `3px solid --brand`
+- Nav item（一级）: height 36px, padding 0 16px, 13px weight 400, border-radius `8px`（默认/hover 状态）
+- Nav item Active（一级）: bg `--brand-bg`（**通栏底色**：抵消 sidebar 容器内边距，延伸到侧栏左右边缘）, text `--brand`, weight 500, **直线无圆角**（`border-radius: 0`）, **3px 品牌色竖条紧贴侧栏左边缘**（`box-shadow: inset 3px 0 0 --brand` 或 `border-left`，禁止内缩留白）
+- Sub-nav item（二级 / 筛选项）: height 32px, padding 0 12px, 13px weight 400, color `--text-3`
+- Sub-nav Hover（二级）: bg `--brand-tint`, text `--brand`
+- Sub-nav Active（二级）: bg `--brand-bg`, text `--brand`, weight 500, **不加左侧蓝条**（避免与一级层级混淆，二级仅靠底色和字重区分选中态）
 - Badge: bg `--danger-bg`, color `--danger`, mono 10px
 
 ### TopBar
@@ -610,7 +613,7 @@ Stagger:   each delay 40-80ms
 
 - **KPI Card**: "#FFFFFF bg, 12px radius, 24px padding, shadow 0 4px 12px rgba(15,27,60,.06). Label 12px #6B7A9C. Number 32px JetBrains Mono weight 600 #0F1B3C. Trend tag #EFFFEB bg #2DAC0C text. 入场 stagger slide-up 200ms spring, 数字 count-up 1200ms."
 
-- **Sidebar**: "220px width, #FFFFFF bg, right border 1px #E5EBF5. Section label 10px mono uppercase #9BA7C3. Nav item 36px height, 13px. Active: bg #EAEFFD, text #3662EC, left 3px solid #3662EC. Transition 120ms ease-default."
+- **Sidebar**: "220px width, #FFFFFF bg, right border 1px #E5EBF5. Section label 10px mono uppercase #9BA7C3. Nav item（一级）36px, 13px, radius 8px。Active（一级）通栏直线（border-radius 0、抵消父 padding 撑满侧栏宽度）, bg #EAEFFD, text #3662EC weight 500, 3px 品牌竖条贴侧栏左边缘（inset shadow 实现）。Sub-nav（二级）32px, indent 30px, 选中态仅 bg+text 加重，不加左侧蓝条。Transition 120ms ease-default."
 
 - **Table**: "Header: #F7F9FD bg, mono 11px uppercase #3A4868. Body: 48px row, 13px, border-bottom #EEF2FA. Hover: #F5F8FF. Selected: #EAEFFD + inset 3px #3662EC. Numeric: JetBrains Mono right-aligned. Pagination 28px btns."
 

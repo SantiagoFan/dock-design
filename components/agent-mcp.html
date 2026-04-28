@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP · 智能体 — DOCK 管理系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --brand: #3662EC; --brand-hover: #4A74F0; --brand-press: #2753D9; --brand-deep: #0A34AA;
+    --brand-bg: #EAEFFD; --brand-tint: #F5F8FF;
+    --success: #2DAC0C; --success-bg: #EFFFEB;
+    --danger: #FF4245; --danger-bg: #FFF2F2;
+    --warning: #FF8F1F; --warning-bg: #FFF7F0;
+    --text-1: #0F1B3C; --text-2: #3A4868; --text-3: #6B7A9C; --text-4: #9BA7C3; --text-5: #C8D0E0;
+    --page-bg: #F7F9FD; --card-bg: #FFFFFF;
+    --line: #E5EBF5; --line-soft: #EEF2FA; --line-brand: #D5DFFA;
+    --overlay-bg: rgba(15,27,60,.35);
+    --sh-sm: none;
+    --sh: 0 4px 12px rgba(15,27,60,.06), 0 2px 4px rgba(15,27,60,.04);
+    --sh-lg: 0 12px 32px rgba(15,27,60,.08), 0 4px 12px rgba(15,27,60,.04);
+    --sh-focus: 0 0 0 3px rgba(54,98,236,.15);
+    --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Inter", sans-serif;
+    --font-en: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+    --dur-fast: 120ms; --dur-normal: 200ms; --dur-slow: 320ms;
+    --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --brand: #4A74F0; --brand-hover: #6B8AFE; --brand-press: #3662EC; --brand-deep: #8AA5FF;
+    --brand-bg: #1A2548; --brand-tint: rgba(74,116,240,.08);
+    --success: #34C914; --success-bg: rgba(52,201,20,.14);
+    --danger: #FF5A5D; --danger-bg: rgba(255,90,93,.14);
+    --warning: #FFA840; --warning-bg: rgba(255,168,64,.14);
+    --text-1: #E8ECF4; --text-2: #9BA7C3; --text-3: #6B7A9C; --text-4: #4D5A7A; --text-5: #2E3654;
+    --page-bg: #0B0F1E; --card-bg: #161B2E;
+    --line: #1E2440; --line-soft: #161B2E; --line-brand: rgba(74,116,240,.32);
+    --overlay-bg: rgba(0,0,0,.6);
+    --sh-sm: none;
+    --sh: 0 4px 12px rgba(0,0,0,.36), 0 2px 4px rgba(0,0,0,.24);
+    --sh-lg: 0 12px 32px rgba(0,0,0,.48), 0 4px 12px rgba(0,0,0,.28);
+    --sh-focus: 0 0 0 3px rgba(74,116,240,.32);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--page-bg); color: var(--text-1);
+    font-family: var(--font-sans); font-size: 14px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color var(--dur-normal) var(--ease-default), color var(--dur-normal) var(--ease-default);
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  .app { display: flex; min-height: 100vh; }
+
+  /* SHELL */
+  .sidebar { width: 220px; flex-shrink: 0; background: var(--card-bg); border-right: 1px solid var(--line); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  .sidebar-brand { height: 64px; padding: 0 16px 0 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+  .sidebar-brand .logo-mark { width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0; object-fit: contain; }
+  .sidebar-brand .brand-name { font-size: 16px; font-weight: 600; color: var(--text-1); }
+  .sidebar { transition: width var(--dur-normal) var(--ease-default); }
+  .sidebar.collapsed { width: 60px; }
+  .sidebar.collapsed .brand-name,
+  .sidebar.collapsed .nav-item > span,
+  .sidebar.collapsed .nav-item .chev,
+  .sidebar.collapsed .nav-sub { display: none; }
+  .sidebar.collapsed .sidebar-brand { padding: 0; justify-content: center; }
+  .sidebar.collapsed .nav-item { padding: 0; justify-content: center; gap: 0; }
+  .sidebar.collapsed .nav-item.active { margin: 0; padding: 0; box-shadow: inset 3px 0 0 var(--brand); }
+  .sidebar-brand .brand-collapse { margin-left: auto; width: 26px; height: 26px; color: var(--text-4); display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px; transition: all var(--dur-fast) var(--ease-default); }
+  .sidebar-brand .brand-collapse:hover { background: var(--brand-tint); color: var(--brand); }
+  .sidebar-nav { padding: 10px 10px 16px; flex: 1; overflow-y: auto; }
+  .sidebar-nav::-webkit-scrollbar { width: 6px; }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: var(--text-5); border-radius: 3px; }
+  .nav-group { display: flex; flex-direction: column; gap: 2px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 12px; border-radius: 8px; color: var(--text-2); font-size: 13px; font-weight: 400; transition: all var(--dur-fast) var(--ease-default); cursor: pointer; position: relative; }
+  .nav-item > svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--text-3); transition: color var(--dur-fast) var(--ease-default); }
+  .nav-item .chev { margin-left: auto; width: 12px; height: 12px; color: var(--text-4); transition: transform var(--dur-normal) var(--ease-default); }
+  .nav-item.expanded .chev { transform: rotate(180deg); }
+  .nav-item:hover { background: var(--brand-tint); color: var(--brand); }
+  .nav-item:hover > svg { color: var(--brand); }
+  .nav-item.active { background: var(--brand-bg); color: var(--brand); font-weight: 500; margin: 0 -10px; padding: 0 22px; border-radius: 0; box-shadow: inset 3px 0 0 var(--brand); }
+  .nav-item.active > svg { color: var(--brand); }
+  .nav-item.parent-active { color: var(--text-1); font-weight: 500; }
+  .nav-item.parent-active > svg { color: var(--brand); }
+  .nav-sub { display: flex; flex-direction: column; gap: 2px; padding: 2px 0 6px 28px; overflow: hidden; max-height: 360px; transition: max-height var(--dur-normal) var(--ease-default), padding var(--dur-normal) var(--ease-default); }
+  .nav-item.collapsed + .nav-sub { max-height: 0; padding-top: 0; padding-bottom: 0; }
+  .nav-sub .sub-item { height: 32px; padding: 0 12px; border-radius: 6px; display: flex; align-items: center; font-size: 13px; color: var(--text-3); cursor: pointer; transition: all var(--dur-fast) var(--ease-default); }
+  .nav-sub .sub-item:hover { background: var(--brand-tint); color: var(--brand); }
+  .nav-sub .sub-item.active { background: var(--brand-bg); color: var(--brand); font-weight: 500; }
+
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .topbar { height: 64px; background: var(--card-bg); border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 24px; gap: 12px; position: sticky; top: 0; z-index: 50; }
+  .topbar-toggle { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-2); transition: all var(--dur-fast) var(--ease-default); }
+  .topbar-toggle:hover { background: var(--brand-tint); color: var(--brand); }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-3); }
+  .breadcrumb .sep { color: var(--text-5); }
+  .breadcrumb .current { color: var(--text-1); font-weight: 500; }
+  .breadcrumb a:hover { color: var(--brand); }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .icon-btn { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--text-3); transition: all var(--dur-fast) var(--ease-default); position: relative; }
+  .icon-btn:hover { background: var(--brand-tint); color: var(--brand); }
+  .theme-toggle .icon-moon { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+  [data-theme="dark"] .theme-toggle .icon-moon { display: inline-block; }
+  .topbar-user { display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; border-radius: 999px; cursor: pointer; transition: background var(--dur-fast) var(--ease-default); }
+  .topbar-user:hover { background: var(--brand-tint); }
+  .topbar-user .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; }
+  .topbar-user .uname { font-size: 13px; color: var(--text-1); font-weight: 500; }
+  .tabs-bar { background: var(--card-bg); border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 24px; gap: 4px; overflow-x: auto; }
+  .tabs-bar .tab { height: 40px; padding: 0 12px; display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-3); border-bottom: 2px solid transparent; transition: all var(--dur-fast) var(--ease-default); cursor: pointer; white-space: nowrap; }
+  .tabs-bar .tab svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .tabs-bar .tab:hover { color: var(--brand); }
+  .tabs-bar .tab.active { color: var(--brand); font-weight: 500; }
+  .tabs-bar { position: relative; }
+  .tab-indicator {
+    position: absolute; bottom: 0; left: 0; height: 2px;
+    background: var(--brand); border-radius: 2px 2px 0 0;
+    pointer-events: none; transform: translateX(0); width: 0;
+    transition: transform var(--dur-slow) var(--ease-spring), width var(--dur-slow) var(--ease-spring);
+    will-change: transform, width;
+  }
+  .tabs-bar .tab .x { color: var(--text-4); width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; }
+  .tabs-bar .tab .x:hover { background: var(--line); color: var(--text-1); }
+
+  .workspace { padding: 24px; flex: 1; min-width: 0; }
+
+  .page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--line-soft); }
+  .page-head h1 { font-size: 24px; font-weight: 600; color: var(--text-1); letter-spacing: -0.01em; margin-bottom: 6px; line-height: 1.3; }
+  .page-head .desc { font-size: 13px; color: var(--text-3); line-height: 1.6; }
+  .page-head .actions { display: flex; gap: 10px; flex-shrink: 0; }
+  .btn-primary { height: 36px; padding: 0 16px; background: var(--brand); color: #fff; border-radius: 8px; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; transition: all var(--dur-fast) var(--ease-default); }
+  .btn-primary:hover { background: var(--brand-hover); box-shadow: 0 6px 16px rgba(54,98,236,.28); transform: translateY(-1px); }
+  .btn-primary:active { background: var(--brand-press); transform: translateY(0); }
+  .btn-primary svg { width: 14px; height: 14px; }
+  .btn-secondary { height: 36px; padding: 0 14px; background: var(--card-bg); color: var(--text-1); border: 1px solid var(--line); border-radius: 8px; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; transition: all var(--dur-fast) var(--ease-default); }
+  .btn-secondary:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-tint); }
+  .btn-secondary svg { width: 14px; height: 14px; }
+
+  /* STATS */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  .stat-card { background: var(--card-bg); border: 1px solid var(--line-soft); border-radius: 12px; padding: 20px 22px; display: flex; align-items: center; gap: 14px; box-shadow: var(--sh); transition: transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out); position: relative; overflow: hidden; }
+  .stat-card::after { content: ""; position: absolute; top: 0; right: 0; width: 110px; height: 110px; background: radial-gradient(circle at top right, var(--brand-tint) 0%, transparent 65%); pointer-events: none; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--sh-lg); }
+  .stat-card.tone-success::after { background: radial-gradient(circle at top right, var(--success-bg) 0%, transparent 65%); }
+  .stat-card.tone-warning::after { background: radial-gradient(circle at top right, var(--warning-bg) 0%, transparent 65%); }
+  .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--brand-bg); color: var(--brand); position: relative; z-index: 1; }
+  .stat-icon.success { background: var(--success-bg); color: var(--success); }
+  .stat-icon.warning { background: var(--warning-bg); color: var(--warning); }
+  .stat-icon svg { width: 20px; height: 20px; }
+  .stat-meta { flex: 1; min-width: 0; position: relative; z-index: 1; }
+  .stat-num { font-family: var(--font-mono); font-size: 26px; font-weight: 600; color: var(--text-1); line-height: 1.1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .stat-num .unit { font-size: 13px; color: var(--text-3); margin-left: 3px; font-weight: 400; }
+  .stat-label { font-size: 12px; color: var(--text-3); margin-top: 4px; line-height: 1.4; }
+
+  /* TOOLBAR */
+  .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+  .filter-pills { display: flex; gap: 4px; background: var(--card-bg); padding: 3px; border: 1px solid var(--line); border-radius: 8px; }
+  .pill-tab { height: 28px; padding: 0 12px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--text-3); display: inline-flex; align-items: center; gap: 4px; transition: all var(--dur-fast) var(--ease-default); cursor: pointer; }
+  .pill-tab:hover { color: var(--brand); }
+  .pill-tab.active { background: transparent; color: var(--brand); }
+  .filter-pills { position: relative; }
+  .pill-tab { position: relative; z-index: 1; }
+  .pill-indicator {
+    position: absolute; top: 3px; left: 0;
+    height: 28px; width: 0;
+    background: var(--brand-bg);
+    border-radius: 6px;
+    pointer-events: none;
+    transform: translateX(0);
+    transition: transform var(--dur-slow) var(--ease-spring), width var(--dur-slow) var(--ease-spring);
+    will-change: transform, width;
+  }
+  .pill-tab .count { font-family: var(--font-mono); font-size: 10px; color: var(--text-4); background: var(--page-bg); padding: 1px 5px; border-radius: 8px; margin-left: 4px; }
+  .pill-tab.active .count { background: var(--card-bg); color: var(--brand); }
+  .search-input { height: 32px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 8px; display: flex; align-items: center; gap: 6px; padding: 0 10px; width: 280px; transition: all var(--dur-fast) var(--ease-default); }
+  .search-input:focus-within { border-color: var(--brand); box-shadow: var(--sh-focus); }
+  .search-input svg { width: 14px; height: 14px; color: var(--text-4); flex-shrink: 0; }
+  .search-input input { border: none; outline: none; background: none; flex: 1; font-size: 13px; color: var(--text-1); font-family: inherit; }
+  .toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+  /* MCP GRID */
+  .mcp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .mcp-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0;
+    cursor: pointer;
+    transition: transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out), border-color var(--dur-fast) var(--ease-default);
+    box-shadow: var(--sh-sm);
+    animation: rise var(--dur-slow) var(--ease-out) backwards;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .mcp-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--brand), var(--brand-hover)); opacity: 0; transition: opacity var(--dur-fast) var(--ease-default); }
+  .mcp-card:hover::before { opacity: 1; }
+  .mcp-card:hover { transform: translateY(-2px); box-shadow: var(--sh-lg); border-color: var(--line-brand); }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .mcp-head { padding: 18px 20px 12px; display: flex; align-items: flex-start; gap: 14px; }
+  .mcp-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: var(--brand-bg);
+    color: var(--brand);
+  }
+  .mcp-icon svg { width: 24px; height: 24px; }
+  .mcp-meta { flex: 1; min-width: 0; padding-top: 2px; }
+  .mcp-name {
+    font-size: 16px; font-weight: 600;
+    color: var(--text-1);
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    display: flex; align-items: center; gap: 6px;
+    flex-wrap: wrap;
+  }
+  .mcp-version {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-4);
+    border: 1px solid var(--line);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .mcp-source {
+    display: inline-block;
+    font-family: var(--font-en);
+    font-size: 10px; font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--brand-bg);
+    color: var(--brand);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .mcp-source.community { background: var(--page-bg); color: var(--text-3); }
+
+  .mcp-status {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-family: var(--font-en);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .mcp-status .s-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .mcp-status.connected { background: var(--success-bg); color: var(--success); }
+  .mcp-status.connected .s-dot { background: var(--success); animation: pulse-s 1.8s ease-in-out infinite; }
+  .mcp-status.idle { background: var(--page-bg); color: var(--text-3); border: 1px solid var(--line); }
+  .mcp-status.idle .s-dot { background: var(--text-4); }
+  .mcp-status.error { background: var(--danger-bg); color: var(--danger); }
+  .mcp-status.error .s-dot { background: var(--danger); }
+  @keyframes pulse-s { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .mcp-desc {
+    padding: 0 20px;
+    font-size: 13px;
+    color: var(--text-3);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 42px;
+  }
+
+  /* MCP TOOLS LIST */
+  .mcp-tools {
+    padding: 0 20px 14px;
+    display: flex; flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tool-chip {
+    display: inline-flex; align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 8px;
+    background: var(--brand-tint);
+    color: var(--brand);
+    border-radius: 6px;
+    border: 1px solid var(--line-brand);
+    font-weight: 500;
+  }
+  .tool-chip svg { width: 10px; height: 10px; }
+  .tool-chip.more {
+    background: var(--page-bg);
+    color: var(--text-3);
+    border: 1px dashed var(--line);
+    font-family: var(--font-sans);
+  }
+
+  /* MCP FOOT */
+  .mcp-foot {
+    background: var(--page-bg);
+    border-top: 1px solid var(--line-soft);
+    padding: 11px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .mcp-stats {
+    display: flex; gap: 16px;
+    font-size: 11px;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+  }
+  .mcp-stats .stat {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .mcp-stats .stat .n {
+    color: var(--text-1);
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .mcp-stats .stat svg { width: 11px; height: 11px; color: var(--text-4); }
+  .mcp-acts { display: flex; gap: 4px; }
+  .act-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-3);
+    transition: all var(--dur-fast) var(--ease-default);
+  }
+  .act-btn:hover { background: var(--brand-bg); color: var(--brand); }
+  .act-btn svg { width: 14px; height: 14px; }
+
+  /* DRAWER */
+  .drawer-overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity var(--dur-normal) var(--ease-default); z-index: 200; }
+  .drawer-overlay.show { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; width: 540px; max-width: 92vw; height: 100vh; background: var(--card-bg); box-shadow: -16px 0 40px rgba(15,27,60,.12); z-index: 201; transform: translateX(100%); transition: transform var(--dur-slow) var(--ease-out); display: flex; flex-direction: column; }
+  .drawer.open { transform: translateX(0); }
+  .drawer-head { padding: 22px 24px 16px; display: flex; gap: 14px; align-items: flex-start; border-bottom: 1px solid var(--line-soft); position: relative; flex-shrink: 0; }
+  .drawer-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-3); transition: all var(--dur-fast) var(--ease-default); }
+  .drawer-close:hover { background: var(--page-bg); color: var(--text-1); }
+  .drawer-close svg { width: 16px; height: 16px; }
+  .d-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--brand-bg); color: var(--brand); }
+  .d-icon svg { width: 28px; height: 28px; }
+  .d-info { flex: 1; min-width: 0; padding-right: 36px; }
+  .d-name { font-size: 18px; font-weight: 600; color: var(--text-1); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .d-cat { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+
+  .d-tabs { display: flex; padding: 0 24px; gap: 4px; border-bottom: 1px solid var(--line); flex-shrink: 0; overflow-x: auto; }
+  .d-tab { height: 42px; padding: 0 12px; font-size: 13px; color: var(--text-3); border-bottom: 2px solid transparent; cursor: pointer; transition: all var(--dur-fast) var(--ease-default); white-space: nowrap; }
+  .d-tab:hover { color: var(--brand); }
+  .d-tab.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 500; }
+
+  .d-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+  .d-body::-webkit-scrollbar { width: 6px; }
+  .d-body::-webkit-scrollbar-thumb { background: var(--text-5); border-radius: 3px; }
+  .d-pane[hidden] { display: none; }
+  .d-section { margin-bottom: 22px; }
+  .d-section h3 { font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+
+  /* TOOL TABLE */
+  .tool-list { display: flex; flex-direction: column; gap: 6px; }
+  .tool-row {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--page-bg);
+    border-radius: 10px;
+    transition: background var(--dur-fast) var(--ease-default);
+  }
+  .tool-row:hover { background: var(--brand-tint); }
+  .tool-icon-mini {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--brand-bg);
+    color: var(--brand);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .tool-icon-mini svg { width: 14px; height: 14px; }
+  .tool-meta { min-width: 0; }
+  .tool-fn {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-1);
+    font-weight: 500;
+  }
+  .tool-fn .params { color: var(--text-4); font-weight: 400; }
+  .tool-d {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+  .tool-calls {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-4);
+    text-align: right;
+  }
+  .tool-calls .n { color: var(--text-2); font-weight: 600; font-size: 12px; display: block; }
+
+  /* CONFIG TABLE */
+  .cfg-row {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .cfg-row:last-child { border-bottom: none; }
+  .cfg-row .lbl {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-bottom: 4px;
+  }
+  .cfg-row .val {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-1);
+    word-break: break-all;
+  }
+  .cfg-row code {
+    background: var(--brand-tint);
+    color: var(--brand);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  /* LOG STREAM */
+  .log-stream {
+    background: var(--page-bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.7;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .log-line { display: flex; gap: 8px; padding: 1px 0; }
+  .log-line .t { color: var(--text-4); flex-shrink: 0; }
+  .log-line.info .lvl { color: var(--brand); }
+  .log-line.success .lvl { color: var(--success); }
+  .log-line.error .lvl { color: var(--danger); }
+  .log-line .lvl { font-weight: 600; flex-shrink: 0; min-width: 56px; }
+  .log-line .msg { color: var(--text-2); }
+
+  .d-foot { padding: 14px 24px 18px; border-top: 1px solid var(--line); display: flex; gap: 10px; flex-shrink: 0; }
+  .d-foot button { flex: 1; }
+
+  /* TOAST */
+  .toast-stack { position: fixed; top: 80px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 300; pointer-events: none; }
+  .toast { background: var(--card-bg); border: 1px solid var(--line); box-shadow: var(--sh-lg); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-1); min-width: 280px; animation: toastIn var(--dur-slow) var(--ease-spring), toastOut var(--dur-normal) var(--ease-default) 2.6s forwards; pointer-events: auto; }
+  @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes toastOut { to { transform: translateX(120%); opacity: 0; } }
+  .toast.success { border-left: 3px solid var(--success); }
+  .toast.info { border-left: 3px solid var(--brand); }
+  .toast .t-icon { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toast.success .t-icon { background: var(--success-bg); color: var(--success); }
+  .toast.info .t-icon { background: var(--brand-bg); color: var(--brand); }
+  .toast .t-icon svg { width: 12px; height: 12px; }
+
+  .mcp-card.hidden { display: none; }
+
+  @media (max-width: 1100px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) { .sidebar { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img class="logo-mark" src="../logo-Bycq6Sne.png" alt="DOCK">
+      <span class="brand-name">DOCK管理系统</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <a class="nav-item" href="dock-home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></a>
+        <div class="nav-item parent-active expanded">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>
+          <span>智能体</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="nav-sub">
+          <a class="sub-item" href="agent-chat.html">会话</a>
+          <a class="sub-item" href="agent-apps.html">应用</a>
+          <a class="sub-item" href="agent-list.html">智能体</a>
+          <a class="sub-item" href="agent-workflow.html">工作流</a>
+          <a class="sub-item active" href="agent-mcp.html">MCP</a>
+          <a class="sub-item" href="agent-aigc.html">AIGC</a>
+          <a class="sub-item" href="agent-knowledge.html">知识库</a>
+          <a class="sub-item" href="agent-digital.html">数字人</a>
+          <a class="sub-item" href="agent-assets.html">数字资产</a>
+        </div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>HRS</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span>WMS</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21h-1l-1-9 5.5-1L13 4l3 5h2l3-3-2 6h2l-1 9h-1"/><circle cx="9" cy="7" r="4"/></svg><span>CRM</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>ERP</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>商城</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-6h15L21 9"/><path d="M3 9v12h18V9"/></svg><span>商户</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="16" cy="13" r="3"/></svg><span>会员</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>财务</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg><span>系统</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>监控</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>工具</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg><span>OMS</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span>CMS</span></div>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="topbar-toggle" aria-label="折叠"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+      <div class="breadcrumb">
+        <a href="dock-home.html">首页</a>
+        <span class="sep">/</span>
+        <span>智能体</span>
+        <span class="sep">/</span>
+        <span class="current">MCP 服务</span>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="切换主题">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="icon-btn" aria-label="通知"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <div class="topbar-user"><div class="avatar">思</div><span class="uname">思链科技</span></div>
+      </div>
+    </header>
+
+    <div class="tabs-bar">
+      <a class="tab" href="dock-home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>首页</a>
+      <a class="tab" href="agent-chat.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>会话</a>
+      <a class="tab" href="agent-list.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>智能体</a>
+      <div class="tab active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+        MCP
+        <span class="x"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>
+      </div>
+    </div>
+
+    <section class="workspace">
+      <div class="page-head">
+        <div>
+          <h1>MCP 服务</h1>
+          <p class="desc">Model Context Protocol · 让智能体接入外部工具与数据 · 8 个已接入服务 · 32 个可用工具</p>
+        </div>
+        <div class="actions">
+          <button class="btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+            查看文档
+          </button>
+          <button class="btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            浏览市场
+          </button>
+          <button class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            安装服务
+          </button>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg></div>
+          <div class="stat-meta"><div class="stat-num">8<span class="unit">个</span></div><div class="stat-label">已接入服务</div></div>
+        </div>
+        <div class="stat-card tone-success">
+          <div class="stat-icon success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+          <div class="stat-meta"><div class="stat-num">32</div><div class="stat-label">可用工具数 · 7 在线</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <div class="stat-meta"><div class="stat-num">8,642</div><div class="stat-label">今日调用 · +24%</div></div>
+        </div>
+        <div class="stat-card tone-warning">
+          <div class="stat-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div class="stat-meta"><div class="stat-num">186<span class="unit">ms</span></div><div class="stat-label">平均响应延迟</div></div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="filter-pills">
+          <div class="pill-tab active" data-filter="all">全部 <span class="count">8</span></div>
+          <div class="pill-tab" data-filter="official">官方 <span class="count">5</span></div>
+          <div class="pill-tab" data-filter="community">社区 <span class="count">2</span></div>
+          <div class="pill-tab" data-filter="self">自研 <span class="count">1</span></div>
+        </div>
+        <div class="search-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="mcpSearch" placeholder="搜索服务名 / 工具名">
+        </div>
+        <div class="toolbar-right">
+          <button class="btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+            排序：调用量
+          </button>
+        </div>
+      </div>
+
+      <div class="mcp-grid">
+        <!-- 1. 飞书 MCP -->
+        <div class="mcp-card" data-source="official" data-id="feishu" style="animation-delay: 60ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon" style="background: linear-gradient(135deg, var(--brand), var(--brand-hover)); color: #fff;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">飞书 MCP <span class="mcp-version">v2.4.0</span></div>
+              <span class="mcp-source">官方</span>
+            </div>
+            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+          </div>
+          <div class="mcp-desc">读写飞书文档、表格、多维表，发送群消息与日程提醒，支持 OAuth 多租户</div>
+          <div class="mcp-tools">
+            <span class="tool-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>read_doc</span>
+            <span class="tool-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>write_sheet</span>
+            <span class="tool-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>send_msg</span>
+            <span class="tool-chip more">+ 4</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="n">2,148</span></span>
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>148ms</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. 钉钉 MCP -->
+        <div class="mcp-card" data-source="official" data-id="dingtalk" style="animation-delay: 120ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon" style="background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: #fff;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">钉钉 MCP <span class="mcp-version">v1.8.2</span></div>
+              <span class="mcp-source">官方</span>
+            </div>
+            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+          </div>
+          <div class="mcp-desc">待办、审批、群机器人、会议室预定等钉钉企业能力，OA 流程一站式接入</div>
+          <div class="mcp-tools">
+            <span class="tool-chip">create_todo</span>
+            <span class="tool-chip">submit_approval</span>
+            <span class="tool-chip">send_robot</span>
+            <span class="tool-chip more">+ 5</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="n">1,488</span></span>
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>192ms</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PostgreSQL MCP -->
+        <div class="mcp-card" data-source="official" data-id="postgres" style="animation-delay: 180ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">PostgreSQL MCP <span class="mcp-version">v3.0.1</span></div>
+              <span class="mcp-source">官方</span>
+            </div>
+            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+          </div>
+          <div class="mcp-desc">SQL 查询执行、Schema 探索、安全只读模式，自动注入参数防 SQL 注入</div>
+          <div class="mcp-tools">
+            <span class="tool-chip">query</span>
+            <span class="tool-chip">describe_table</span>
+            <span class="tool-chip">list_schemas</span>
+            <span class="tool-chip more">+ 2</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="n">3,420</span></span>
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>86ms</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. GitHub MCP -->
+        <div class="mcp-card" data-source="official" data-id="github" style="animation-delay: 240ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon" style="background: var(--page-bg); color: var(--text-1);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">GitHub MCP <span class="mcp-version">v1.4.0</span></div>
+              <span class="mcp-source">官方</span>
+            </div>
+            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+          </div>
+          <div class="mcp-desc">Issue / PR 操作、代码搜索、commit 分析与 CI 状态读取，支持私库 token 鉴权</div>
+          <div class="mcp-tools">
+            <span class="tool-chip">create_issue</span>
+            <span class="tool-chip">search_code</span>
+            <span class="tool-chip">review_pr</span>
+            <span class="tool-chip more">+ 6</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="n">986</span></span>
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>248ms</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 文件系统 MCP -->
+        <div class="mcp-card" data-source="official" data-id="fs" style="animation-delay: 300ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">文件系统 MCP <span class="mcp-version">v2.1.0</span></div>
+              <span class="mcp-source">官方</span>
+            </div>
+            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+          </div>
+          <div class="mcp-desc">读写本地文件、目录浏览、glob 搜索，沙箱隔离 + 路径白名单确保安全</div>
+          <div class="mcp-tools">
+            <span class="tool-chip">read_file</span>
+            <span class="tool-chip">write_file</span>
+            <span class="tool-chip">glob</span>
+            <span class="tool-chip more">+ 3</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="n">632</span></span>
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>24ms</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. RAG 检索 MCP（自研） -->
+        <div class="mcp-card" data-source="self" data-id="rag" style="animation-delay: 360ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon" style="background: linear-gradient(135deg, #3662EC, #4A74F0); color: #fff;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">RAG 检索 MCP <span class="mcp-version">v1.2.0</span></div>
+              <span class="mcp-source" style="background: linear-gradient(135deg, var(--brand-bg), var(--success-bg)); color: var(--brand-deep);">自研</span>
+            </div>
+            <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span>
+          </div>
+          <div class="mcp-desc">向量召回 + BM25 + Cross-Encoder 三层检索，对接公司知识库，召回率 0.86</div>
+          <div class="mcp-tools">
+            <span class="tool-chip">retrieve</span>
+            <span class="tool-chip">rerank</span>
+            <span class="tool-chip">embed</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="n">5,842</span></span>
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>156ms</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="重启"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. 网页爬虫 MCP -->
+        <div class="mcp-card" data-source="community" data-id="scraper" style="animation-delay: 420ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon" style="background: var(--success-bg); color: var(--success);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">网页爬虫 MCP <span class="mcp-version">v0.9.4</span></div>
+              <span class="mcp-source community">社区</span>
+            </div>
+            <span class="mcp-status idle"><span class="s-dot"></span>IDLE</span>
+          </div>
+          <div class="mcp-desc">基于 Playwright 的网页抓取与解析，支持反爬虫绕过、JavaScript 渲染等场景</div>
+          <div class="mcp-tools">
+            <span class="tool-chip">scrape_url</span>
+            <span class="tool-chip">extract_text</span>
+            <span class="tool-chip">screenshot</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span class="n">214</span></span>
+              <span class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>1.2s</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="启用"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. 浏览器自动化（社区，错误） -->
+        <div class="mcp-card" data-source="community" data-id="browser" style="animation-delay: 480ms;">
+          <div class="mcp-head">
+            <div class="mcp-icon" style="background: var(--danger-bg); color: var(--danger);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="mcp-meta">
+              <div class="mcp-name">浏览器自动化 <span class="mcp-version">v0.6.1</span></div>
+              <span class="mcp-source community">社区</span>
+            </div>
+            <span class="mcp-status error"><span class="s-dot"></span>ERROR</span>
+          </div>
+          <div class="mcp-desc">基于 Chromium 的网页操作自动化，登录态/表单提交/截图，因鉴权失败暂时离线</div>
+          <div class="mcp-tools">
+            <span class="tool-chip">click</span>
+            <span class="tool-chip">fill_form</span>
+            <span class="tool-chip">navigate</span>
+          </div>
+          <div class="mcp-foot">
+            <div class="mcp-stats">
+              <span class="stat" style="color: var(--danger);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>OAuth 失效</span>
+            </div>
+            <div class="mcp-acts">
+              <button class="act-btn" title="重新连接"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg></button>
+              <button class="act-btn" title="配置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="mcpDrawer" aria-hidden="true">
+  <header class="drawer-head">
+    <div class="d-icon" id="dIcon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+    </div>
+    <div class="d-info">
+      <div class="d-name"><span id="dName">飞书 MCP</span> <span class="mcp-status connected"><span class="s-dot"></span>CONNECTED</span></div>
+      <div class="d-cat" id="dCat">v2.4.0 · 官方 · 7 个工具 · 平均延迟 148ms</div>
+    </div>
+    <button class="drawer-close" id="drawerClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </header>
+  <nav class="d-tabs" id="dTabs">
+    <button class="d-tab active" data-pane="tools">工具列表</button>
+    <button class="d-tab" data-pane="config">配置</button>
+    <button class="d-tab" data-pane="logs">运行日志</button>
+  </nav>
+  <div class="d-body">
+    <div class="d-pane" data-pane="tools">
+      <div class="d-section">
+        <h3>暴露工具 · 7 个</h3>
+        <div class="tool-list">
+          <div class="tool-row">
+            <div class="tool-icon-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+            <div class="tool-meta">
+              <div class="tool-fn">read_doc<span class="params">(doc_id, range?)</span></div>
+              <div class="tool-d">读取飞书云文档内容，支持 markdown / 富文本格式</div>
+            </div>
+            <div class="tool-calls"><span class="n">486</span>本月</div>
+          </div>
+          <div class="tool-row">
+            <div class="tool-icon-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+            <div class="tool-meta">
+              <div class="tool-fn">write_sheet<span class="params">(sheet_id, range, data)</span></div>
+              <div class="tool-d">写入多维表格，支持单元格 / 行 / 区域三种粒度</div>
+            </div>
+            <div class="tool-calls"><span class="n">324</span>本月</div>
+          </div>
+          <div class="tool-row">
+            <div class="tool-icon-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="tool-meta">
+              <div class="tool-fn">send_msg<span class="params">(chat_id, msg)</span></div>
+              <div class="tool-d">向群或个人发送消息，支持文本 / 卡片 / 富文本</div>
+            </div>
+            <div class="tool-calls"><span class="n">812</span>本月</div>
+          </div>
+          <div class="tool-row">
+            <div class="tool-icon-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="tool-meta">
+              <div class="tool-fn">create_event<span class="params">(title, time, attendees)</span></div>
+              <div class="tool-d">创建日程，自动邀请参会人</div>
+            </div>
+            <div class="tool-calls"><span class="n">186</span>本月</div>
+          </div>
+          <div class="tool-row">
+            <div class="tool-icon-mini"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg></div>
+            <div class="tool-meta">
+              <div class="tool-fn">search_doc<span class="params">(query, scope?)</span></div>
+              <div class="tool-d">全文搜索云文档，按关键词召回</div>
+            </div>
+            <div class="tool-calls"><span class="n">240</span>本月</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-pane" data-pane="config" hidden>
+      <div class="d-section">
+        <h3>连接配置</h3>
+        <div class="cfg-row">
+          <div class="lbl">协议端点</div>
+          <div class="val"><code>stdio://feishu-mcp</code></div>
+        </div>
+        <div class="cfg-row">
+          <div class="lbl">认证方式</div>
+          <div class="val">OAuth 2.0 · 已绑定</div>
+        </div>
+        <div class="cfg-row">
+          <div class="lbl">App ID</div>
+          <div class="val"><code>cli_a1b2c3d4e5f6</code></div>
+        </div>
+        <div class="cfg-row">
+          <div class="lbl">租户</div>
+          <div class="val">思链科技 · 主租户</div>
+        </div>
+      </div>
+      <div class="d-section">
+        <h3>访问控制</h3>
+        <div class="cfg-row">
+          <div class="lbl">允许的智能体</div>
+          <div class="val">星野、墨白、灵澜、Leo（4 / 9）</div>
+        </div>
+        <div class="cfg-row">
+          <div class="lbl">速率限制</div>
+          <div class="val">100 req/min · 1000 req/hour</div>
+        </div>
+      </div>
+    </div>
+    <div class="d-pane" data-pane="logs" hidden>
+      <div class="d-section">
+        <h3>最近 5 分钟</h3>
+        <div class="log-stream">
+          <div class="log-line success"><span class="t">14:32:18</span><span class="lvl">SUCCESS</span><span class="msg">read_doc(doc_xy7..) → 2.1KB / 148ms</span></div>
+          <div class="log-line success"><span class="t">14:32:14</span><span class="lvl">SUCCESS</span><span class="msg">send_msg(chat_oc88..) → ok / 86ms</span></div>
+          <div class="log-line info"><span class="t">14:32:10</span><span class="lvl">INFO</span><span class="msg">tool_call: write_sheet(sheet_a3...) requested</span></div>
+          <div class="log-line success"><span class="t">14:32:11</span><span class="lvl">SUCCESS</span><span class="msg">write_sheet → 12 rows / 412ms</span></div>
+          <div class="log-line success"><span class="t">14:31:48</span><span class="lvl">SUCCESS</span><span class="msg">read_doc(doc_w42..) → 4.8KB / 192ms</span></div>
+          <div class="log-line info"><span class="t">14:31:32</span><span class="lvl">INFO</span><span class="msg">heartbeat: connection healthy</span></div>
+          <div class="log-line success"><span class="t">14:30:58</span><span class="lvl">SUCCESS</span><span class="msg">search_doc(q="Q2 战略") → 8 results / 248ms</span></div>
+          <div class="log-line error"><span class="t">14:30:42</span><span class="lvl">ERROR</span><span class="msg">read_doc(doc_x99..) → 404 not_found</span></div>
+          <div class="log-line success"><span class="t">14:30:18</span><span class="lvl">SUCCESS</span><span class="msg">create_event() → ev_88x.. / 320ms</span></div>
+          <div class="log-line info"><span class="t">14:30:01</span><span class="lvl">INFO</span><span class="msg">heartbeat: connection healthy</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="d-foot">
+    <button class="btn-secondary">查看文档</button>
+    <button class="btn-primary" id="dRestart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3.51-7.13"/><path d="M21 4v5h-5"/></svg>
+      重启服务
+    </button>
+  </footer>
+</aside>
+
+<!-- TOAST -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+  /* THEME */
+  const THEME_KEY = 'mindlink-theme';
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  function applyTheme(t) { if (t === 'dark') root.setAttribute('data-theme', 'dark'); else root.removeAttribute('data-theme'); }
+  applyTheme(localStorage.getItem(THEME_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  themeToggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem(THEME_KEY, next);
+  });
+
+  /* SIDEBAR COLLAPSE */
+  const SIDEBAR_KEY = 'mindlink-sidebar-collapsed';
+  const sidebar = document.querySelector('.sidebar');
+  if (localStorage.getItem(SIDEBAR_KEY) === 'true') sidebar?.classList.add('collapsed');
+  document.querySelector('.topbar-toggle')?.addEventListener('click', () => {
+    if (!sidebar) return;
+    sidebar.classList.toggle('collapsed');
+    localStorage.setItem(SIDEBAR_KEY, sidebar.classList.contains('collapsed'));
+  });
+
+  /* NAV */
+  document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+    const next = item.nextElementSibling;
+    const hasSub = next && next.classList.contains('nav-sub');
+    item.addEventListener('click', () => {
+      if (item.tagName === 'A') return;
+      if (hasSub) {
+        const expanded = item.classList.toggle('expanded');
+        item.classList.toggle('collapsed', !expanded);
+      }
+    });
+  });
+
+  /* TABS */
+  const tabsBar = document.querySelector('.tabs-bar');
+  let tabIndicator = tabsBar.querySelector('.tab-indicator');
+  if (!tabIndicator) {
+    tabIndicator = document.createElement('span');
+    tabIndicator.className = 'tab-indicator';
+    tabIndicator.setAttribute('aria-hidden', 'true');
+    tabsBar.appendChild(tabIndicator);
+  }
+  function moveTabIndicator() {
+    const active = tabsBar.querySelector('.tab.active');
+    if (!active) { tabIndicator.style.width = '0'; return; }
+    tabIndicator.style.transform = `translateX(${active.offsetLeft}px)`;
+    tabIndicator.style.width = `${active.offsetWidth}px`;
+  }
+  tabsBar.addEventListener('click', (e) => {
+    const closeIcon = e.target.closest('.x');
+    const tab = e.target.closest('.tab');
+    if (!tab) return;
+    if (closeIcon) {
+      e.stopPropagation(); e.preventDefault();
+      const wasActive = tab.classList.contains('active');
+      const fallback = tab.previousElementSibling || tab.nextElementSibling;
+      tab.remove();
+      if (wasActive && fallback) fallback.classList.add('active');
+      moveTabIndicator();
+      return;
+    }
+    if (tab.tagName !== 'A') {
+      tabsBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      moveTabIndicator();
+    }
+  });
+  requestAnimationFrame(moveTabIndicator);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveTabIndicator);
+  window.addEventListener('resize', moveTabIndicator);
+
+  /* FILTER PILLS — sliding indicator */
+  (function setupPillIndicator() {
+    const filterPills = document.querySelector('.filter-pills');
+    if (!filterPills) return;
+    let pillIndicator = filterPills.querySelector('.pill-indicator');
+    if (!pillIndicator) {
+      pillIndicator = document.createElement('span');
+      pillIndicator.className = 'pill-indicator';
+      pillIndicator.setAttribute('aria-hidden', 'true');
+      filterPills.insertBefore(pillIndicator, filterPills.firstChild);
+    }
+    function movePillIndicator() {
+      const active = filterPills.querySelector('.pill-tab.active');
+      if (!active) { pillIndicator.style.width = '0'; return; }
+      const offsetX = active.offsetLeft - filterPills.clientLeft;
+      pillIndicator.style.transform = `translateX(${offsetX}px)`;
+      pillIndicator.style.width = `${active.offsetWidth}px`;
+    }
+    filterPills.addEventListener('click', (e) => {
+      if (e.target.closest('.pill-tab')) requestAnimationFrame(movePillIndicator);
+    });
+    requestAnimationFrame(movePillIndicator);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePillIndicator);
+    window.addEventListener('resize', movePillIndicator);
+  })();
+
+  /* MCP DATA */
+  const MCPS = {
+    'feishu':   { name:'飞书 MCP', cat:'v2.4.0 · 官方 · 7 个工具 · 平均延迟 148ms' },
+    'dingtalk': { name:'钉钉 MCP', cat:'v1.8.2 · 官方 · 8 个工具 · 平均延迟 192ms' },
+    'postgres': { name:'PostgreSQL MCP', cat:'v3.0.1 · 官方 · 5 个工具 · 平均延迟 86ms' },
+    'github':   { name:'GitHub MCP', cat:'v1.4.0 · 官方 · 9 个工具 · 平均延迟 248ms' },
+    'fs':       { name:'文件系统 MCP', cat:'v2.1.0 · 官方 · 6 个工具 · 平均延迟 24ms' },
+    'rag':      { name:'RAG 检索 MCP', cat:'v1.2.0 · 自研 · 3 个工具 · 平均延迟 156ms' },
+    'scraper':  { name:'网页爬虫 MCP', cat:'v0.9.4 · 社区 · 3 个工具 · 平均延迟 1.2s' },
+    'browser':  { name:'浏览器自动化', cat:'v0.6.1 · 社区 · 3 个工具 · 当前离线（OAuth 失效）' }
+  };
+
+  const cards = document.querySelectorAll('.mcp-card');
+  let currentFilter = 'all';
+  let currentQuery = '';
+
+  function applyFilter() {
+    const q = currentQuery.trim().toLowerCase();
+    cards.forEach(card => {
+      const src = card.dataset.source;
+      const id = card.dataset.id;
+      const data = MCPS[id];
+      let show = true;
+      if (currentFilter !== 'all' && src !== currentFilter) show = false;
+      if (q) {
+        const tools = Array.from(card.querySelectorAll('.tool-chip')).map(t => t.textContent).join(' ');
+        const hay = (data.name + data.cat + ' ' + tools).toLowerCase();
+        if (!hay.includes(q)) show = false;
+      }
+      card.classList.toggle('hidden', !show);
+    });
+  }
+  document.querySelectorAll('.pill-tab').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.pill-tab').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      currentFilter = p.dataset.filter;
+      applyFilter();
+    });
+  });
+  document.getElementById('mcpSearch').addEventListener('input', (e) => {
+    currentQuery = e.target.value;
+    applyFilter();
+  });
+
+  /* DRAWER */
+  const drawer = document.getElementById('mcpDrawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  function openDrawer(id) {
+    const m = MCPS[id];
+    if (!m) return;
+    document.getElementById('dName').textContent = m.name;
+    document.getElementById('dCat').textContent = m.cat;
+    drawer.classList.add('open');
+    drawerOverlay.classList.add('show');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    drawerOverlay.classList.remove('show');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
+  cards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.act-btn')) return;
+      openDrawer(card.dataset.id);
+    });
+  });
+
+  /* DRAWER TABS */
+  document.getElementById('dTabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('.d-tab');
+    if (!tab) return;
+    document.querySelectorAll('.d-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const pane = tab.dataset.pane;
+    document.querySelectorAll('.d-pane').forEach(p => { p.hidden = p.dataset.pane !== pane; });
+  });
+
+  /* ACT BUTTONS */
+  document.querySelectorAll('.act-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const t = btn.title;
+      const card = btn.closest('.mcp-card');
+      const m = MCPS[card.dataset.id];
+      if (t === '重启' || t === '重新连接') showToast('info', `正在重启「${m.name}」…`);
+      else if (t === '启用') showToast('success', `「${m.name}」已启用`);
+      else if (t === '配置') showToast('info', `进入「${m.name}」配置面板（演示）`);
+    });
+  });
+
+  document.getElementById('dRestart').addEventListener('click', () => {
+    const name = document.getElementById('dName').textContent;
+    closeDrawer();
+    showToast('info', `正在重启「${name}」…`);
+  });
+
+  /* TOAST */
+  const toastStack = document.getElementById('toastStack');
+  function showToast(type, msg) {
+    const ICONS = {
+      success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>',
+      info:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>'
+    };
+    const t = document.createElement('div');
+    t.className = 'toast ' + type;
+    t.innerHTML = `<span class="t-icon">${ICONS[type] || ICONS.info}</span><span>${msg}</span>`;
+    toastStack.appendChild(t);
+    setTimeout(() => t.remove(), 3200);
+  }
+</script>
+
+</body>
+</html>
