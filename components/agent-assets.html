@@ -303,6 +303,59 @@
     grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
     gap: 14px;
   }
+
+  /* EMPTY STATE · 搜索无结果（DESIGN.md §10 .muted 配方） */
+  .asset-empty {
+    display: none;
+    background: var(--du-card-bg);
+    border: var(--du-bw-1) dashed var(--du-line);
+    border-radius: var(--du-radius-2xl);
+    padding: var(--du-sp-12) var(--du-sp-6);
+    text-align: center;
+    flex-direction: column; align-items: center;
+    gap: var(--du-sp-3);
+  }
+  .asset-empty.show { display: flex; }
+  .asset-empty-icon {
+    width: 72px; height: 72px;
+    border-radius: var(--du-radius-2xl);
+    background: var(--du-page-bg);
+    border: var(--du-bw-1) solid var(--du-line-soft);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--du-text-4);
+  }
+  .asset-empty-icon svg { width: 32px; height: 32px; }
+  .asset-empty-title {
+    font-size: var(--du-fs-md);
+    font-weight: var(--du-fw-semibold);
+    color: var(--du-text-1);
+  }
+  .asset-empty-title .keyword {
+    color: var(--du-brand);
+    font-family: var(--du-font-mono);
+  }
+  .asset-empty-desc {
+    font-size: var(--du-fs-sm);
+    color: var(--du-text-3);
+    max-width: 360px;
+    margin-top: var(--du-sp-2);
+    line-height: var(--du-lh-base);
+  }
+  .asset-empty-actions { display: flex; gap: var(--du-sp-2); margin-top: var(--du-sp-5); }
+  .asset-empty-btn {
+    height: 32px;
+    padding: 0 var(--du-sp-4);
+    border: var(--du-bw-1) solid var(--du-brand);
+    background: transparent;
+    color: var(--du-brand);
+    border-radius: var(--du-radius-lg);
+    font-size: var(--du-fs-sm);
+    font-weight: var(--du-fw-medium);
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color var(--du-dur-fast) var(--du-ease-default);
+  }
+  .asset-empty-btn:hover { background: var(--du-brand-bg); }
   .asset-card {
     background: var(--du-card-bg);
     border: 1px solid var(--du-line);
@@ -1226,6 +1279,21 @@
         </div>
 
       </div>
+
+      <!-- EMPTY STATE · 搜索/筛选无结果 -->
+      <div class="asset-empty" id="assetEmpty">
+        <div class="asset-empty-icon">
+          <svg viewBox="0 0 1024 1024" fill="currentColor">
+            <path d="M513.15 641.988c168.465 0 327.328 73.28 435.855 201.055 17.151 20.15 14.863 49.97-5.208 67.902-8.204 7.333-19.016 11.374-30.437 11.374-14.296 0-27.943-6.08-37.444-16.681C784.2 798.782 651.521 737.444 511.991 737.444c-140.53 0-273.215 61.351-364.031 168.317-9.165 10.763-22.292 16.942-36.014 16.942-11.251 0-22.12-4.175-30.606-11.759-10.123-8.6-16.111-20.257-16.981-32.942-0.847-12.384 3.298-24.35 11.671-33.693 110.402-128.613 269.695-202.321 437.12-202.321z m273.223-246.564c-43.766 0-80.734-37.845-80.734-82.638V192.105c0-44.798 36.969-82.646 80.734-82.646 43.763 0 80.734 37.848 80.734 82.646v120.683c0 45.566-36.216 82.636-80.734 82.636z m-547.906 0c-43.761 0-80.731-37.845-80.731-82.638V192.105c0-44.798 36.97-82.646 80.731-82.646 43.771 0 80.746 37.848 80.746 82.646v120.683c0 44.791-36.975 82.636-80.746 82.636z"/>
+          </svg>
+        </div>
+        <div class="asset-empty-title" id="assetEmptyTitle">未找到 "<span class="keyword" id="assetEmptyKeyword">关键词</span>"</div>
+        <div class="asset-empty-desc">换个关键词试试，或清除筛选查看全部资产</div>
+        <div class="asset-empty-actions">
+          <button class="asset-empty-btn" id="assetEmptyClear">清除搜索</button>
+        </div>
+      </div>
+
     </section>
   </div>
 </div>
@@ -1452,11 +1520,16 @@
   };
 
   const cards = document.querySelectorAll('.asset-card');
+  const assetGrid = document.querySelector('.asset-grid');
+  const assetEmpty = document.getElementById('assetEmpty');
+  const assetEmptyKw = document.getElementById('assetEmptyKeyword');
+  const assetEmptyTitle = document.getElementById('assetEmptyTitle');
   let currentFilter = 'all';
   let currentQuery = '';
 
   function applyFilter() {
     const q = currentQuery.trim().toLowerCase();
+    let visibleCount = 0;
     cards.forEach(card => {
       const type = card.dataset.type;
       const data = ASSETS[card.dataset.id];
@@ -1467,8 +1540,28 @@
         if (!hay.includes(q)) show = false;
       }
       card.classList.toggle('hidden', !show);
+      if (show) visibleCount++;
     });
+
+    // Empty state · 0 结果且有筛选/搜索条件
+    const hasCondition = q.length > 0 || currentFilter !== 'all';
+    if (visibleCount === 0 && hasCondition) {
+      // 关键词回显：搜索词优先，否则展示当前筛选类目
+      if (q) {
+        assetEmptyTitle.innerHTML = '未找到 "<span class="keyword">' + escapeHtml(currentQuery.trim()) + '</span>"';
+      } else {
+        const tabName = document.querySelector('.pill-tab.active')?.textContent.trim() || '当前筛选';
+        assetEmptyTitle.innerHTML = '"<span class="keyword">' + escapeHtml(tabName) + '</span>" 分类下暂无资产';
+      }
+      assetEmpty.classList.add('show');
+      assetGrid.style.display = 'none';
+    } else {
+      assetEmpty.classList.remove('show');
+      assetGrid.style.display = '';
+    }
   }
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
   document.querySelectorAll('.pill-tab').forEach(p => {
     p.addEventListener('click', () => {
       document.querySelectorAll('.pill-tab').forEach(x => x.classList.remove('active'));
@@ -1482,8 +1575,22 @@
     applyFilter();
   });
 
+  // 一键清除搜索 + 重置筛选
+  document.getElementById('assetEmptyClear').addEventListener('click', () => {
+    const searchEl = document.getElementById('assetSearch');
+    searchEl.value = '';
+    currentQuery = '';
+    currentFilter = 'all';
+    document.querySelectorAll('.pill-tab').forEach(p => {
+      p.classList.toggle('active', p.dataset.filter === 'all');
+    });
+    if (typeof movePillIndicator === 'function') movePillIndicator();
+    applyFilter();
+    searchEl.focus();
+  });
+
   /* VIEW TOGGLE — grid ↔ list */
-  const assetGrid = document.querySelector('.asset-grid');
+  /* assetGrid 已在上方 applyFilter 区块声明，此处直接复用 */
   document.querySelectorAll('.view-toggle button').forEach(b => {
     b.addEventListener('click', () => {
       document.querySelectorAll('.view-toggle button').forEach(x => x.classList.remove('active'));
