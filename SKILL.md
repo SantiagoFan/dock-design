@@ -12,6 +12,13 @@ description: |
 > 适用：桌面端（≥1280px）/ 移动端（≤430px）/ 响应式双端
 > 输出：可运行 HTML 原型 · React 组件 · 设计 Token · 动效代码 · 风格系统
 
+> **⚠️ 项目协作约定**
+> 本手册是**通用方法论**，不是任何具体项目的规范源。当用于 **MindLink（思链科技）** 项目时：
+> - **Token 体系**（颜色/字号/间距/圆角/阴影/动效/Z-index/状态层/图表/组件级 Token）→ 以 [`DESIGN.md`](./DESIGN.md) 为唯一真相源
+> - **品牌色 / 禁止条款 / 速查表**（如禁用 700+、阴影微蓝、不引入第二品牌色）→ 以 [`CLAUDE.md`](./CLAUDE.md) 为执行守则
+> - **可视化样板** → [`mindlink-preview.html`](./mindlink-preview.html)
+>
+> 本文件保留的是 **跨项目通用** 的内容：需求拆解 / 移动端 / 动效系统 / 前沿技术 / 6 套设计风格 / 无障碍清单。
 
 ---
 
@@ -29,78 +36,11 @@ description: |
 
 ## 二、设计 Token 系统
 
-所有输出必须基于 CSS 变量，禁止硬编码颜色和尺寸。
+> **本节已迁移至 [`DESIGN.md`](./DESIGN.md)。**
+> MindLink 项目共 14 张 Token 表（≈ 235 个变量），覆盖：颜色 · 字号 · 字重 · 行高 · 间距 · 圆角 · 边框 · 控件高度 · 图标 · Z-index · 透明度 · 断点 · 状态层 · 数据可视化 · 组件级 Token。
+> 本文档下方所有代码示例引用的 `var(--color-primary)` `var(--text-sm)` `var(--space-4)` 等是**通用占位命名**，应用到具体项目时按对应规范的 Token 名替换（MindLink 对应 `var(--brand)` `var(--fs-sm)` `var(--sp-4)` ...）。
 
-```css
-:root {
-  /* 品牌色 */
-  --color-primary:       #2563EB;
-  --color-primary-light: #DBEAFE;
-  --color-primary-dark:  #1D4ED8;
-  --color-accent:        #F59E0B;
-
-  /* 中性色 */
-  --color-bg:          #F8FAFC;
-  --color-surface:     #FFFFFF;
-  --color-border:      #E2E8F0;
-  --color-text:        #0F172A;
-  --color-text-muted:  #64748B;
-
-  /* 语义色 */
-  --color-success: #10B981;
-  --color-error:   #EF4444;
-  --color-warning: #F59E0B;
-
-  /* 排版 */
-  --font-display: 'Sora', sans-serif;
-  --font-body:    'DM Sans', sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
-
-  --text-xs:   0.75rem;   /* 12px */
-  --text-sm:   0.875rem;  /* 14px */
-  --text-base: 1rem;      /* 16px */
-  --text-lg:   1.125rem;  /* 18px */
-  --text-xl:   1.25rem;   /* 20px */
-  --text-2xl:  1.5rem;    /* 24px */
-  --text-3xl:  1.875rem;  /* 30px */
-  --text-4xl:  2.25rem;   /* 36px */
-
-  /* 间距（4pt 栅格）*/
-  --space-1:  0.25rem;   /* 4px  */
-  --space-2:  0.5rem;    /* 8px  */
-  --space-3:  0.75rem;   /* 12px */
-  --space-4:  1rem;      /* 16px */
-  --space-6:  1.5rem;    /* 24px */
-  --space-8:  2rem;      /* 32px */
-  --space-12: 3rem;      /* 48px */
-  --space-16: 4rem;      /* 64px */
-
-  /* 圆角 */
-  --radius-sm:   4px;
-  --radius-md:   8px;
-  --radius-lg:   12px;
-  --radius-xl:   16px;
-  --radius-2xl:  24px;
-  --radius-full: 9999px;
-
-  /* 阴影 */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,.08);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
-  --shadow-xl: 0 20px 48px rgba(0,0,0,.16);
-
-  /* 动效变量（统一管理）*/
-  --ease-out:    cubic-bezier(.16, 1, .3, 1);
-  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
-  --ease-expo:   cubic-bezier(.19, 1, .22, 1);
-
-  --dur-instant: 80ms;
-  --dur-fast:    150ms;
-  --dur-normal:  250ms;
-  --dur-slow:    400ms;
-  --dur-slower:  600ms;
-}
-```
+**总原则不变**：所有输出必须基于 CSS 变量，禁止硬编码颜色和尺寸。
 
 ---
 
@@ -169,47 +109,10 @@ description: |
 
 ## 五、基础组件代码
 
-### 5.1 按钮
+> **按钮 / KPI 卡 / 卡片 / 表单 / 标签 / 模态 / 抽屉 / 表格 等基础组件**已在 [`DESIGN.md`](./DESIGN.md) §4–§16 详尽定义（含四态 / 浅深双模式 / 组件级 Token）。
+> 本节仅保留 **DESIGN.md 未覆盖** 的实现细节：骨架屏、移动端 Sheet、Toast 弹层（含 JS）。
 
-```css
-.btn {
-  display: inline-flex; align-items: center; gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-md);
-  font-size: var(--text-sm); font-weight: 600;
-  border: 1.5px solid transparent; cursor: pointer;
-  transition: background var(--dur-fast) var(--ease-out),
-              transform  var(--dur-fast) var(--ease-spring),
-              box-shadow var(--dur-fast) var(--ease-out);
-}
-.btn-primary { background: var(--color-primary); color: #fff; }
-.btn-primary:hover {
-  background: var(--color-primary-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-.btn-primary:active { transform: scale(.97); }
-```
-
-### 5.2 KPI 数据卡
-
-```css
-.kpi-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--dur-normal) var(--ease-out),
-              transform  var(--dur-normal) var(--ease-out);
-}
-.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.kpi-value { font-size: var(--text-3xl); font-weight: 700; font-family: var(--font-mono); }
-.kpi-change.positive { color: var(--color-success); }
-.kpi-change.negative { color: var(--color-error); }
-```
-
-### 5.3 骨架屏
+### 5.1 骨架屏
 
 ```css
 .skeleton {
@@ -223,7 +126,7 @@ description: |
 @keyframes shimmer { to { background-position: -200% 0; } }
 ```
 
-### 5.4 底部弹层（Mobile Sheet）
+### 5.2 底部弹层（Mobile Sheet）
 
 ```css
 .sheet-overlay {
@@ -242,7 +145,7 @@ description: |
 @keyframes slideUp { from { transform: translateY(100%); } }
 ```
 
-### 5.5 Toast 通知
+### 5.3 Toast 通知（JS 实现）
 
 ```javascript
 function showToast(message, type = 'success') {

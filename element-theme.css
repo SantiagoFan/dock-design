@@ -1,0 +1,328 @@
+/* ═══════════════════════════════════════════════════════════════
+ * MindLink × Element Plus 主题适配层 v1.0
+ *
+ * 用法：
+ *   1. 在你的入口 main.js / main.ts 引入 Element Plus 后再引入本文件
+ *      import 'element-plus/dist/index.css'
+ *      import './element-theme.css'   ← 必须在 Element 默认样式之后加载
+ *   2. 确保你的全局已经定义了 MindLink 的 :root Token（可参考
+ *      mindlink-preview.html 顶部 :root 块，或使用 DESIGN.md §2 Tokens）
+ *
+ * 原理：Element Plus v2 全套 CSS 变量驱动，本文件只把 --el-* 重新指向
+ * MindLink Token，不重写任何组件样式。
+ *
+ * 覆盖范围：100+ 组件全部自动同步主题色 / 圆角 / 阴影 / 字体 / 高度
+ * ═══════════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ─────────── ① 品牌主色 ─────────── */
+  --el-color-primary:           var(--du-brand);
+  --el-color-primary-dark-2:    var(--du-brand-press);
+  --el-color-primary-light-3:   var(--du-brand-hover);
+  --el-color-primary-light-5:   #7B9AF3;
+  --el-color-primary-light-7:   #B4C5F8;
+  --el-color-primary-light-8:   #CFDAFB;
+  --el-color-primary-light-9:   var(--du-brand-bg);
+
+  /* ─────────── ② 功能色 · success ─────────── */
+  --el-color-success:           var(--du-success);
+  --el-color-success-light-3:   var(--du-success-hover);
+  --el-color-success-light-5:   #7AD45F;
+  --el-color-success-light-7:   #A5E08E;
+  --el-color-success-light-8:   #B9E7A6;
+  --el-color-success-light-9:   var(--du-success-bg);
+  --el-color-success-dark-2:    var(--du-success-press);
+
+  /* ─────────── ③ 功能色 · warning ─────────── */
+  --el-color-warning:           var(--du-warning);
+  --el-color-warning-light-3:   var(--du-warning-hover);
+  --el-color-warning-light-5:   #FFAA66;
+  --el-color-warning-light-7:   #FFC494;
+  --el-color-warning-light-8:   #FFD0A8;
+  --el-color-warning-light-9:   var(--du-warning-bg);
+  --el-color-warning-dark-2:    var(--du-warning-press);
+
+  /* ─────────── ④ 功能色 · danger / error ─────────── */
+  --el-color-danger:            var(--du-danger);
+  --el-color-danger-light-3:    var(--du-danger-hover);
+  --el-color-danger-light-5:    #FF8082;
+  --el-color-danger-light-7:    #FFA8AA;
+  --el-color-danger-light-8:    #FFBCBE;
+  --el-color-danger-light-9:    var(--du-danger-bg);
+  --el-color-danger-dark-2:     var(--du-danger-press);
+
+  --el-color-error:             var(--du-danger);
+  --el-color-error-light-3:     var(--du-danger-hover);
+  --el-color-error-light-5:     #FF8082;
+  --el-color-error-light-7:     #FFA8AA;
+  --el-color-error-light-8:     #FFBCBE;
+  --el-color-error-light-9:     var(--du-danger-bg);
+  --el-color-error-dark-2:      var(--du-danger-press);
+
+  /* ─────────── ⑤ 功能色 · info ─────────── */
+  --el-color-info:              var(--du-text-3);
+  --el-color-info-light-3:      var(--du-text-4);
+  --el-color-info-light-5:      #B0BAD3;
+  --el-color-info-light-7:      var(--du-line);
+  --el-color-info-light-8:      var(--du-line-soft);
+  --el-color-info-light-9:      var(--du-page-bg);
+  --el-color-info-dark-2:       var(--du-text-2);
+
+  /* ─────────── ⑥ 文本色 ─────────── */
+  --el-text-color-primary:      var(--du-text-1);
+  --el-text-color-regular:      var(--du-text-2);
+  --el-text-color-secondary:    var(--du-text-3);
+  --el-text-color-placeholder:  var(--du-text-4);
+  --el-text-color-disabled:     var(--du-text-4);
+
+  /* ─────────── ⑦ 背景色 ─────────── */
+  --el-bg-color:                var(--du-card-bg);
+  --el-bg-color-page:           var(--du-page-bg);
+  --el-bg-color-overlay:        var(--du-card-bg);
+
+  /* ─────────── ⑧ 填充色 / 灰度阶 ─────────── */
+  --el-fill-color:              var(--du-page-bg);
+  --el-fill-color-light:        var(--du-line-soft);
+  --el-fill-color-lighter:      var(--du-card-bg);
+  --el-fill-color-extra-light:  var(--du-card-bg);
+  --el-fill-color-dark:         var(--du-line);
+  --el-fill-color-darker:       var(--du-line);
+  --el-fill-color-blank:        var(--du-card-bg);
+
+  /* ─────────── ⑨ 边框色 ─────────── */
+  --el-border-color:            var(--du-line);
+  --el-border-color-light:      var(--du-line-soft);
+  --el-border-color-lighter:    var(--du-line-soft);
+  --el-border-color-extra-light: var(--du-line-soft);
+  --el-border-color-dark:       var(--du-text-4);
+  --el-border-color-darker:     var(--du-text-3);
+  --el-border-color-hover:      var(--du-brand);
+
+  /* ─────────── ⑩ 圆角（4 档） ─────────── */
+  --el-border-radius-base:      var(--du-radius-lg);    /* 8px · 输入框/按钮 */
+  --el-border-radius-small:     var(--du-radius-md);    /* 6px · 微元素 */
+  --el-border-radius-round:     var(--du-radius-pill);  /* 999px · pill */
+  --el-border-radius-circle:    50%;
+
+  /* ─────────── ⑪ 阴影（统一微蓝） ─────────── */
+  --el-box-shadow:              var(--du-sh-lg);
+  --el-box-shadow-light:        var(--du-sh-sm);
+  --el-box-shadow-lighter:      var(--du-sh-sm);
+  --el-box-shadow-dark:         var(--du-sh-xl);
+
+  /* ─────────── ⑫ 字体 ─────────── */
+  --el-font-family:
+    var(--du-font-zh, "Noto Sans SC"),
+    var(--du-font-en, "Inter"),
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif;
+  --el-font-family-monospace:   var(--du-font-mono);
+
+  --el-font-size-extra-large:   var(--du-fs-xl);    /* 20 */
+  --el-font-size-large:         var(--du-fs-md);    /* 16 */
+  --el-font-size-medium:        var(--du-fs-base);  /* 14 */
+  --el-font-size-base:          var(--du-fs-base);  /* 14 */
+  --el-font-size-small:         var(--du-fs-sm);    /* 13 */
+  --el-font-size-extra-small:   var(--du-fs-xs);    /* 12 */
+
+  /* ─────────── ⑬ 控件高度（与 MindLink --du-h-* 一致） ─────────── */
+  --el-component-size-large:    var(--du-h-lg);   /* 40px */
+  --el-component-size:          var(--du-h-md);   /* 32px */
+  --el-component-size-small:    var(--du-h-sm);   /* 28px */
+
+  /* ─────────── ⑭ 禁用态 ─────────── */
+  --el-disabled-text-color:     var(--du-text-4);
+  --el-disabled-bg-color:       var(--du-page-bg);
+  --el-disabled-border-color:   var(--du-line);
+
+  /* ─────────── ⑮ 遮罩 / 蒙层（统一品牌微蓝 · 配 backdrop-blur） ─────────── */
+  --el-overlay-color:           rgba(15, 27, 60, .35);   /* 与 --du-modal-backdrop 对齐 */
+  --el-overlay-color-light:     rgba(15, 27, 60, .25);
+  --el-overlay-color-lighter:   rgba(15, 27, 60, .15);
+  --el-mask-color:              rgba(15, 27, 60, .35);
+  --el-mask-color-extra-light:  rgba(15, 27, 60, .15);
+
+  /* ─────────── ⑯ 动效（与 MindLink --dur / --ease 对齐） ─────────── */
+  --el-transition-duration:           var(--du-dur-normal);
+  --el-transition-duration-fast:      var(--du-dur-fast);
+  --el-transition-function-ease-in-out-bezier: var(--du-ease-default);
+  --el-transition-function-fast-bezier:        var(--du-ease-out);
+  --el-transition-all:                all var(--du-dur-normal) var(--du-ease-default);
+  --el-transition-fade:               opacity var(--du-dur-normal) var(--du-ease-default);
+  --el-transition-md-fade:            transform var(--du-dur-normal) var(--du-ease-default), opacity var(--du-dur-normal) var(--du-ease-default);
+  --el-transition-fade-linear:        opacity var(--du-dur-fast) linear;
+  --el-transition-border:             border-color var(--du-dur-fast) var(--du-ease-default);
+  --el-transition-box-shadow:         box-shadow var(--du-dur-fast) var(--du-ease-default);
+  --el-transition-color:              color var(--du-dur-fast) var(--du-ease-default);
+
+  /* ─────────── ⑰ Z-index（与 MindLink --du-z-* 对齐） ─────────── */
+  --el-index-normal:    var(--du-z-base);
+  --el-index-top:       var(--du-z-popover);
+  --el-index-popper:    var(--du-z-popover);
+  --el-index-dialog:    var(--du-z-modal);
+  --el-index-message:   var(--du-z-toast);
+  --el-index-tooltip:   var(--du-z-tooltip);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+ * 深色模式 · Element Plus 默认 [data-theme="dark"] / .dark 切换
+ * MindLink 用的是 [data-theme="dark"]，下面同时覆盖 .dark 兼容官方默认
+ * ═══════════════════════════════════════════════════════════════ */
+[data-theme="dark"],
+html.dark {
+  --el-color-primary-light-3:   var(--du-brand-hover);
+  --el-color-primary-light-5:   #6B8AFE;
+  --el-color-primary-light-7:   #4F6CD0;
+  --el-color-primary-light-8:   #3F58A8;
+  --el-color-primary-light-9:   var(--du-brand-bg);
+
+  --el-bg-color:                var(--du-card-bg);
+  --el-bg-color-page:           var(--du-page-bg);
+  --el-bg-color-overlay:        var(--du-card-bg);
+
+  --el-fill-color:              var(--du-card-bg);
+  --el-fill-color-light:        var(--du-line-soft);
+  --el-fill-color-lighter:      var(--du-card-bg);
+  --el-fill-color-extra-light:  var(--du-page-bg);
+  --el-fill-color-dark:         var(--du-line);
+  --el-fill-color-darker:       var(--du-line);
+  --el-fill-color-blank:        var(--du-card-bg);
+
+  --el-overlay-color:           rgba(0, 0, 0, .80);
+  --el-overlay-color-light:     rgba(0, 0, 0, .60);
+  --el-overlay-color-lighter:   rgba(0, 0, 0, .40);
+  --el-mask-color:              rgba(0, 0, 0, .60);
+  --el-mask-color-extra-light:  rgba(0, 0, 0, .25);
+
+  --el-disabled-bg-color:       var(--du-line-soft);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+ * 局部硬覆盖 · 解决 Element Plus 个别组件不读 CSS 变量的硬编码问题
+ * ═══════════════════════════════════════════════════════════════ */
+
+/* 按钮 · 强制四态颜色一致（防止 Element 默认 hover 偏离品牌） */
+.el-button--primary {
+  --el-button-bg-color:          var(--du-brand);
+  --el-button-border-color:      var(--du-brand);
+  --el-button-hover-bg-color:    var(--du-brand-hover);
+  --el-button-hover-border-color: var(--du-brand-hover);
+  --el-button-active-bg-color:   var(--du-brand-press);
+  --el-button-active-border-color: var(--du-brand-press);
+}
+
+/* 按钮 focus-visible · 加 MindLink 焦点环 */
+.el-button:focus-visible {
+  outline: none;
+  box-shadow: var(--du-sh-focus);
+}
+
+/* Input / Textarea · 焦点态焦点环 */
+.el-input__wrapper.is-focus {
+  box-shadow: var(--du-sh-focus) !important;
+}
+
+/* Card · 默认 Level 0 Flat（与 MindLink 默认卡片一致） */
+.el-card {
+  box-shadow: var(--du-card-sh, none) !important;
+  border-radius: var(--du-card-radius);
+  border-color: var(--du-card-bd);
+}
+.el-card.is-hover-shadow:hover,
+.el-card.is-always-shadow {
+  box-shadow: var(--du-sh) !important;
+}
+
+/* Dialog / Drawer · 阴影统一品牌微蓝 */
+.el-dialog,
+.el-drawer {
+  box-shadow: var(--du-sh-xl);
+  border-radius: var(--du-radius-xl);
+}
+
+/* ──────────────────────────────────────────
+   Modal Backdrop · 必须 backdrop-filter 模糊（DESIGN.md §2.11）
+   覆盖 Element 全部带遮罩的浮层：Dialog / Drawer / MessageBox / Image Preview / Loading
+   ────────────────────────────────────────── */
+.el-overlay {
+  background-color: var(--du-modal-backdrop, rgba(15,27,60,.35)) !important;
+  backdrop-filter: blur(var(--du-backdrop-blur, 8px));
+  -webkit-backdrop-filter: blur(var(--du-backdrop-blur, 8px));
+}
+
+/* Drawer 模糊更轻（主页面仍可见一半，重模糊会反而干扰） */
+.el-overlay:has(.el-drawer) {
+  backdrop-filter: blur(var(--du-backdrop-blur-light, 4px));
+  -webkit-backdrop-filter: blur(var(--du-backdrop-blur-light, 4px));
+}
+
+/* Image Preview 强沉浸 */
+.el-image-viewer__mask {
+  background-color: rgba(15,27,60,.55) !important;
+  backdrop-filter: blur(var(--du-backdrop-blur-heavy, 16px));
+  -webkit-backdrop-filter: blur(var(--du-backdrop-blur-heavy, 16px));
+}
+
+/* 减少透明度偏好 · 自动降级为纯色不透明 */
+@media (prefers-reduced-transparency: reduce) {
+  .el-overlay,
+  .el-image-viewer__mask {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(15,27,60,.6) !important;
+  }
+}
+
+/* Message / Notification · 圆角与 MindLink Toast 一致 */
+.el-message,
+.el-notification {
+  border-radius: var(--du-toast-radius, var(--du-radius-lg));
+  box-shadow: var(--du-sh-lg);
+  /* ❌ 严禁左侧装饰色条（DESIGN.md §18 Don't）*/
+  border-left: none !important;
+}
+
+/* Tag · 圆角与 MindLink Tag 一致 */
+.el-tag {
+  border-radius: var(--du-tag-radius, var(--du-radius-xs));
+}
+
+/* 滚动条颜色（默认浏览器灰偏暗，统一品牌微蓝） */
+.el-scrollbar__bar .el-scrollbar__thumb {
+  background: var(--du-text-4);
+  opacity: 0.4;
+}
+.el-scrollbar__bar .el-scrollbar__thumb:hover {
+  opacity: 0.7;
+}
+
+/* ──────────────────────────────────────────
+   DatePicker · 面板宽度跟随 trigger（DESIGN.md §6 Date Input）
+   用法：<el-date-picker style="width: 100%" popper-class="du-date-popper">
+   ────────────────────────────────────────── */
+.du-date-popper.el-popper {
+  min-width: 280px !important;
+}
+.du-date-popper .el-date-picker {
+  width: 100% !important;
+}
+.du-date-popper .el-date-picker__header {
+  border-bottom: 1px solid var(--du-line-soft);
+}
+.du-date-popper .el-date-table td.today .el-date-table-cell__text {
+  color: var(--du-brand);
+  box-shadow: inset 0 0 0 1px var(--du-brand);
+  background: transparent;
+}
+.du-date-popper .el-date-table td.current .el-date-table-cell__text {
+  background: var(--du-brand);
+  color: #fff;
+}
+.du-date-popper .el-date-table td:hover .el-date-table-cell__text {
+  background: var(--du-brand-bg);
+  color: var(--du-brand);
+}

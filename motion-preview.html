@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Motion Lab · MindLink 动效手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   Token v2.0 · 浅色 / 深色双套
+   ═════════════════════════════════════════════ */
+:root {
+  --du-brand: #3662EC;
+  --du-brand-hover: #4A74F0;
+  --du-brand-press: #2753D9;
+  --du-brand-bg: #EAEFFD;
+  --du-brand-deep: #0A34AA;
+  --du-success: #2DAC0C;
+  --du-success-bg: #EFFFEB;
+  --du-danger: #FF4245;
+  --du-danger-bg: #FFF2F2;
+  --du-warning: #FF8F1F;
+  --du-warning-soft: #FAC814;
+  --du-page-bg: #F7F9FD;
+  --du-card-bg: #FFFFFF;
+  --du-line: #E5EBF5;
+  --du-line-soft: #EEF2FA;
+  --du-text-1: #0F1B3C;
+  --du-text-2: #3A4868;
+  --du-text-3: #6B7A9C;
+  --du-text-4: #9BA7C3;
+  --du-font-zh: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --du-font-en: "Inter",-apple-system,sans-serif;
+  --du-font-mono: "Geist Mono","JetBrains Mono","SF Mono",ui-monospace,Menlo,monospace;
+  --du-sh-sm: 0 1px 2px rgba(15,27,60,.04), 0 1px 3px rgba(15,27,60,.06);
+  --du-sh: 0 4px 12px rgba(15,27,60,.06), 0 2px 4px rgba(15,27,60,.04);
+  --du-sh-lg: 0 12px 32px rgba(15,27,60,.08), 0 4px 12px rgba(15,27,60,.04);
+  --du-sh-xl: 0 24px 56px rgba(15,27,60,.14), 0 10px 24px rgba(15,27,60,.08);
+  --du-sh-focus: 0 0 0 3px rgba(54,98,236,.15);
+  --du-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --du-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --du-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --du-ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --du-dur-instant: 80ms;
+  --du-dur-fast: 120ms;
+  --du-dur-normal: 200ms;
+  --du-dur-slow: 320ms;
+  --du-dur-slower: 600ms;
+  --du-fs-xs: 12px; --du-fs-sm: 13px; --du-fs-base: 14px; --du-fs-md: 16px;
+  --du-fs-lg: 18px; --du-fs-xl: 20px; --du-fs-2xl: 24px; --du-fs-3xl: 32px;
+  --du-fw-regular: 400; --du-fw-medium: 500; --du-fw-semibold: 600;
+  --du-sp-1: 4px; --du-sp-2: 8px; --du-sp-3: 12px; --du-sp-4: 16px;
+  --du-sp-5: 20px; --du-sp-6: 24px; --du-sp-8: 32px; --du-sp-10: 40px; --du-sp-12: 48px;
+  --du-radius-xs: 2px; --du-radius-sm: 4px; --du-radius-md: 6px;
+  --du-radius-lg: 8px; --du-radius-xl: 12px; --du-radius-2xl: 16px; --du-radius-pill: 999px;
+}
+
+[data-theme="dark"] {
+  --du-brand: #4A74F0;
+  --du-brand-hover: #6B8CF5;
+  --du-brand-press: #3662EC;
+  --du-brand-bg: #1A2548;
+  --du-page-bg: #0B0F1E;
+  --du-card-bg: #161B2E;
+  --du-line: #1E2440;
+  --du-line-soft: #181D32;
+  --du-text-1: #E8ECF4;
+  --du-text-2: #9BA7C3;
+  --du-text-3: #5A6585;
+  --du-text-4: #3A4460;
+  --du-sh-sm: 0 1px 2px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.2);
+  --du-sh: 0 4px 12px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.15);
+  --du-sh-lg: 0 12px 32px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--du-font-zh);
+  background: var(--du-page-bg);
+  color: var(--du-text-1);
+  font-size: var(--du-fs-base);
+  line-height: 1.6;
+  transition: background var(--du-dur-normal) var(--du-ease-default), color var(--du-dur-normal) var(--du-ease-default);
+}
+
+/* ═══════════════════════════════════════════
+   滚动驱动 · 阅读进度条
+   ═════════════════════════════════════════════ */
+.reading-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--du-brand);
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 100;
+  animation: scaleProgress linear both;
+  animation-timeline: scroll(root block);
+}
+@keyframes scaleProgress { to { transform: scaleX(1); } }
+
+/* ═══════════════════════════════════════════
+   顶栏 / 主题切换
+   ═════════════════════════════════════════════ */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--du-page-bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--du-line);
+  padding: var(--du-sp-4) var(--du-sp-6);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-title { font-size: var(--du-fs-md); font-weight: var(--du-fw-semibold); display: flex; align-items: center; gap: var(--du-sp-2); }
+.topbar-title .badge {
+  font-family: var(--du-font-mono);
+  font-size: var(--du-fs-xs); padding: 2px 6px;
+  background: var(--du-brand-bg); color: var(--du-brand);
+  border-radius: var(--du-radius-sm);
+}
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: var(--du-radius-pill);
+  background: var(--du-card-bg); border: 1px solid var(--du-line);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all var(--du-dur-fast) var(--du-ease-default);
+}
+.theme-toggle:hover { box-shadow: var(--du-sh); border-color: var(--du-brand); }
+.theme-toggle svg { width: 16px; height: 16px; color: var(--du-text-2); }
+
+/* ═══════════════════════════════════════════
+   Hero
+   ═════════════════════════════════════════════ */
+.hero {
+  text-align: center;
+  padding: var(--du-sp-12) var(--du-sp-6) var(--du-sp-10);
+  max-width: 1200px; margin: 0 auto;
+}
+.hero h1 {
+  font-size: 48px; font-weight: var(--du-fw-semibold);
+  line-height: 1.2; letter-spacing: -0.01em;
+  margin-bottom: var(--du-sp-3);
+}
+.hero h1 .accent {
+  background: linear-gradient(135deg, var(--du-brand), var(--du-brand-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero .subtitle {
+  font-size: var(--du-fs-md); color: var(--du-text-3);
+  max-width: 640px; margin: 0 auto;
+}
+
+/* TOC */
+.toc {
+  max-width: 1200px; margin: var(--du-sp-8) auto 0;
+  padding: 0 var(--du-sp-6);
+  display: flex; flex-wrap: wrap; gap: var(--du-sp-2);
+  justify-content: center;
+}
+.toc a {
+  padding: var(--du-sp-1) var(--du-sp-3);
+  border: 1px solid var(--du-line);
+  border-radius: var(--du-radius-pill);
+  background: var(--du-card-bg);
+  color: var(--du-text-3);
+  text-decoration: none;
+  font-size: var(--du-fs-xs); font-family: var(--du-font-mono);
+  transition: all var(--du-dur-fast) var(--du-ease-default);
+}
+.toc a:hover { border-color: var(--du-brand); color: var(--du-brand); transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════════
+   通用 Section / Demo Card
+   ═════════════════════════════════════════════ */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--du-sp-12) var(--du-sp-6);
+}
+.section-head {
+  margin-bottom: var(--du-sp-8);
+}
+.section-num {
+  font-family: var(--du-font-mono); font-size: var(--du-fs-xs);
+  color: var(--du-brand); letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--du-sp-2);
+}
+.section-title {
+  font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold);
+  margin-bottom: var(--du-sp-1);
+}
+.section-desc { color: var(--du-text-3); font-size: var(--du-fs-sm); }
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--du-sp-4);
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: var(--du-sp-4);
+}
+
+.demo-card {
+  background: var(--du-card-bg);
+  border: 1px solid var(--du-line);
+  border-radius: var(--du-radius-xl);
+  padding: var(--du-sp-5);
+  display: flex; flex-direction: column; gap: var(--du-sp-3);
+  min-height: 200px;
+  transition: box-shadow var(--du-dur-normal) var(--du-ease-default), border-color var(--du-dur-normal) var(--du-ease-default);
+}
+.demo-card:hover { box-shadow: var(--du-sh); }
+.demo-stage {
+  flex: 1;
+  background: var(--du-page-bg);
+  border-radius: var(--du-radius-lg);
+  padding: var(--du-sp-5);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 120px;
+  position: relative; overflow: hidden;
+}
+.demo-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--du-sp-2);
+}
+.demo-name {
+  font-size: var(--du-fs-base); font-weight: var(--du-fw-medium);
+}
+.demo-desc {
+  font-size: var(--du-fs-xs); color: var(--du-text-3);
+  font-family: var(--du-font-mono);
+  margin-top: 2px;
+}
+.replay-btn {
+  display: inline-flex; align-items: center; gap: var(--du-sp-1);
+  height: 28px;
+  padding: 0 var(--du-sp-3);
+  background: var(--du-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--du-radius-md);
+  font-size: var(--du-fs-xs);
+  font-weight: var(--du-fw-medium);
+  cursor: pointer;
+  font-family: var(--du-font-zh);
+  transition: background var(--du-dur-fast) var(--du-ease-default), transform var(--du-dur-fast) var(--du-ease-default);
+}
+.replay-btn:hover { background: var(--du-brand-hover); transform: translateY(-1px); }
+.replay-btn:active { transform: scale(0.97); }
+.replay-btn svg { width: 12px; height: 12px; }
+
+/* ═══════════════════════════════════════════
+   §1 · 动效分级（Duration Levels）
+   ═════════════════════════════════════════════ */
+.lvl-bar {
+  display: grid; grid-template-columns: 100px 1fr 80px;
+  gap: var(--du-sp-3); align-items: center;
+  padding: var(--du-sp-3) 0;
+  border-bottom: 1px solid var(--du-line-soft);
+}
+.lvl-bar:last-child { border-bottom: none; }
+.lvl-name {
+  font-weight: var(--du-fw-semibold);
+  font-size: var(--du-fs-base);
+}
+.lvl-track {
+  height: 24px;
+  background: var(--du-page-bg);
+  border-radius: var(--du-radius-md);
+  position: relative; overflow: hidden;
+}
+.lvl-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, var(--du-brand), var(--du-brand-hover));
+  border-radius: var(--du-radius-md);
+}
+.lvl-fill.play { animation: lvlFill var(--lvl-dur) var(--du-ease-out) forwards; }
+@keyframes lvlFill { to { width: 100%; } }
+.lvl-meta { font-family: var(--du-font-mono); font-size: var(--du-fs-sm); color: var(--du-text-3); text-align: right; }
+
+/* ═══════════════════════════════════════════
+   §2 · 进场动效
+   ═════════════════════════════════════════════ */
+.enter-target {
+  width: 90px; height: 90px;
+  background: linear-gradient(135deg, var(--du-brand), var(--du-brand-deep));
+  border-radius: var(--du-radius-xl);
+  box-shadow: var(--du-sh);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: var(--du-fw-semibold); font-size: var(--du-fs-md);
+}
+@keyframes fadeUp     { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popIn      { from { opacity: 0; transform: scale(0.92); }      to { opacity: 1; transform: scale(1); } }
+@keyframes slideRight { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeDown   { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.anim-fade-up.play     { animation: fadeUp     var(--du-dur-slow)   var(--du-ease-expo)   both; }
+.anim-pop-in.play      { animation: popIn      var(--du-dur-slow)   var(--du-ease-spring) both; }
+.anim-slide-right.play { animation: slideRight var(--du-dur-slow)   var(--du-ease-expo)   both; }
+.anim-fade-down.play   { animation: fadeDown   var(--du-dur-normal) var(--du-ease-out)    both; }
+
+/* ═══════════════════════════════════════════
+   §3 · 列表交错（Stagger）
+   ═════════════════════════════════════════════ */
+.stagger-list {
+  display: flex; flex-direction: column; gap: var(--du-sp-2);
+  width: 100%;
+}
+.stagger-item {
+  background: var(--du-card-bg);
+  border: 1px solid var(--du-line);
+  border-radius: var(--du-radius-md);
+  padding: var(--du-sp-2) var(--du-sp-3);
+  font-size: var(--du-fs-sm);
+  display: flex; align-items: center; gap: var(--du-sp-2);
+  opacity: 0;
+}
+.stagger-item .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--du-brand);
+}
+.stagger-list.play .stagger-item { animation: fadeUp 400ms var(--du-ease-expo) both; }
+.stagger-list.play .stagger-item:nth-child(1) { animation-delay: 0ms; }
+.stagger-list.play .stagger-item:nth-child(2) { animation-delay: 60ms; }
+.stagger-list.play .stagger-item:nth-child(3) { animation-delay: 120ms; }
+.stagger-list.play .stagger-item:nth-child(4) { animation-delay: 180ms; }
+.stagger-list.play .stagger-item:nth-child(5) { animation-delay: 240ms; }
+
+/* ═══════════════════════════════════════════
+   §4 · 过渡动效
+   ═════════════════════════════════════════════ */
+.accordion {
+  width: 100%;
+  border: 1px solid var(--du-line);
+  border-radius: var(--du-radius-lg);
+  overflow: hidden;
+  background: var(--du-card-bg);
+}
+.accordion-head {
+  padding: var(--du-sp-3) var(--du-sp-4);
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer;
+  font-weight: var(--du-fw-medium);
+  font-size: var(--du-fs-sm);
+}
+.accordion-head svg { transition: transform var(--du-dur-normal) var(--du-ease-default); }
+.accordion.open .accordion-head svg { transform: rotate(180deg); }
+.accordion-body {
+  overflow: hidden; max-height: 0; opacity: 0;
+  transition: max-height var(--du-dur-slow) var(--du-ease-expo), opacity var(--du-dur-normal) var(--du-ease-out), padding var(--du-dur-slow) var(--du-ease-expo);
+  padding: 0 var(--du-sp-4);
+  font-size: var(--du-fs-sm); color: var(--du-text-3);
+}
+.accordion.open .accordion-body {
+  max-height: 200px; opacity: 1;
+  padding: var(--du-sp-3) var(--du-sp-4) var(--du-sp-4);
+  border-top: 1px solid var(--du-line-soft);
+}
+
+@keyframes countUp { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.count-num {
+  font-family: var(--du-font-mono);
+  font-size: 36px; font-weight: var(--du-fw-semibold);
+  color: var(--du-brand);
+  display: inline-block;
+}
+.count-num.play { animation: countUp var(--du-dur-fast) var(--du-ease-out); }
+
+/* ═══════════════════════════════════════════
+   §5 · 微交互
+   ═════════════════════════════════════════════ */
+.heart-btn {
+  width: 56px; height: 56px;
+  border-radius: var(--du-radius-pill);
+  background: var(--du-card-bg);
+  border: 1px solid var(--du-line);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all var(--du-dur-fast) var(--du-ease-default);
+}
+.heart-btn:hover { box-shadow: var(--du-sh); }
+.heart-btn svg { width: 24px; height: 24px; transition: fill var(--du-dur-fast) var(--du-ease-default); fill: none; stroke: var(--du-text-3); stroke-width: 2; }
+.heart-btn.liked svg { fill: var(--du-danger); stroke: var(--du-danger); animation: heartBeat 400ms var(--du-ease-out); }
+@keyframes heartBeat { 0%{transform:scale(1);} 30%{transform:scale(1.35);} 60%{transform:scale(0.9);} 100%{transform:scale(1);} }
+
+.ripple-btn {
+  position: relative; overflow: hidden;
+  padding: 12px 24px;
+  background: var(--du-brand); color: #fff; border: none;
+  border-radius: var(--du-radius-lg);
+  font-size: var(--du-fs-sm); font-weight: var(--du-fw-medium);
+  cursor: pointer;
+  font-family: var(--du-font-zh);
+}
+.ripple-btn .ripple-fx {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  transform: scale(0);
+  pointer-events: none;
+  animation: rippleAnim 500ms var(--du-ease-expo);
+}
+@keyframes rippleAnim { to { transform: scale(2.5); opacity: 0; } }
+
+@keyframes shake {
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-6px);}
+  40%{transform:translateX(6px);}
+  60%{transform:translateX(-4px);}
+  80%{transform:translateX(4px);}
+}
+.shake-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--du-sp-3);
+  border: 1px solid var(--du-line);
+  border-radius: var(--du-radius-lg);
+  background: var(--du-card-bg);
+  color: var(--du-text-1);
+  font-size: var(--du-fs-sm);
+  font-family: var(--du-font-zh);
+  outline: none;
+  transition: border-color var(--du-dur-fast) var(--du-ease-default);
+}
+.shake-input.error { border-color: var(--du-danger); animation: shake 400ms var(--du-ease-out); }
+
+/* ═══════════════════════════════════════════
+   §6 · 加载动效
+   ═════════════════════════════════════════════ */
+.spinner {
+  width: 28px; height: 28px;
+  border: 3px solid var(--du-line);
+  border-top-color: var(--du-brand);
+  border-radius: 50%;
+  animation: spin 800ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.dots-loader {
+  display: flex; gap: 6px;
+}
+.dots-loader .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--du-brand);
+  animation: dotBounce 1.2s var(--du-ease-default) infinite;
+}
+.dots-loader .dot:nth-child(2) { animation-delay: 200ms; }
+.dots-loader .dot:nth-child(3) { animation-delay: 400ms; }
+@keyframes dotBounce { 0%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-10px);} }
+
+.indeterminate {
+  position: relative; overflow: hidden;
+  height: 4px; width: 100%;
+  background: var(--du-line);
+  border-radius: var(--du-radius-pill);
+}
+.indeterminate::after {
+  content: ''; position: absolute; top: 0; bottom: 0;
+  background: var(--du-brand);
+  border-radius: var(--du-radius-pill);
+  animation: indeterminateMove 2s cubic-bezier(.65,.815,.735,.395) infinite;
+}
+@keyframes indeterminateMove {
+  0%{left:-35%;right:100%;}
+  60%{left:100%;right:-90%;}
+  100%{left:100%;right:-90%;}
+}
+
+/* ═══════════════════════════════════════════
+   §7 · View Transitions API
+   ═════════════════════════════════════════════ */
+.vt-stage { width: 100%; }
+.vt-tabs { display: flex; gap: var(--du-sp-1); margin-bottom: var(--du-sp-3); }
+.vt-tab {
+  padding: var(--du-sp-1) var(--du-sp-3);
+  border-radius: var(--du-radius-md);
+  border: 1px solid var(--du-line);
+  background: var(--du-card-bg);
+  font-size: var(--du-fs-xs); font-family: var(--du-font-mono);
+  cursor: pointer; color: var(--du-text-3);
+  transition: all var(--du-dur-fast) var(--du-ease-default);
+}
+.vt-tab.active { background: var(--du-brand-bg); color: var(--du-brand); border-color: var(--du-brand); }
+.vt-content { padding: var(--du-sp-4); border: 1px solid var(--du-line); border-radius: var(--du-radius-lg); background: var(--du-card-bg); min-height: 80px; }
+.vt-content h4 { font-size: var(--du-fs-md); font-weight: var(--du-fw-semibold); margin-bottom: 4px; }
+.vt-content p  { font-size: var(--du-fs-sm); color: var(--du-text-3); }
+::view-transition-old(vt-content) { animation: 220ms var(--du-ease-out) both vt-out; }
+::view-transition-new(vt-content) { animation: 280ms var(--du-ease-out) both vt-in; }
+@keyframes vt-out { to   { transform: translateX(-30%); opacity: 0; } }
+@keyframes vt-in  { from { transform: translateX(30%);  opacity: 0; } }
+.vt-content { view-transition-name: vt-content; }
+
+/* ═══════════════════════════════════════════
+   §8 · Scroll-driven Animations
+   ═════════════════════════════════════════════ */
+.scroll-stage {
+  height: 320px;
+  overflow-y: scroll;
+  background: var(--du-page-bg);
+  border-radius: var(--du-radius-lg);
+  padding: var(--du-sp-4);
+  position: relative;
+}
+.scroll-track {
+  position: sticky; top: 0; height: 4px;
+  background: var(--du-brand);
+  transform-origin: left; transform: scaleX(0);
+  border-radius: var(--du-radius-pill);
+  margin-bottom: var(--du-sp-4);
+  animation: scaleProgress linear both;
+  animation-timeline: scroll(nearest block);
+}
+.reveal-block {
+  background: var(--du-card-bg);
+  border: 1px solid var(--du-line);
+  border-radius: var(--du-radius-md);
+  padding: var(--du-sp-3);
+  margin-bottom: var(--du-sp-3);
+  font-size: var(--du-fs-sm);
+  color: var(--du-text-2);
+  animation: revealUp linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 50%;
+}
+@keyframes revealUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.scroll-fallback-note {
+  font-size: var(--du-fs-xs); color: var(--du-text-4); font-family: var(--du-font-mono);
+  margin-top: var(--du-sp-2);
+}
+
+/* ═══════════════════════════════════════════
+   §9 · @property 渐变动画
+   ═════════════════════════════════════════════ */
+@property --gradient-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+.gradient-card {
+  width: 200px; height: 120px;
+  border-radius: var(--du-radius-xl);
+  background: conic-gradient(from var(--gradient-angle), var(--du-brand), #9B5BFF, var(--du-brand));
+  transition: --gradient-angle 1200ms var(--du-ease-expo);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: var(--du-fw-semibold);
+}
+.gradient-card:hover { --gradient-angle: 360deg; }
+
+@property --counter-num { syntax: '<integer>'; initial-value: 0; inherits: false; }
+.css-counter {
+  --counter-num: 0;
+  counter-reset: cnt var(--counter-num);
+  font-family: var(--du-font-mono);
+  font-size: 36px; font-weight: var(--du-fw-semibold);
+  color: var(--du-brand);
+  transition: --counter-num 1500ms var(--du-ease-expo);
+}
+.css-counter.play { --counter-num: 12846; }
+.css-counter::after { content: counter(cnt); }
+
+/* ═══════════════════════════════════════════
+   §10 · 流光边框 + 鼠标光晕
+   ═════════════════════════════════════════════ */
+.glow-card {
+  position: relative;
+  width: 100%; max-width: 360px; min-height: 140px;
+  border-radius: var(--du-radius-xl);
+  background: var(--du-card-bg);
+  padding: var(--du-sp-5);
+  overflow: hidden;
+  border: 1px solid var(--du-line);
+  cursor: pointer;
+}
+.glow-card::before {
+  content: ''; position: absolute;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(54,98,236,.15), transparent 70%);
+  border-radius: 50%; pointer-events: none;
+  left: var(--mx, 50%); top: var(--my, 50%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity var(--du-dur-normal) var(--du-ease-default);
+}
+.glow-card:hover::before { opacity: 1; }
+.glow-card-content {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: var(--du-sp-2);
+}
+.glow-card-title { font-size: var(--du-fs-md); font-weight: var(--du-fw-semibold); }
+.glow-card-desc { font-size: var(--du-fs-sm); color: var(--du-text-3); }
+
+@property --flow-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+.flow-border {
+  position: relative;
+  width: 100%; max-width: 360px;
+  border-radius: var(--du-radius-xl);
+  padding: 2px;
+  background: conic-gradient(from var(--flow-angle), var(--du-brand), #9B5BFF, var(--du-brand));
+  animation: flowSpin 4s linear infinite;
+}
+@keyframes flowSpin { to { --flow-angle: 360deg; } }
+.flow-border-inner {
+  background: var(--du-card-bg);
+  border-radius: calc(var(--du-radius-xl) - 2px);
+  padding: var(--du-sp-5);
+  min-height: 100px;
+  display: flex; flex-direction: column; gap: var(--du-sp-2);
+}
+
+/* ═══════════════════════════════════════════
+   §11 · 磁性按钮
+   ═════════════════════════════════════════════ */
+.magnet-stage {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 160px;
+}
+.magnet-btn {
+  display: inline-flex; align-items: center; gap: var(--du-sp-2);
+  padding: var(--du-sp-3) var(--du-sp-6);
+  background: var(--du-brand); color: #fff;
+  border: none; border-radius: var(--du-radius-pill);
+  font-size: var(--du-fs-base); font-weight: var(--du-fw-semibold);
+  cursor: pointer;
+  font-family: var(--du-font-zh);
+  transition: transform var(--du-dur-fast) var(--du-ease-spring);
+}
+.magnet-btn svg { width: 16px; height: 16px; }
+
+/* ═══════════════════════════════════════════
+   §12 · 文字动效
+   ═════════════════════════════════════════════ */
+.typewriter {
+  font-family: var(--du-font-mono);
+  font-size: var(--du-fs-md);
+  color: var(--du-text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid var(--du-brand);
+  animation: caret 0.8s steps(1) infinite;
+}
+@keyframes caret { 50% { border-right-color: transparent; } }
+.typewriter.play { animation: typing 2.2s steps(20, end) forwards, caret 0.8s steps(1) infinite; }
+@keyframes typing { from { width: 0; } to { width: 20ch; } }
+
+.shimmer-text {
+  font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold);
+  background: linear-gradient(90deg, var(--du-text-3) 0%, var(--du-brand) 50%, var(--du-text-3) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerSlide 2.5s linear infinite;
+}
+@keyframes shimmerSlide { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.word-reveal {
+  font-size: var(--du-fs-xl); font-weight: var(--du-fw-semibold);
+  display: inline-flex; flex-wrap: wrap; gap: 0 8px;
+}
+.word-reveal span {
+  display: inline-block;
+  opacity: 0; transform: translateY(20px);
+}
+.word-reveal.play span { animation: fadeUp 600ms var(--du-ease-expo) both; }
+.word-reveal.play span:nth-child(1) { animation-delay: 0ms; }
+.word-reveal.play span:nth-child(2) { animation-delay: 80ms; }
+.word-reveal.play span:nth-child(3) { animation-delay: 160ms; }
+.word-reveal.play span:nth-child(4) { animation-delay: 240ms; }
+.word-reveal.play span:nth-child(5) { animation-delay: 320ms; }
+
+/* ═══════════════════════════════════════════
+   §13 · 3D 翻转卡片
+   ═════════════════════════════════════════════ */
+.flip-stage { perspective: 1200px; }
+.flip-card {
+  width: 220px; height: 140px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 600ms var(--du-ease-spring);
+  cursor: pointer;
+}
+.flip-card.flipped { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute; inset: 0;
+  border-radius: var(--du-radius-xl);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--du-fs-md); font-weight: var(--du-fw-semibold);
+  color: #fff;
+  padding: var(--du-sp-4);
+  text-align: center;
+}
+.flip-front { background: linear-gradient(135deg, var(--du-brand), var(--du-brand-deep)); box-shadow: var(--du-sh); }
+.flip-back  { background: linear-gradient(135deg, #9B5BFF, var(--du-brand)); transform: rotateY(180deg); box-shadow: var(--du-sh); }
+
+/* ═══════════════════════════════════════════
+   §14 · 性能规则提示
+   ═════════════════════════════════════════════ */
+.rule-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: var(--du-sp-2);
+}
+.rule-list li {
+  display: flex; gap: var(--du-sp-2);
+  font-size: var(--du-fs-sm);
+  padding: var(--du-sp-2) var(--du-sp-3);
+  background: var(--du-brand-bg);
+  border-radius: var(--du-radius-md);
+  color: var(--du-text-1);
+}
+.rule-list li::before {
+  content: '✓';
+  color: var(--du-brand);
+  font-weight: var(--du-fw-semibold);
+}
+.rule-list .bad { background: var(--du-danger-bg); color: var(--du-danger); }
+.rule-list .bad::before { content: '✗'; color: var(--du-danger); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: var(--du-sp-12) var(--du-sp-6) var(--du-sp-8);
+  color: var(--du-text-4);
+  font-family: var(--du-font-mono);
+  font-size: var(--du-fs-xs);
+  border-top: 1px solid var(--du-line);
+  margin-top: var(--du-sp-12);
+}
+
+/* prefers-reduced-motion 全局降级 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="reading-progress"></div>
+
+<header class="topbar">
+  <div class="topbar-title">
+    Motion Lab
+    <span class="badge">v1 · 2026-04-28</span>
+  </div>
+  <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
+    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+  </button>
+</header>
+
+<section class="hero">
+  <h1>MindLink <span class="accent">动效手册</span></h1>
+  <p class="subtitle">基于 SKILL.md §六 §七 的可视化动效目录 · 共 14 章 · 每个 demo 可重播 · 支持深色模式与减少动效（prefers-reduced-motion）</p>
+
+  <nav class="toc">
+    <a href="#levels">动效分级</a>
+    <a href="#enter">进场</a>
+    <a href="#stagger">交错</a>
+    <a href="#trans">过渡</a>
+    <a href="#micro">微交互</a>
+    <a href="#loading">加载</a>
+    <a href="#vt">View Transitions</a>
+    <a href="#scroll">Scroll-driven</a>
+    <a href="#property">@property</a>
+    <a href="#glow">流光/光晕</a>
+    <a href="#magnet">磁性按钮</a>
+    <a href="#text">文字动效</a>
+    <a href="#flip">3D 翻转</a>
+    <a href="#rules">性能规则</a>
+  </nav>
+</section>
+
+<!-- §1 动效分级 -->
+<section class="section" id="levels">
+  <div class="section-head">
+    <div class="section-num">01 / Duration Scale</div>
+    <h2 class="section-title">动效分级</h2>
+    <p class="section-desc">5 档时长基准 · 每条点击重播观察节奏</p>
+  </div>
+
+  <div style="background:var(--du-card-bg);border:1px solid var(--du-line);border-radius:var(--du-radius-xl);padding:var(--du-sp-5);">
+    <div class="lvl-bar">
+      <div class="lvl-name">即时</div>
+      <div class="lvl-track"><div class="lvl-fill" style="--lvl-dur: 80ms"></div></div>
+      <div class="lvl-meta">80ms</div>
+    </div>
+    <div class="lvl-bar">
+      <div class="lvl-name">快速</div>
+      <div class="lvl-track"><div class="lvl-fill" style="--lvl-dur: 120ms"></div></div>
+      <div class="lvl-meta">120ms</div>
+    </div>
+    <div class="lvl-bar">
+      <div class="lvl-name">标准</div>
+      <div class="lvl-track"><div class="lvl-fill" style="--lvl-dur: 200ms"></div></div>
+      <div class="lvl-meta">200ms</div>
+    </div>
+    <div class="lvl-bar">
+      <div class="lvl-name">缓慢</div>
+      <div class="lvl-track"><div class="lvl-fill" style="--lvl-dur: 320ms"></div></div>
+      <div class="lvl-meta">320ms</div>
+    </div>
+    <div class="lvl-bar">
+      <div class="lvl-name">舒缓</div>
+      <div class="lvl-track"><div class="lvl-fill" style="--lvl-dur: 600ms"></div></div>
+      <div class="lvl-meta">600ms</div>
+    </div>
+    <div style="margin-top:var(--du-sp-4); display:flex; justify-content:flex-end;">
+      <button class="replay-btn" onclick="replayLevels()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        全部重播
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- §2 进场动效 -->
+<section class="section" id="enter">
+  <div class="section-head">
+    <div class="section-num">02 / Entrance</div>
+    <h2 class="section-title">进场动效</h2>
+    <p class="section-desc">4 种进场范式 · ease-expo 减速感 / ease-spring 弹簧</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="demo-card">
+      <div class="demo-stage"><div class="enter-target anim-fade-up">↑</div></div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Fade Up</div><div class="demo-desc">320ms · ease-expo</div></div>
+        <button class="replay-btn" onclick="replayAnim(this, 'anim-fade-up')">▶</button>
+      </div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-stage"><div class="enter-target anim-pop-in">⊙</div></div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Pop In</div><div class="demo-desc">320ms · ease-spring</div></div>
+        <button class="replay-btn" onclick="replayAnim(this, 'anim-pop-in')">▶</button>
+      </div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-stage"><div class="enter-target anim-slide-right">→</div></div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Slide Right</div><div class="demo-desc">320ms · ease-expo</div></div>
+        <button class="replay-btn" onclick="replayAnim(this, 'anim-slide-right')">▶</button>
+      </div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-stage"><div class="enter-target anim-fade-down">↓</div></div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Fade Down</div><div class="demo-desc">200ms · ease-out</div></div>
+        <button class="replay-btn" onclick="replayAnim(this, 'anim-fade-down')">▶</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §3 列表交错 -->
+<section class="section" id="stagger">
+  <div class="section-head">
+    <div class="section-num">03 / Stagger</div>
+    <h2 class="section-title">列表交错进场</h2>
+    <p class="section-desc">每项延迟 60ms 入场 · 营造"序列感"</p>
+  </div>
+
+  <div class="demo-card" style="max-width:480px;">
+    <div class="demo-stage" style="background:var(--du-page-bg);">
+      <div class="stagger-list" id="stagger-demo">
+        <div class="stagger-item"><span class="dot"></span>第 1 项 · 选题"AI 短视频脚本"</div>
+        <div class="stagger-item"><span class="dot"></span>第 2 项 · 已生成 5 条候选脚本</div>
+        <div class="stagger-item"><span class="dot"></span>第 3 项 · 配音生成中...</div>
+        <div class="stagger-item"><span class="dot"></span>第 4 项 · 素材匹配完成</div>
+        <div class="stagger-item"><span class="dot"></span>第 5 项 · 等待审核</div>
+      </div>
+    </div>
+    <div class="demo-meta">
+      <div><div class="demo-name">Stagger Delay 60ms</div><div class="demo-desc">5 items · ease-expo</div></div>
+      <button class="replay-btn" onclick="replayStagger()">▶ 重播</button>
+    </div>
+  </div>
+</section>
+
+<!-- §4 过渡动效 -->
+<section class="section" id="trans">
+  <div class="section-head">
+    <div class="section-num">04 / Transitions</div>
+    <h2 class="section-title">过渡动效</h2>
+    <p class="section-desc">展开收起 / 数字更新</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="demo-card">
+      <div class="demo-stage" style="align-items:flex-start; flex-direction:column;">
+        <div class="accordion" id="acc-demo">
+          <div class="accordion-head" onclick="toggleAccordion(this)">
+            <span>什么是 MindLink？</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="accordion-body">
+            MindLink 是思链科技的新媒体内容系统，覆盖选题、脚本、生成、审核、发布全流程，AI 驱动下提效 3 倍以上。
+          </div>
+        </div>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Accordion · 手风琴</div><div class="demo-desc">max-height + opacity · 320ms</div></div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-stage">
+        <span class="count-num" id="count-demo">0</span>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Count Up · 数字滚动</div><div class="demo-desc">requestAnimationFrame · 1.2s</div></div>
+        <button class="replay-btn" onclick="countUp()">▶ 计数</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §5 微交互 -->
+<section class="section" id="micro">
+  <div class="section-head">
+    <div class="section-num">05 / Micro-interaction</div>
+    <h2 class="section-title">微交互</h2>
+    <p class="section-desc">点赞弹跳 / 涟漪 / 错误抖动</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="demo-card">
+      <div class="demo-stage">
+        <button class="heart-btn" onclick="this.classList.toggle('liked')">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Heart Beat · 点赞</div><div class="demo-desc">scale 1 → 1.35 → 0.9 → 1</div></div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-stage">
+        <button class="ripple-btn" onclick="ripple(event)">点击产生涟漪</button>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Ripple · 涟漪</div><div class="demo-desc">scale(0) → scale(2.5) · 500ms</div></div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-stage" style="flex-direction:column; gap:8px; padding:0 var(--du-sp-6);">
+        <input class="shake-input" id="shake-input" placeholder="留空后点击校验">
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Shake · 表单错误</div><div class="demo-desc">±6px · 400ms</div></div>
+        <button class="replay-btn" onclick="shakeInput()">校验</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §6 加载动效 -->
+<section class="section" id="loading">
+  <div class="section-head">
+    <div class="section-num">06 / Loading</div>
+    <h2 class="section-title">加载动效</h2>
+    <p class="section-desc">三种加载语义 · 对应不同场景</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="demo-card">
+      <div class="demo-stage"><div class="spinner"></div></div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Spinner · 旋转圆环</div><div class="demo-desc">短任务 · 800ms / 周</div></div>
+      </div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-stage">
+        <div class="dots-loader"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Dots · 三点跳动</div><div class="demo-desc">AI 思考态 · 1.2s / 周</div></div>
+      </div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-stage" style="padding:var(--du-sp-6) var(--du-sp-5);">
+        <div class="indeterminate"></div>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Indeterminate · 不定长进度</div><div class="demo-desc">页面级 · 顶部 · 2s 周</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §7 View Transitions -->
+<section class="section" id="vt">
+  <div class="section-head">
+    <div class="section-num">07 / View Transitions API</div>
+    <h2 class="section-title">View Transitions（页面级丝滑切换）</h2>
+    <p class="section-desc">Chrome 111+ · 切换 Tab 观察滑入滑出。不支持的浏览器自动降级为瞬时切换</p>
+  </div>
+
+  <div class="demo-card">
+    <div class="demo-stage" style="flex-direction:column; align-items:stretch;">
+      <div class="vt-stage">
+        <div class="vt-tabs">
+          <button class="vt-tab active" onclick="switchVT(this, 'a')">Tab A</button>
+          <button class="vt-tab" onclick="switchVT(this, 'b')">Tab B</button>
+          <button class="vt-tab" onclick="switchVT(this, 'c')">Tab C</button>
+        </div>
+        <div class="vt-content" id="vt-content">
+          <h4>选题工坊</h4>
+          <p>基于行业热点，AI 每日推送 20+ 候选选题，按播放量预测排序。</p>
+        </div>
+      </div>
+    </div>
+    <div class="demo-meta">
+      <div><div class="demo-name">document.startViewTransition</div><div class="demo-desc">SPA 路由 / Tab 切换 · 共享元素补间</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- §8 Scroll-driven -->
+<section class="section" id="scroll">
+  <div class="section-head">
+    <div class="section-num">08 / Scroll-driven</div>
+    <h2 class="section-title">Scroll-driven Animations</h2>
+    <p class="section-desc">Chrome 115+ · 阅读进度条（页面顶部）+ 容器内进入视口淡入</p>
+  </div>
+
+  <div class="demo-card">
+    <div class="scroll-stage">
+      <div class="scroll-track"></div>
+      <div class="reveal-block">第 1 段 · 滚动这块容器，每段在进入视口时由下淡入。</div>
+      <div class="reveal-block">第 2 段 · animation-timeline: view() · animation-range: entry 0% 50%。</div>
+      <div class="reveal-block">第 3 段 · 不依赖 IntersectionObserver，纯 CSS 实现。</div>
+      <div class="reveal-block">第 4 段 · 不兼容时整段直接显示，无报错。</div>
+      <div class="reveal-block">第 5 段 · 顶部进度条同步反映滚动百分比。</div>
+      <div class="reveal-block">第 6 段 · 滚到底部，进度条铺满。</div>
+      <div class="reveal-block">第 7 段 · 阅读进度也可以放在页面顶部（本页就是）。</div>
+      <div class="reveal-block">第 8 段 · 适用于落地页 / 长文章 / 教程类内容。</div>
+    </div>
+    <div class="scroll-fallback-note">⚠ 不支持的浏览器中，所有段落直接显示无动效。</div>
+    <div class="demo-meta">
+      <div><div class="demo-name">CSS Scroll-driven</div><div class="demo-desc">animation-timeline · 零 JS</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- §9 @property -->
+<section class="section" id="property">
+  <div class="section-head">
+    <div class="section-num">09 / CSS @property</div>
+    <h2 class="section-title">@property · 可动画自定义属性</h2>
+    <p class="section-desc">让 CSS 变量参与 transition · 实现纯 CSS 渐变动画 / 数字计数</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="demo-card">
+      <div class="demo-stage">
+        <div class="gradient-card">悬停旋转</div>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Conic Gradient 旋转</div><div class="demo-desc">--gradient-angle: 0 → 360deg</div></div>
+      </div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-stage">
+        <span class="css-counter" id="css-counter"></span>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">纯 CSS 数字计数</div><div class="demo-desc">@property &lt;integer&gt; · counter()</div></div>
+        <button class="replay-btn" onclick="cssCounter()">▶ 计数</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §10 流光 + 光晕 -->
+<section class="section" id="glow">
+  <div class="section-head">
+    <div class="section-num">10 / Glow & Flow</div>
+    <h2 class="section-title">流光边框 + 鼠标光晕</h2>
+    <p class="section-desc">悬停感强烈 · 适合主操作区域</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="demo-card">
+      <div class="demo-stage">
+        <div class="glow-card" id="glow-card">
+          <div class="glow-card-content">
+            <div class="glow-card-title">鼠标光晕跟随</div>
+            <div class="glow-card-desc">mousemove + CSS var · 实时跟随光斑</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Mouse Spotlight</div><div class="demo-desc">--mx --my via JS</div></div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-stage">
+        <div class="flow-border">
+          <div class="flow-border-inner">
+            <div style="font-size:var(--du-fs-md); font-weight:var(--du-fw-semibold);">流光边框</div>
+            <div style="font-size:var(--du-fs-sm); color:var(--du-text-3);">conic-gradient + @property · 纯 CSS</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Flowing Border</div><div class="demo-desc">--flow-angle 4s linear infinite</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §11 磁性按钮 -->
+<section class="section" id="magnet">
+  <div class="section-head">
+    <div class="section-num">11 / Magnetic Button</div>
+    <h2 class="section-title">磁性吸附按钮</h2>
+    <p class="section-desc">鼠标靠近时按钮被"吸"过来 · 离开时弹回原位</p>
+  </div>
+
+  <div class="demo-card">
+    <div class="demo-stage magnet-stage">
+      <button class="magnet-btn" id="magnet-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        立即体验
+      </button>
+    </div>
+    <div class="demo-meta">
+      <div><div class="demo-name">Magnetic Hover</div><div class="demo-desc">mousemove · transform · ease-spring</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- §12 文字动效 -->
+<section class="section" id="text">
+  <div class="section-head">
+    <div class="section-num">12 / Text Animation</div>
+    <h2 class="section-title">文字动效</h2>
+    <p class="section-desc">打字机 / 闪光渐变 / 单词逐入</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="demo-card">
+      <div class="demo-stage" style="overflow:hidden;">
+        <span class="typewriter" id="typewriter-demo">$ MindLink generate...</span>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Typewriter · 打字机</div><div class="demo-desc">steps() · 2.2s</div></div>
+        <button class="replay-btn" onclick="replayTypewriter()">▶</button>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-stage">
+        <span class="shimmer-text">AI Powered</span>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Shimmer · 闪光</div><div class="demo-desc">background-clip: text · 2.5s 循环</div></div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-stage">
+        <span class="word-reveal" id="word-reveal">
+          <span>让</span><span>每个</span><span>创意</span><span>都</span><span>被看见</span>
+        </span>
+      </div>
+      <div class="demo-meta">
+        <div><div class="demo-name">Word Reveal · 单词逐入</div><div class="demo-desc">stagger 80ms · 600ms each</div></div>
+        <button class="replay-btn" onclick="replayWordReveal()">▶</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- §13 3D 翻转卡片 -->
+<section class="section" id="flip">
+  <div class="section-head">
+    <div class="section-num">13 / 3D Flip Card</div>
+    <h2 class="section-title">3D 翻转卡片</h2>
+    <p class="section-desc">spring 缓动 · 适用于产品介绍 / 知识卡牌</p>
+  </div>
+
+  <div class="demo-card">
+    <div class="demo-stage flip-stage">
+      <div class="flip-card" id="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-face flip-front">点击翻转 →</div>
+        <div class="flip-face flip-back">← 这是背面</div>
+      </div>
+    </div>
+    <div class="demo-meta">
+      <div><div class="demo-name">Card Flip</div><div class="demo-desc">rotateY · backface-visibility · 600ms ease-spring</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- §14 性能规则 -->
+<section class="section" id="rules">
+  <div class="section-head">
+    <div class="section-num">14 / Performance Rules</div>
+    <h2 class="section-title">动效性能规则</h2>
+    <p class="section-desc">永远只动 transform / opacity，避免重排</p>
+  </div>
+
+  <div class="demo-card">
+    <ul class="rule-list">
+      <li>用 <strong>transform</strong> 和 <strong>opacity</strong> 实现动效（GPU 加速 / 不触发 layout）</li>
+      <li>用 <strong>will-change: transform</strong> 提前告知浏览器（用完移除）</li>
+      <li>悬停动效不超过 <strong>200ms</strong>（用户感知阈值）</li>
+      <li>页面切换控制在 <strong>320–600ms</strong>（不打断思维流）</li>
+      <li>同时动效元素不超过 <strong>5 个</strong>（认知负载）</li>
+      <li>提供 <strong>prefers-reduced-motion</strong> 降级（前庭敏感者）</li>
+      <li class="bad">禁用 <strong>top / left / width / height</strong> 动画 · 触发 layout</li>
+      <li class="bad">禁用 <strong>box-shadow</strong> 高频动画 · 重绘代价高</li>
+      <li class="bad">禁用 <strong>filter</strong> 在动画属性上（除非必要）</li>
+      <li class="bad">不要堆叠 <strong>3 种以上</strong> 同时动效（视觉噪音）</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="footer">
+  Motion Lab · 14 类动效 · 32+ demo · 基于 SKILL.md §六 §七 · MindLink Token v2.0<br>
+  思链科技 · 2026
+</footer>
+
+<script>
+/* ──────────────────────────────────────────────
+   工具函数
+   ────────────────────────────────────────────── */
+function replayAnim(btn, cls) {
+  const stage = btn.closest('.demo-card').querySelector('.demo-stage');
+  const target = stage.querySelector('.' + cls);
+  target.classList.remove('play');
+  void target.offsetWidth;
+  target.classList.add('play');
+}
+
+/* §1 重播全部分级 */
+function replayLevels() {
+  document.querySelectorAll('.lvl-fill').forEach(el => {
+    el.classList.remove('play');
+    void el.offsetWidth;
+    el.classList.add('play');
+  });
+}
+
+/* §3 列表交错 */
+function replayStagger() {
+  const list = document.getElementById('stagger-demo');
+  list.classList.remove('play');
+  void list.offsetWidth;
+  list.classList.add('play');
+}
+
+/* §4 手风琴 */
+function toggleAccordion(head) {
+  head.parentElement.classList.toggle('open');
+}
+
+/* §4 数字计数 */
+function countUp() {
+  const el = document.getElementById('count-demo');
+  el.classList.remove('play'); void el.offsetWidth; el.classList.add('play');
+  const to = 12846, dur = 1200, start = performance.now();
+  function frame(now) {
+    const p = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(to * eased).toLocaleString();
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* §5 涟漪 */
+function ripple(e) {
+  const btn = e.currentTarget;
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const fx = document.createElement('span');
+  fx.className = 'ripple-fx';
+  fx.style.width = fx.style.height = size + 'px';
+  fx.style.left = (e.clientX - rect.left - size/2) + 'px';
+  fx.style.top  = (e.clientY - rect.top - size/2) + 'px';
+  btn.appendChild(fx);
+  setTimeout(() => fx.remove(), 500);
+}
+
+/* §5 输入框抖动 */
+function shakeInput() {
+  const el = document.getElementById('shake-input');
+  if (el.value.trim()) {
+    el.classList.remove('error');
+    return;
+  }
+  el.classList.remove('error');
+  void el.offsetWidth;
+  el.classList.add('error');
+  setTimeout(() => el.classList.remove('error'), 600);
+}
+
+/* §7 View Transitions Tab 切换 */
+const vtData = {
+  a: { title: '选题工坊', desc: '基于行业热点，AI 每日推送 20+ 候选选题，按播放量预测排序。' },
+  b: { title: '脚本生成', desc: 'AI 模型一键产出 5 条候选脚本，支持人工编辑与多轮迭代。' },
+  c: { title: '智能配音', desc: '40+ 音色实时合成，情绪可控，秒级出片。' }
+};
+function switchVT(tab, key) {
+  document.querySelectorAll('.vt-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  const apply = () => {
+    const c = document.getElementById('vt-content');
+    c.innerHTML = `<h4>${vtData[key].title}</h4><p>${vtData[key].desc}</p>`;
+  };
+  if (document.startViewTransition) {
+    document.startViewTransition(apply);
+  } else {
+    apply();
+  }
+}
+
+/* §9 CSS 数字计数 */
+function cssCounter() {
+  const el = document.getElementById('css-counter');
+  el.classList.remove('play');
+  void el.offsetWidth;
+  el.classList.add('play');
+}
+
+/* §10 鼠标光晕 */
+const glowCard = document.getElementById('glow-card');
+glowCard.addEventListener('mousemove', e => {
+  const rect = glowCard.getBoundingClientRect();
+  glowCard.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+  glowCard.style.setProperty('--my', (e.clientY - rect.top)  + 'px');
+});
+
+/* §11 磁性按钮 */
+const magnetBtn = document.getElementById('magnet-btn');
+const magnetStage = magnetBtn.closest('.magnet-stage');
+magnetStage.addEventListener('mousemove', e => {
+  const rect = magnetBtn.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const dx = (e.clientX - cx) * 0.3;
+  const dy = (e.clientY - cy) * 0.3;
+  const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+  if (dist < 180) {
+    magnetBtn.style.transform = `translate(${dx}px, ${dy}px)`;
+  } else {
+    magnetBtn.style.transform = '';
+  }
+});
+magnetStage.addEventListener('mouseleave', () => magnetBtn.style.transform = '');
+
+/* §12 打字机重播 */
+function replayTypewriter() {
+  const el = document.getElementById('typewriter-demo');
+  el.classList.remove('play'); void el.offsetWidth; el.classList.add('play');
+}
+
+/* §12 单词逐入重播 */
+function replayWordReveal() {
+  const el = document.getElementById('word-reveal');
+  el.classList.remove('play'); void el.offsetWidth; el.classList.add('play');
+}
+
+/* 主题切换 */
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', cur ? 'light' : 'dark');
+  const icon = document.getElementById('theme-icon');
+  icon.innerHTML = cur
+    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>'
+    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  try { localStorage.setItem('motion-lab-theme', cur ? 'light' : 'dark'); } catch(e) {}
+}
+try {
+  const saved = localStorage.getItem('motion-lab-theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('theme-icon').innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+} catch(e) {}
+
+/* 自动首次播放 §1 §3 */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    replayLevels();
+    replayStagger();
+    document.querySelectorAll('.enter-target').forEach(el => el.classList.add('play'));
+    cssCounter();
+    replayTypewriter();
+    replayWordReveal();
+  }, 300);
+});
+</script>
+
+</body>
+</html>

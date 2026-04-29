@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Element Plus × MindLink 主题预览</title>
+
+<!-- 字体 · Inter + Noto Sans SC + Geist Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- ① Element Plus 默认样式（必须先加载） -->
+<link rel="stylesheet" href="https://unpkg.com/element-plus@2.7.6/dist/index.css">
+<!-- ② MindLink 主题层（覆盖默认） -->
+<link rel="stylesheet" href="./element-theme.css">
+
+<style>
+/* ───────────────────────────────────────────
+   MindLink Token v2.0 · 浅色 + 深色（element-theme.css 全部依赖这套变量）
+   ─────────────────────────────────────────── */
+:root {
+  --du-brand: #3662EC; --du-brand-hover: #4A74F0; --du-brand-press: #2753D9;
+  --du-brand-bg: #EAEFFD; --du-brand-deep: #0A34AA;
+  --du-success: #2DAC0C; --du-success-hover: #53C736; --du-success-press: #259C08; --du-success-bg: #EFFFEB;
+  --du-warning: #FF8F1F; --du-warning-hover: #FFB061; --du-warning-press: #E37D17; --du-warning-bg: #FFF7F0;
+  --du-danger:  #FF4245; --du-danger-hover:  #FF6B6E; --du-danger-press:  #E3272A; --du-danger-bg:  #FFF2F2;
+
+  --du-text-1: #0F1B3C; --du-text-2: #3A4868; --du-text-3: #6B7A9C; --du-text-4: #9BA7C3;
+  --du-page-bg: #F7F9FD; --du-card-bg: #FFFFFF;
+  --du-line: #E5EBF5; --du-line-soft: #EEF2FA;
+
+  --du-font-zh: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --du-font-en: "Inter",-apple-system,sans-serif;
+  --du-font-mono: "Geist Mono","JetBrains Mono","SF Mono",ui-monospace,Menlo,monospace;
+
+  --du-sh-sm: 0 1px 2px rgba(15,27,60,.04), 0 1px 3px rgba(15,27,60,.06);
+  --du-sh: 0 4px 12px rgba(15,27,60,.06), 0 2px 4px rgba(15,27,60,.04);
+  --du-sh-lg: 0 12px 32px rgba(15,27,60,.08), 0 4px 12px rgba(15,27,60,.04);
+  --du-sh-xl: 0 24px 56px rgba(15,27,60,.14), 0 10px 24px rgba(15,27,60,.08);
+  --du-sh-focus: 0 0 0 3px rgba(54,98,236,.15);
+
+  --du-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --du-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --du-dur-fast: 120ms; --du-dur-normal: 200ms; --du-dur-slow: 320ms;
+
+  --du-fs-xs: 12px; --du-fs-sm: 13px; --du-fs-base: 14px; --du-fs-md: 16px; --du-fs-lg: 18px; --du-fs-xl: 20px; --du-fs-2xl: 24px; --du-fs-3xl: 32px;
+  --du-fw-regular: 400; --du-fw-medium: 500; --du-fw-semibold: 600;
+  --du-sp-1: 4px; --du-sp-2: 8px; --du-sp-3: 12px; --du-sp-4: 16px; --du-sp-5: 20px; --du-sp-6: 24px; --du-sp-8: 32px; --du-sp-10: 40px; --du-sp-12: 48px;
+  --du-radius-xs: 2px; --du-radius-sm: 4px; --du-radius-md: 6px; --du-radius-lg: 8px; --du-radius-xl: 12px; --du-radius-2xl: 16px; --du-radius-pill: 999px;
+  --du-bw-1: 1px;
+  --du-h-sm: 28px; --du-h-md: 32px; --du-h-lg: 40px;
+  --du-z-base: 0; --du-z-popover: 1050; --du-z-modal: 1040; --du-z-toast: 1060; --du-z-tooltip: 1070;
+
+  --du-card-radius: var(--du-radius-xl);
+  --du-card-bd: var(--du-line);
+  --du-card-sh: none;
+  --du-tag-radius: var(--du-radius-xs);
+  --du-toast-radius: var(--du-radius-lg);
+
+  /* §2.11 模态遮罩（含 backdrop-blur） */
+  --du-modal-backdrop: rgba(15,27,60,.35);
+  --du-backdrop-blur: 8px;
+  --du-backdrop-blur-light: 4px;
+  --du-backdrop-blur-heavy: 16px;
+}
+
+[data-theme="dark"] {
+  --du-brand: #4A74F0; --du-brand-hover: #6B8CF5; --du-brand-press: #3662EC;
+  --du-brand-bg: #1A2548;
+  --du-page-bg: #0B0F1E; --du-card-bg: #161B2E;
+  --du-line: #1E2440; --du-line-soft: #181D32;
+  --du-text-1: #E8ECF4; --du-text-2: #9BA7C3; --du-text-3: #5A6585; --du-text-4: #3A4460;
+  --du-sh-sm: 0 1px 2px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.2);
+  --du-sh: 0 4px 12px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.15);
+  --du-sh-lg: 0 12px 32px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.2);
+  --du-sh-xl: 0 24px 56px rgba(0,0,0,.4), 0 10px 24px rgba(0,0,0,.25);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--du-font-zh);
+  background: var(--du-page-bg);
+  color: var(--du-text-1);
+  font-size: var(--du-fs-base);
+  line-height: 1.6;
+  transition: background var(--du-dur-normal) var(--du-ease-default);
+}
+
+/* ─────── Topbar ─────── */
+.pv-topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--du-sp-4) var(--du-sp-6);
+  background: color-mix(in srgb, var(--du-page-bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--du-line);
+}
+.pv-title { display: flex; align-items: center; gap: var(--du-sp-2); font-weight: var(--du-fw-semibold); }
+.pv-title .badge {
+  font-family: var(--du-font-mono); font-size: var(--du-fs-xs);
+  padding: 2px 6px; background: var(--du-brand-bg); color: var(--du-brand);
+  border-radius: var(--du-radius-sm);
+}
+.pv-theme-btn {
+  width: 36px; height: 36px; border-radius: var(--du-radius-pill);
+  background: var(--du-card-bg); border: 1px solid var(--du-line);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--du-text-2);
+  transition: all var(--du-dur-fast) var(--du-ease-default);
+}
+.pv-theme-btn:hover { box-shadow: var(--du-sh); border-color: var(--du-brand); }
+
+/* ─────── Hero ─────── */
+.pv-hero {
+  text-align: center;
+  padding: var(--du-sp-12) var(--du-sp-6);
+  max-width: 1200px; margin: 0 auto;
+}
+.pv-hero h1 {
+  font-size: 40px; font-weight: var(--du-fw-semibold);
+  line-height: 1.2; margin: 0 0 var(--du-sp-3); letter-spacing: -0.01em;
+}
+.pv-hero h1 .accent {
+  background: linear-gradient(135deg, var(--du-brand), var(--du-brand-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pv-hero p { color: var(--du-text-3); max-width: 640px; margin: 0 auto; font-size: var(--du-fs-md); }
+
+.pv-toc {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 var(--du-sp-6) var(--du-sp-8);
+  display: flex; flex-wrap: wrap; gap: var(--du-sp-2); justify-content: center;
+}
+.pv-toc a {
+  font-family: var(--du-font-mono); font-size: var(--du-fs-xs);
+  padding: var(--du-sp-1) var(--du-sp-3);
+  background: var(--du-card-bg); color: var(--du-text-3);
+  border: 1px solid var(--du-line); border-radius: var(--du-radius-pill);
+  text-decoration: none;
+  transition: all var(--du-dur-fast) var(--du-ease-default);
+}
+.pv-toc a:hover { color: var(--du-brand); border-color: var(--du-brand); }
+
+/* ─────── Section ─────── */
+.pv-section { max-width: 1200px; margin: 0 auto; padding: var(--du-sp-8) var(--du-sp-6); }
+.pv-head { margin-bottom: var(--du-sp-5); }
+.pv-num {
+  font-family: var(--du-font-mono); font-size: var(--du-fs-xs);
+  color: var(--du-brand); letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: var(--du-sp-2);
+}
+.pv-h2 { font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold); margin: 0 0 var(--du-sp-1); }
+.pv-desc { font-size: var(--du-fs-sm); color: var(--du-text-3); }
+
+.pv-card {
+  background: var(--du-card-bg);
+  border: 1px solid var(--du-line);
+  border-radius: var(--du-radius-xl);
+  padding: var(--du-sp-6);
+}
+.pv-row { display: flex; flex-wrap: wrap; gap: var(--du-sp-3); align-items: center; margin-bottom: var(--du-sp-3); }
+.pv-row:last-child { margin-bottom: 0; }
+.pv-row-label {
+  width: 80px; flex-shrink: 0;
+  font-size: var(--du-fs-xs); color: var(--du-text-3);
+  font-family: var(--du-font-mono);
+}
+.pv-grid-2 {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: var(--du-sp-4);
+}
+.pv-grid-3 {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--du-sp-4);
+}
+.pv-mini-title {
+  font-size: var(--du-fs-base); font-weight: var(--du-fw-medium);
+  color: var(--du-text-1); margin: 0 0 var(--du-sp-2);
+}
+
+.pv-footer {
+  text-align: center; padding: var(--du-sp-12) var(--du-sp-6) var(--du-sp-8);
+  color: var(--du-text-4); font-family: var(--du-font-mono); font-size: var(--du-fs-xs);
+  border-top: 1px solid var(--du-line);
+}
+
+/* 品牌色 Tooltip · 主体 + 箭头同色 */
+.brand-tooltip.el-popper {
+  background: var(--du-brand) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+}
+.brand-tooltip.el-popper .el-popper__arrow::before {
+  background: var(--du-brand) !important;
+  border: none !important;
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+
+<header class="pv-topbar">
+  <div class="pv-title">
+    Element × MindLink
+    <span class="badge">v2.7.6 · 主题预览</span>
+  </div>
+  <button class="pv-theme-btn" @click="toggleTheme" :title="isDark ? '切换浅色' : '切换深色'">
+    <svg v-if="!isDark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</header>
+
+<section class="pv-hero">
+  <h1>Element × <span class="accent">MindLink</span> 主题适配</h1>
+  <p>Element Plus 100+ 组件经 element-theme.css 一键接入 MindLink Token，下方为主要组件实测。</p>
+</section>
+
+<nav class="pv-toc">
+  <a href="#btn">Button</a>
+  <a href="#form">Form</a>
+  <a href="#tag">Tag</a>
+  <a href="#alert">Alert</a>
+  <a href="#card">Card</a>
+  <a href="#table">Table</a>
+  <a href="#tabs">Tabs</a>
+  <a href="#pagination">Pagination</a>
+  <a href="#switch">Switch / Slider</a>
+  <a href="#feedback">Message / Notify</a>
+  <a href="#dialog">Dialog / Drawer</a>
+  <a href="#tooltip">Tooltip / Popover</a>
+  <a href="#upload">Upload 四态</a>
+</nav>
+
+<!-- 1. Button -->
+<section class="pv-section" id="btn">
+  <div class="pv-head">
+    <div class="pv-num">01 / Button</div>
+    <h2 class="pv-h2">按钮 · 5 类 × 3 尺寸</h2>
+    <p class="pv-desc">主色已映射 --du-brand，hover/active 自动跟 --du-brand-hover/--du-brand-press</p>
+  </div>
+  <div class="pv-card">
+    <div class="pv-row"><span class="pv-row-label">solid</span>
+      <el-button type="primary">主操作</el-button>
+      <el-button type="success">成功</el-button>
+      <el-button type="warning">警告</el-button>
+      <el-button type="danger">危险</el-button>
+      <el-button type="info">信息</el-button>
+      <el-button>默认</el-button>
+    </div>
+    <div class="pv-row"><span class="pv-row-label">plain</span>
+      <el-button type="primary" plain>主操作</el-button>
+      <el-button type="success" plain>成功</el-button>
+      <el-button type="warning" plain>警告</el-button>
+      <el-button type="danger" plain>危险</el-button>
+      <el-button type="info" plain>信息</el-button>
+    </div>
+    <div class="pv-row"><span class="pv-row-label">size</span>
+      <el-button type="primary" size="large">大型 40</el-button>
+      <el-button type="primary">默认 32</el-button>
+      <el-button type="primary" size="small">小型 28</el-button>
+      <el-button type="primary" disabled>禁用</el-button>
+      <el-button type="primary" loading>加载</el-button>
+      <el-button type="primary" round>胶囊</el-button>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Form -->
+<section class="pv-section" id="form">
+  <div class="pv-head">
+    <div class="pv-num">02 / Form</div>
+    <h2 class="pv-h2">输入框 / 选择 / 表单</h2>
+    <p class="pv-desc">焦点环已替换为 MindLink --du-sh-focus（品牌微蓝）</p>
+  </div>
+  <div class="pv-grid-2">
+    <div class="pv-card">
+      <h3 class="pv-mini-title">基础输入</h3>
+      <el-form label-width="80px">
+        <el-form-item label="项目名">
+          <el-input v-model="form.name" placeholder="请输入项目名" />
+        </el-form-item>
+        <el-form-item label="类型">
+          <el-select v-model="form.type" placeholder="请选择" style="width: 100%">
+            <el-option label="短视频" value="video" />
+            <el-option label="图文" value="article" />
+            <el-option label="直播" value="live" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="日期">
+          <el-date-picker v-model="form.date" type="date" placeholder="请选择" style="width: 100%" />
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="form.desc" type="textarea" :rows="2" placeholder="请输入描述" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">提交</el-button>
+          <el-button>重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="pv-card">
+      <h3 class="pv-mini-title">校验状态</h3>
+      <el-form>
+        <el-form-item label="正常">
+          <el-input model-value="正常态" />
+        </el-form-item>
+        <el-form-item label="禁用">
+          <el-input model-value="禁用态" disabled />
+        </el-form-item>
+        <el-form-item label="错误" :error="'此字段必填'">
+          <el-input model-value="" />
+        </el-form-item>
+        <el-form-item label="只读">
+          <el-input model-value="只读内容" readonly />
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Tag -->
+<section class="pv-section" id="tag">
+  <div class="pv-head">
+    <div class="pv-num">03 / Tag</div>
+    <h2 class="pv-h2">标签</h2>
+    <p class="pv-desc">圆角已对齐 --du-tag-radius (2px)</p>
+  </div>
+  <div class="pv-card">
+    <div class="pv-row"><span class="pv-row-label">solid</span>
+      <el-tag>默认</el-tag>
+      <el-tag type="success">成功</el-tag>
+      <el-tag type="warning">警告</el-tag>
+      <el-tag type="danger">错误</el-tag>
+      <el-tag type="info">信息</el-tag>
+    </div>
+    <div class="pv-row"><span class="pv-row-label">light</span>
+      <el-tag effect="light">默认</el-tag>
+      <el-tag type="success" effect="light">成功</el-tag>
+      <el-tag type="warning" effect="light">警告</el-tag>
+      <el-tag type="danger" effect="light">错误</el-tag>
+    </div>
+    <div class="pv-row"><span class="pv-row-label">size</span>
+      <el-tag size="large">大型</el-tag>
+      <el-tag>默认</el-tag>
+      <el-tag size="small">小型</el-tag>
+      <el-tag closable>可关闭</el-tag>
+      <el-tag round>胶囊</el-tag>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Alert -->
+<section class="pv-section" id="alert">
+  <div class="pv-head">
+    <div class="pv-num">04 / Alert</div>
+    <h2 class="pv-h2">行内提示</h2>
+  </div>
+  <div class="pv-card">
+    <el-alert title="信息提示 · 系统已自动保存草稿" type="info" :closable="false" show-icon style="margin-bottom: 12px;" />
+    <el-alert title="操作成功 · 已发布 5 条短视频脚本" type="success" :closable="false" show-icon style="margin-bottom: 12px;" />
+    <el-alert title="警告提示 · 本月调用额度已使用 80%" type="warning" :closable="false" show-icon style="margin-bottom: 12px;" />
+    <el-alert title="错误提示 · 网络异常，请检查后重试" type="error" :closable="false" show-icon />
+  </div>
+</section>
+
+<!-- 5. Card -->
+<section class="pv-section" id="card">
+  <div class="pv-head">
+    <div class="pv-num">05 / Card</div>
+    <h2 class="pv-h2">卡片</h2>
+    <p class="pv-desc">默认 Level 0 Flat（无阴影），shadow="hover" 时浮起</p>
+  </div>
+  <div class="pv-grid-3">
+    <el-card>
+      <h3 class="pv-mini-title" style="margin: 0 0 8px;">Flat 默认</h3>
+      <p style="color: var(--du-text-3); font-size: var(--du-fs-sm); margin: 0;">无阴影 · 仅边框</p>
+    </el-card>
+    <el-card shadow="hover">
+      <h3 class="pv-mini-title" style="margin: 0 0 8px;">Hover Shadow</h3>
+      <p style="color: var(--du-text-3); font-size: var(--du-fs-sm); margin: 0;">悬停浮起</p>
+    </el-card>
+    <el-card shadow="always">
+      <h3 class="pv-mini-title" style="margin: 0 0 8px;">Always Shadow</h3>
+      <p style="color: var(--du-text-3); font-size: var(--du-fs-sm); margin: 0;">常驻阴影</p>
+    </el-card>
+  </div>
+</section>
+
+<!-- 6. Table -->
+<section class="pv-section" id="table">
+  <div class="pv-head">
+    <div class="pv-num">06 / Table</div>
+    <h2 class="pv-h2">表格</h2>
+  </div>
+  <div class="pv-card" style="padding: 0; overflow: hidden;">
+    <el-table :data="tableData" stripe>
+      <el-table-column prop="name" label="智能体" width="160" />
+      <el-table-column prop="type" label="类型" width="120">
+        <template #default="{ row }">
+          <el-tag :type="row.tagType" size="small">{{ row.type }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="usage" label="本月调用" width="120" />
+      <el-table-column prop="status" label="状态" width="100">
+        <template #default="{ row }">
+          <el-tag :type="row.statusType" effect="light" size="small">{{ row.status }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="updated" label="最近更新" />
+      <el-table-column label="操作" width="160">
+        <template #default>
+          <el-button size="small" type="primary" link>编辑</el-button>
+          <el-button size="small" type="danger" link>删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</section>
+
+<!-- 7. Tabs -->
+<section class="pv-section" id="tabs">
+  <div class="pv-head">
+    <div class="pv-num">07 / Tabs</div>
+    <h2 class="pv-h2">标签页</h2>
+  </div>
+  <div class="pv-card">
+    <el-tabs v-model="activeTab">
+      <el-tab-pane label="选题" name="topic">每日基于热点 AI 推送 20+ 候选选题。</el-tab-pane>
+      <el-tab-pane label="脚本" name="script">AI 一键产出 5 条候选脚本，支持人工编辑与多轮迭代。</el-tab-pane>
+      <el-tab-pane label="发布" name="publish">多平台一键分发，支持定时发布与回流统计。</el-tab-pane>
+    </el-tabs>
+  </div>
+</section>
+
+<!-- 8. Pagination -->
+<section class="pv-section" id="pagination">
+  <div class="pv-head">
+    <div class="pv-num">08 / Pagination</div>
+    <h2 class="pv-h2">分页</h2>
+  </div>
+  <div class="pv-card">
+    <el-pagination
+      :total="248"
+      :page-size="10"
+      :current-page="3"
+      layout="prev, pager, next, jumper, ->, total"
+    />
+  </div>
+</section>
+
+<!-- 9. Switch / Slider -->
+<section class="pv-section" id="switch">
+  <div class="pv-head">
+    <div class="pv-num">09 / Switch · Slider</div>
+    <h2 class="pv-h2">开关 / 滑动条</h2>
+  </div>
+  <div class="pv-card">
+    <div class="pv-row" style="margin-bottom: 24px;">
+      <span class="pv-row-label">switch</span>
+      <el-switch v-model="switchA" />
+      <el-switch v-model="switchB" inline-prompt active-text="开启" inactive-text="关闭" />
+      <el-switch disabled :model-value="true" />
+    </div>
+    <div class="pv-row">
+      <span class="pv-row-label">slider</span>
+      <div style="flex: 1; max-width: 480px;">
+        <el-slider v-model="sliderValue" show-input />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. Message / Notification -->
+<section class="pv-section" id="feedback">
+  <div class="pv-head">
+    <div class="pv-num">10 / Feedback</div>
+    <h2 class="pv-h2">Message / Notification</h2>
+    <p class="pv-desc">⚠ 主题层已强制移除 Element 默认的左侧色条（执行 §18 Don't 禁令）</p>
+  </div>
+  <div class="pv-card">
+    <h3 class="pv-mini-title">Message · 顶部消息</h3>
+    <div class="pv-row">
+      <el-button @click="showMsg('info')">info</el-button>
+      <el-button @click="showMsg('success')" type="success">success</el-button>
+      <el-button @click="showMsg('warning')" type="warning">warning</el-button>
+      <el-button @click="showMsg('error')" type="danger">error</el-button>
+    </div>
+    <h3 class="pv-mini-title" style="margin-top: 16px;">Notification · 角标通知</h3>
+    <div class="pv-row">
+      <el-button @click="showNotif('info')">info</el-button>
+      <el-button @click="showNotif('success')" type="success">success</el-button>
+      <el-button @click="showNotif('warning')" type="warning">warning</el-button>
+      <el-button @click="showNotif('error')" type="danger">error</el-button>
+    </div>
+  </div>
+</section>
+
+<!-- 11. Dialog / Drawer -->
+<section class="pv-section" id="dialog">
+  <div class="pv-head">
+    <div class="pv-num">11 / Overlay</div>
+    <h2 class="pv-h2">Dialog / Drawer</h2>
+  </div>
+  <div class="pv-card">
+    <div class="pv-row">
+      <el-button type="primary" @click="dialogOpen = true">打开 Dialog</el-button>
+      <el-button @click="drawerOpen = true">打开 Drawer (右侧抽屉)</el-button>
+      <el-button @click="confirmDemo">弹出 Confirm</el-button>
+    </div>
+
+    <el-dialog v-model="dialogOpen" title="确认发布到抖音" width="420">
+      <p>确定要将"二大妈河套美食村"项目的 5 条短视频一键分发到抖音平台吗？</p>
+      <template #footer>
+        <el-button @click="dialogOpen = false">取消</el-button>
+        <el-button type="primary" @click="dialogOpen = false">确认发布</el-button>
+      </template>
+    </el-dialog>
+
+    <el-drawer v-model="drawerOpen" title="筛选" size="360">
+      <el-form label-position="top">
+        <el-form-item label="时间范围">
+          <el-date-picker type="daterange" range-separator="至" style="width: 100%" />
+        </el-form-item>
+        <el-form-item label="平台">
+          <el-checkbox-group v-model="checkPlatforms">
+            <el-checkbox label="抖音">抖音</el-checkbox>
+            <el-checkbox label="视频号">视频号</el-checkbox>
+            <el-checkbox label="小红书">小红书</el-checkbox>
+            <el-checkbox label="快手">快手</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-button type="primary" style="width: 100%">应用筛选</el-button>
+      </el-form>
+    </el-drawer>
+  </div>
+</section>
+
+<!-- 12. Tooltip / Popover -->
+<section class="pv-section" id="tooltip">
+  <div class="pv-head">
+    <div class="pv-num">12 / Tooltip · Popover</div>
+    <h2 class="pv-h2">提示 / 弹层</h2>
+  </div>
+  <div class="pv-card">
+    <div class="pv-row">
+      <el-tooltip content="这是默认 Tooltip" placement="top">
+        <el-button>悬停看 Tooltip</el-button>
+      </el-tooltip>
+      <el-tooltip content="顶部品牌色 Tooltip" placement="top" popper-class="brand-tooltip">
+        <el-button>品牌色变体</el-button>
+      </el-tooltip>
+      <el-popover placement="top" :width="280" trigger="click">
+        <template #reference>
+          <el-button>点击看 Popover</el-button>
+        </template>
+        <div style="font-weight: 600; margin-bottom: 8px;">操作菜单</div>
+        <el-button size="small" type="primary" link>编辑</el-button>
+        <el-button size="small" link>分享</el-button>
+        <el-button size="small" type="danger" link>删除</el-button>
+      </el-popover>
+    </div>
+  </div>
+</section>
+
+<!-- 13. Upload 4 形态 -->
+<section class="pv-section" id="upload">
+  <div class="pv-head">
+    <div class="pv-num">13 / Upload · 重点</div>
+    <h2 class="pv-h2">Upload 四态实测（DESIGN.md §20.5）</h2>
+    <p class="pv-desc">text · picture · picture-card · drag — 按场景选用</p>
+  </div>
+
+  <div class="pv-grid-2">
+    <!-- text -->
+    <div class="pv-card">
+      <h3 class="pv-mini-title">① text · 附件场景</h3>
+      <p style="color: var(--du-text-3); font-size: var(--du-fs-sm); margin: 0 0 12px;">合同 / 凭证 / 文档类</p>
+      <el-upload :auto-upload="false" :limit="3" v-model:file-list="fileListA">
+        <el-button type="primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          选择文件
+        </el-button>
+        <template #tip>
+          <div style="font-size: var(--du-fs-xs); color: var(--du-text-3); margin-top: 8px;">
+            支持 .pdf / .doc / .xlsx · 单个 ≤ 20MB · 最多 3 个
+          </div>
+        </template>
+      </el-upload>
+    </div>
+
+    <!-- picture -->
+    <div class="pv-card">
+      <h3 class="pv-mini-title">② picture · 单图 + 文件名</h3>
+      <p style="color: var(--du-text-3); font-size: var(--du-fs-sm); margin: 0 0 12px;">封面 / Banner 上传</p>
+      <el-upload list-type="picture" :auto-upload="false" :limit="2" v-model:file-list="fileListB">
+        <el-button type="primary">选择图片</el-button>
+        <template #tip>
+          <div style="font-size: var(--du-fs-xs); color: var(--du-text-3); margin-top: 8px;">
+            支持 jpg / png / webp · 单图 ≤ 5MB
+          </div>
+        </template>
+      </el-upload>
+    </div>
+
+    <!-- picture-card -->
+    <div class="pv-card">
+      <h3 class="pv-mini-title">③ picture-card · 相册批量</h3>
+      <p style="color: var(--du-text-3); font-size: var(--du-fs-sm); margin: 0 0 12px;">头像 / 多图九宫格</p>
+      <el-upload list-type="picture-card" :auto-upload="false" :limit="9" v-model:file-list="fileListC">
+        <span style="font-size: 24px; color: var(--du-text-3);">+</span>
+        <template #tip>
+          <div style="font-size: var(--du-fs-xs); color: var(--du-text-3); margin-top: 8px;">
+            最多 9 张 · 单图 ≤ 5MB
+          </div>
+        </template>
+      </el-upload>
+    </div>
+
+    <!-- drag -->
+    <div class="pv-card">
+      <h3 class="pv-mini-title">④ drag · 大文件 / 数据集</h3>
+      <p style="color: var(--du-text-3); font-size: var(--du-fs-sm); margin: 0 0 12px;">拖拽区批量场景</p>
+      <el-upload drag :auto-upload="false" :limit="3" v-model:file-list="fileListD">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--du-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <div style="font-size: var(--du-fs-md); color: var(--du-text-1);">将文件拖到此处，或<em style="color: var(--du-brand); font-style: normal;">点击上传</em></div>
+        <template #tip>
+          <div style="font-size: var(--du-fs-xs); color: var(--du-text-3); margin-top: 8px;">
+            支持 .csv / .json / .zip · 单个 ≤ 100MB
+          </div>
+        </template>
+      </el-upload>
+    </div>
+  </div>
+</section>
+
+<footer class="pv-footer">
+  Element × MindLink · DESIGN.md §20 实测预览 · 思链科技 · 2026-04-29
+</footer>
+
+</div>
+
+<!-- ③ Vue 3 + Element Plus runtime（CDN，需联网） -->
+<script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/element-plus@2.7.6/dist/index.full.min.js"></script>
+
+<script>
+const { createApp, ref, reactive } = Vue;
+
+const App = {
+  setup() {
+    const isDark = ref(false);
+    const toggleTheme = () => {
+      isDark.value = !isDark.value;
+      document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : '');
+      try { localStorage.setItem('el-pv-theme', isDark.value ? 'dark' : 'light'); } catch (e) {}
+    };
+    try {
+      if (localStorage.getItem('el-pv-theme') === 'dark') {
+        isDark.value = true;
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+
+    const form = reactive({ name: '', type: '', date: '', desc: '' });
+    const activeTab = ref('topic');
+    const switchA = ref(true);
+    const switchB = ref(false);
+    const sliderValue = ref(40);
+    const dialogOpen = ref(false);
+    const drawerOpen = ref(false);
+    const checkPlatforms = ref(['抖音']);
+    const fileListA = ref([]);
+    const fileListB = ref([]);
+    const fileListC = ref([]);
+    const fileListD = ref([]);
+
+    const tableData = ref([
+      { name: '小创作家', type: '生成', tagType: '', usage: '12,840', status: '在线', statusType: 'success', updated: '2 小时前' },
+      { name: '审核助手', type: '审核', tagType: 'success', usage: '4,128', status: '在线', statusType: 'success', updated: '5 分钟前' },
+      { name: '数据分析师', type: '数据', tagType: 'warning', usage: '892', status: '思考中', statusType: 'warning', updated: '刚刚' },
+      { name: '客服机器人', type: '对话', tagType: 'info', usage: '8,432', status: '离线', statusType: 'info', updated: '昨天' },
+    ]);
+
+    const showMsg = (type) => {
+      const map = {
+        info: '系统已自动保存草稿',
+        success: '操作成功，已发布到抖音',
+        warning: '本月调用额度已使用 80%',
+        error: '网络异常，请检查后重试'
+      };
+      ElementPlus.ElMessage({ message: map[type], type, showClose: true });
+    };
+    const showNotif = (type) => {
+      const map = {
+        info: { title: '新消息', message: '小创作家完成了视频生成任务' },
+        success: { title: '发布成功', message: '5 条短视频已分发到抖音平台' },
+        warning: { title: '额度提醒', message: '本月调用额度即将用完，请及时升级' },
+        error: { title: '操作失败', message: '网络异常，请稍后重试' }
+      };
+      ElementPlus.ElNotification({ ...map[type], type, duration: 3500 });
+    };
+    const confirmDemo = () => {
+      ElementPlus.ElMessageBox.confirm(
+        '确认要删除这个智能体吗？此操作不可撤销。',
+        '删除确认',
+        { confirmButtonText: '确认删除', cancelButtonText: '取消', type: 'warning' }
+      ).then(() => {
+        ElementPlus.ElMessage.success('已删除');
+      }).catch(() => {});
+    };
+
+    return {
+      isDark, toggleTheme,
+      form, activeTab, switchA, switchB, sliderValue,
+      dialogOpen, drawerOpen, checkPlatforms,
+      fileListA, fileListB, fileListC, fileListD,
+      tableData,
+      showMsg, showNotif, confirmDemo
+    };
+  }
+};
+
+const app = createApp(App);
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+
+</body>
+</html>
