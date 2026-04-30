@@ -21,27 +21,23 @@
 ## 二、项目文件地图
 
 ```
-思链科技设计系统/
+思链科技设计系统/                  ← 纯规范项目，无业务代码
 ├── 📄 规范文档（必读）
 │   ├── DESIGN.md          # 唯一真相源 · 235+ Token + 22 章组件规范
 │   ├── CLAUDE.md          # AI 智能体执行守则（速查 + 禁止条）
+│   ├── README.md          # 本文件 · 三角色使用说明
 │   └── SKILL.md           # 跨项目通用方法论（移动端 / 动效 / 6 套设计风格）
 │
 ├── 🎨 主题接入文件（前端必用）
 │   └── element-theme.css  # Element Plus 主题映射，覆盖 100+ 组件
 │
-├── 👁 可视化样板（设计验收 / 前端参考）
-│   ├── mindlink-preview.html   # 主预览（5300+ 行）
-│   ├── element-preview.html    # Element Plus 实测
-│   └── motion-preview.html     # 动效手册
-│
-└── 🧱 业务组件（11 页，全部 v2.0 合规）
-    └── components/
-        ├── dock-home.html              # 首页
-        ├── agent-list / chat / mcp / knowledge
-        ├── agent-workflow / aigc / digital / assets / apps
-        └── ai-team-org.html
+└── 👁 可视化样板（设计验收 / 前端参考）
+    ├── mindlink-preview.html   # 主预览（5600+ 行 · 顶部跳转 Element / Motion）
+    ├── element-preview.html    # Element Plus 真实运行时主题验证
+    └── motion-preview.html     # 动效手册（14 类 32 demo）
 ```
+
+> **业务代码不在本仓库**：DOCK 管理系统的业务页面（dock-home / agent-* / ai-team-org 等）由独立业务前端项目维护，仅引用本仓库的 token + 主题。本仓库专注规范与样板，不被业务迭代污染。
 
 ---
 
@@ -218,7 +214,7 @@ document.documentElement.removeAttribute('data-theme');
   2. 在 mindlink-preview.html 加可视化 demo
   3. 让前端 review，避免实现成本爆炸
   4. 合并后通知所有协作者
-- **禁忌**：直接改业务页（components/*.html）而不更新 DESIGN.md → 规范会失真
+- **禁忌**：业务前端项目里临时改 token 值或写死硬编码而不反馈到 DESIGN.md → 规范与实现脱节，跨项目复用时双重标准
 
 ---
 
@@ -234,7 +230,18 @@ document.documentElement.removeAttribute('data-theme');
 不用。`--du-bp-*` 断点 token 已定义。窄屏自动适配；如果某些组件需要紧凑，用 `--du-h-sm` `--du-fs-xs` 即可。
 
 #### Q4: 我们项目还在用 v1 老 token（没 `--du-` 前缀），怎么迁移？
-参考 `components/agent-assets.html` 是 v1 → v2 迁移完成的示例。项目根目录可以跑批量 sed（详见 `mindlink-preview.html` 提交历史）。
+查 `mindlink-preview.html` 顶部 `:root` 看 v2.0 全套 token 名，跑批量 sed 加前缀：
+```bash
+sed -i \
+  -e 's/--brand/--du-brand/g' \
+  -e 's/--text-/--du-text-/g' \
+  -e 's/--fs-/--du-fs-/g' \
+  -e 's/--sp-/--du-sp-/g' \
+  -e 's/--radius-/--du-radius-/g' \
+  -e 's/--sh/--du-sh/g' \
+  src/**/*.{vue,css,scss}
+```
+注意：`--el-*`（Element Plus）不要加前缀，与 `--du-*` 共存。
 
 #### Q5: 改了 token 想看效果，每次都要重新打开 preview 吗？
 打开 `mindlink-preview.html`，浏览器 DevTools 的 Console 里改 `:root` 变量，例：

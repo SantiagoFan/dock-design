@@ -19,8 +19,7 @@
 
 根据 DESIGN.md 规范生成 HTML/CSS 组件代码。生成时必须：
 - **使用 `--du-` 命名空间** 的 CSS 变量（如 `var(--du-brand)`、`var(--du-text-1)`），不硬编码色值
-- 字体使用 `var(--du-font-zh)` / `var(--du-font-en)` / `var(--du-font-mono)` 三通道
-  - **注意**：`components/*.html` 历史用 `--du-font-sans`（与 `--du-font-zh` 等价），新代码统一用 `--du-font-zh`
+- 字体使用 `var(--du-font-zh)` / `var(--du-font-en)` / `var(--du-font-mono)` 三通道（其中 `--du-font-mono` 已映射到 Inter，配 `font-variant-numeric: tabular-nums` 实现等宽数字）
 - 字号使用 `--du-fs-xs` 至 `--du-fs-3xl`（**桌面端最低 12px**，禁用 9/10/11px）
 - 字重使用 `--du-fw-regular/medium/semibold`（**最高 600**，禁用 700+）
 - 间距使用 `--du-sp-1` 至 `--du-sp-16`（4-base 栅格）
