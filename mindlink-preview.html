@@ -277,18 +277,16 @@
     border-bottom: 1px solid var(--du-line);
   }
   .nav-brand {
-    font-family: var(--du-font-zh); font-size: 15px; font-weight: 600;
-    color: var(--du-text-1); text-decoration: none;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center;
+    text-decoration: none;
+    height: 100%;
   }
-  .nav-brand-mark {
-    width: 26px; height: 26px; border-radius: 8px;
-    background: linear-gradient(135deg, var(--du-brand) 0%, var(--du-brand-deep) 100%);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-family: var(--du-font-en); font-weight: var(--du-fw-semibold); font-size: 13px;
-    box-shadow: 0 2px 8px rgba(54,98,236,.3);
+  .nav-brand-logo {
+    height: 32px;
+    width: auto;
+    display: block;
+    object-fit: contain;
   }
-  .nav-brand-en { font-family: var(--du-font-en); font-size: var(--du-fs-xs); color: var(--du-text-3); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-left: 4px;}
   .nav-links { display: flex; gap: 22px; list-style: none; }
   .nav-links a { font-size: 13px; font-weight: 400; color: var(--du-text-2); text-decoration: none; transition: color 0.15s; }
   .nav-links a:hover { color: var(--du-brand); }
@@ -2914,10 +2912,8 @@
 
 <!-- NAV -->
 <nav class="nav">
-  <a class="nav-brand" href="#">
-    <div class="nav-brand-mark">M</div>
-    <span>思链科技</span>
-    <span class="nav-brand-en">MindLink</span>
+  <a class="nav-brand" href="#" aria-label="思链科技 MindLink">
+    <img class="nav-brand-logo" src="./ML-LOGO.png" alt="思链科技 MindLink">
   </a>
   <ul class="nav-links">
     <li><a href="#colors">色彩</a></li>
