@@ -334,9 +334,16 @@ Tags: height 22px, padding 0 8px, radius 4px, font 11-12px weight 500。
 
 ### Text Input
 - Height 36px, bg `#FFFFFF`, border `1px solid --du-line`, radius 8px
-- Placeholder: `--du-text-4`
+- **Placeholder 颜色必须 `var(--du-text-4)`（#9BA7C3）**——禁止依赖浏览器默认（默认值是 input color 的 60% 不透明度，跨浏览器不一致，且 Chrome/Safari 会偏暗）
 - Focus: border `--du-brand`, shadow `--du-sh-focus`
 - Error: border `--du-danger`, shadow `0 0 0 3px rgba(255,66,69,.12)`
+
+**全局规则**（必须在每个使用 input/textarea 的页面 `<style>` 顶部注入）：
+```css
+input::placeholder,
+textarea::placeholder { color: var(--du-text-4); }
+```
+这条放在 `* { box-sizing }` 重置之后，相当于一个全局 baseline，避免每个具体 input 类都要重写一遍。
 
 ### **Select（下拉选择）** ← v2.0 全量重设计
 
