@@ -8,14 +8,13 @@
 
 ## 一、3 分钟快速上手
 
-打开浏览器，双击 `mindlink-preview.html` —— 进入主预览页，顶部三个按钮可跳到其他预览：
+打开浏览器，双击 `mindlink-preview.html` —— 进入主预览页，顶部两个按钮可跳到其他预览：
 
 | 主页面 | 用途 | 你需要时打开 |
 |---|---|---|
 | 📘 **mindlink-preview.html** | 设计系统主预览（22 章组件） | 找规范、查 token、看视觉 |
 | 🧩 **element-preview.html** | Element Plus 真实运行时主题 | 验证 Element 组件接入效果 |
 | 🎬 **motion-preview.html** | 动效手册（14 类 32 demo） | 找动效曲线、复制代码 |
-| 🔤 **font-preview.html** | 字体候选 A/B 实测 | 仅在评估字体替换时打开 |
 
 ---
 
@@ -34,8 +33,7 @@
 ├── 👁 可视化样板（设计验收 / 前端参考）
 │   ├── mindlink-preview.html   # 主预览（5300+ 行）
 │   ├── element-preview.html    # Element Plus 实测
-│   ├── motion-preview.html     # 动效手册
-│   └── font-preview.html       # 字体对比
+│   └── motion-preview.html     # 动效手册
 │
 └── 🧱 业务组件（11 页，全部 v2.0 合规）
     └── components/
