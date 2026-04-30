@@ -208,13 +208,13 @@
 
   /* TOOLBAR */
   .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
-  .filter-pills { display: flex; gap: 4px; background: var(--du-card-bg); padding: 3px; border: 1px solid var(--du-line); border-radius: var(--du-radius-lg); position: relative; }
+  .filter-pills { display: flex; gap: 4px; background: var(--du-card-bg); padding: 2px; border: 1px solid var(--du-line); border-radius: var(--du-radius-lg); position: relative; }
   .pill-tab { height: 28px; padding: 0 12px; border-radius: var(--du-radius-md); font-size: var(--du-fs-xs); font-weight: var(--du-fw-medium); color: var(--du-text-3); display: inline-flex; align-items: center; gap: 4px; transition: all var(--du-dur-fast) var(--du-ease-default); cursor: pointer; position: relative; z-index: 1; }
   .pill-tab:hover { color: var(--du-brand); }
   .pill-tab.active { background: transparent; color: var(--du-brand); }
   .pill-tab .count { font-family: var(--du-font-mono); font-size: var(--du-fs-xs); color: var(--du-text-4); background: var(--du-page-bg); padding: 1px 5px; border-radius: var(--du-radius-lg); margin-left: 4px; }
   .pill-tab.active .count { background: var(--du-card-bg); color: var(--du-brand); }
-  .pill-indicator { position: absolute; top: 3px; left: 0; height: 28px; width: 0; background: var(--du-brand-bg); border-radius: var(--du-radius-md); pointer-events: none; transform: translateX(0); transition: transform var(--du-dur-slow) var(--du-ease-spring), width var(--du-dur-slow) var(--du-ease-spring); will-change: transform, width; }
+  .pill-indicator { position: absolute; top: 2px; left: 0; height: 28px; width: 0; background: var(--du-brand-bg); border-radius: var(--du-radius-md); pointer-events: none; transform: translateX(0); transition: transform var(--du-dur-slow) var(--du-ease-spring), width var(--du-dur-slow) var(--du-ease-spring); will-change: transform, width; }
   .search-input { height: 32px; background: var(--du-card-bg); border: 1px solid var(--du-line); border-radius: var(--du-radius-lg); display: flex; align-items: center; gap: 6px; padding: 0 10px; width: 280px; transition: all var(--du-dur-fast) var(--du-ease-default); }
   .search-input:focus-within { border-color: var(--du-brand); box-shadow: var(--du-sh-focus); }
   .search-input svg { width: 14px; height: 14px; color: var(--du-text-4); flex-shrink: 0; }
