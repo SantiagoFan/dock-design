@@ -254,7 +254,7 @@ document.documentElement.style.setProperty('--du-brand', '#FF0000');
 
 | 版本 | 日期 | 关键改动 |
 |---|---|---|
-| v2.0 | 2026-04 | 14 张 Token 表 / `--du-` 命名空间 / 8 类缺省态 / Element Plus 适配层 / Geist Mono / Noto Sans SC Web 优先 |
+| v2.0 | 2026-04 | 14 张 Token 表 / `--du-` 命名空间 / 8 类缺省态 / Element Plus 适配层 / Inter 统一数字字体（弃 Geist Mono） / Noto Sans SC Web 优先 |
 | v1.x | 2026-03 | 基础规范 + 6 张表 |
 
 ---

@@ -49,7 +49,7 @@
 | 多层阴影 | 禁止堆叠超过规范定义 | 手写多层 box-shadow |
 | 左侧色条 | **任何组件都不允许加 2~4px 装饰色条**（仅 Sidebar 一级例外） | Toast/卡片/Alert 加 border-left |
 | 图标方式 | 内联 SVG + currentColor | 引用字体图标 CDN / emoji |
-| 字体三通道 | Noto Sans SC（Web 优先）/ Inter / Geist Mono | 仅用 system-ui，或用 JetBrains Mono |
+| 字体双通道 | Noto Sans SC（Web 优先）/ Inter（英文 + 数字 tabular-nums）| 仅用 system-ui，或加载额外的 mono 字体 |
 | 危险按钮阴影 | 红色 `rgba(255,66,69,.28)` | 蓝色阴影用于危险按钮 |
 | 原生表单 | 禁用 `<select>` / `<input type="date">` | 必须 `<el-select>` / `.du-select` |
 | 模态遮罩 | 必须 `backdrop-filter: blur` | 仅半透明色块无模糊 |
@@ -96,7 +96,7 @@
 6. **❌ 不在任何组件加左侧装饰色条**——按钮/卡片/Toast/Alert/Notification 全部禁用（仅 Sidebar 一级菜单选中态例外）
 7. **❌ 系统规范禁止 emoji 当 UI 图标**（`👋 🎉 ✨` 等），全部内联 SVG
 8. 不用字体图标 CDN（国内加载不稳定）
-9. 不在数字列用可变宽字体（用 `--du-font-mono` Geist Mono）
+9. 不在数字列用可变宽字体（用 `--du-font-mono`，已映射到 Inter，配 `font-variant-numeric: tabular-nums` 实现等宽）
 10. 不给卡片加多层阴影
 11. 不在装饰性元素上使用品牌色
 12. **❌ 桌面端禁用 9 / 10 / 11px 字号**（最低 12px = `--du-fs-xs`，WCAG AA）
@@ -115,7 +115,7 @@
 动效时长:  120ms(fast) · 200ms(normal · 默认) · 320ms(slow)
 缓动曲线:  ease-default · ease-out · ease-spring（弹簧用于成功/选中反馈）
 默认动效:  200ms ease-out
-字体:      Noto Sans SC（Web 优先）/ Inter / Geist Mono
+字体:      Noto Sans SC（Web 优先，中文）/ Inter（英文 + 数字 + tabular-nums）双通道
 字号阶梯:  12 · 13 · 14 · 16 · 18 · 20 · 24 · 32 (--du-fs-xs ... --du-fs-3xl)
 字重:      400(regular) · 500(medium) · 600(semibold · 上限)
 间距栅格:  4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64 (--du-sp-1 ... --du-sp-16)

@@ -6,7 +6,7 @@
 <title>Design System Preview: 思链科技 MindLink</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     /* Brand */
@@ -78,10 +78,10 @@
     --du-sh-xl: 0 24px 56px rgba(15,27,60,.14), 0 10px 24px rgba(15,27,60,.08);
     --du-sh-focus: 0 0 0 3px rgba(54,98,236,.15);
 
-    /* Fonts · v2.0 Web 字体优先（Noto Sans SC 跨端一致 · PingFang SC 兜底）+ Geist Mono 数字 */
+    /* Fonts · v2.0 Web 字体优先（Noto Sans SC 跨端一致 · PingFang SC 兜底）· 数字字体统一 Inter + tabular-nums（避免 mono 字体 CDN 加载失败） */
     --du-font-zh: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     --du-font-en: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-    --du-font-mono: "Geist Mono", "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+    --du-font-mono: "Inter", -apple-system, BlinkMacSystemFont, "SF Mono", ui-monospace, Menlo, monospace;
 
     /* Motion · 三档时长 / 三种缓动 */
     --du-ease-default: cubic-bezier(0.4, 0, 0.2, 1);     /* 通用 */
@@ -3220,7 +3220,7 @@
 <section class="section" id="typography">
   <div class="section-label">02 / Typography</div>
   <h2 class="section-title">字体系统</h2>
-  <p class="section-subtitle">中文 Noto Sans SC（Web 优先，PingFang SC 兜底，跨端视觉一致）· 英文 Inter · 数字 Geist Mono，三通道协同排版</p>
+  <p class="section-subtitle">中文 Noto Sans SC（Web 优先，PingFang SC 兜底，跨端视觉一致）· 英文 / 数字 Inter（含 tabular-nums 等宽数字），双通道协同排版</p>
 
   <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-zh); font-size:40px; font-weight:600; line-height:1.2; letter-spacing:-0.01em;">Display Hero — 思链科技 MindLink</div><div class="type-meta">40px · 600 · 1.20 · -0.01em</div></div>
   <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-zh); font-size:32px; font-weight:600; line-height:1.25; letter-spacing:-0.005em;">Page Title — 新媒体内容系统</div><div class="type-meta">32px · 600 · 1.25</div></div>
@@ -3231,8 +3231,8 @@
   <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-zh); font-size:14px; font-weight:500;">Body Emphasis — 强调正文 · 已发布视频</div><div class="type-meta">14px · 500 · 1.60</div></div>
   <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-zh); font-size:12px; font-weight:400; color:var(--du-text-3);">Caption — 辅助说明、时间戳、元信息。刚刚更新 · 2 分钟前</div><div class="type-meta">12px · 400 · 1.50</div></div>
   <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-zh); font-size: var(--du-fs-xs); font-weight:500; letter-spacing:0.02em; color:var(--du-text-3); text-transform:uppercase;">Micro — Metadata Tag / Status Label</div><div class="type-meta">11px · 500 · 0.02em</div></div>
-  <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-mono); font-size:32px; font-weight:600; color:var(--du-brand); line-height:1.1;">1,284,392</div><div class="type-meta">Data Display · Geist Mono · 32px · 600</div></div>
-  <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-mono); font-size:13px; font-weight:500; color:var(--du-text-1);">2026-04-16 · 14:23:08 · +12.3%</div><div class="type-meta">Data Inline · Geist Mono · 13px · 500</div></div>
+  <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-mono); font-size:32px; font-weight:600; color:var(--du-brand); line-height:1.1;">1,284,392</div><div class="type-meta">Data Display · Inter + tabular-nums · 32px · 600</div></div>
+  <div class="type-sample"><div class="type-preview" style="font-family:var(--du-font-mono); font-size:13px; font-weight:500; color:var(--du-text-1);">2026-04-16 · 14:23:08 · +12.3%</div><div class="type-meta">Data Inline · Inter + tabular-nums · 13px · 500</div></div>
 
   <div class="color-group-label" style="margin-top:36px;">Token 映射表 · 字号 / 字重 / 行高</div>
   <div style="background:#fff;border:1px solid var(--du-line-soft);border-radius:12px;overflow:hidden;">
