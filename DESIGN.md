@@ -801,7 +801,12 @@ textarea::placeholder { color: var(--du-text-4); }
 - **❌ 桌面端禁止使用 9 / 10 / 11px 字号**——最低 12px（`var(--du-fs-xs)`），WCAG AA 可读性下限。Caption / 状态标签 / mono 元数据全部统一 12px。移动端 ≤ 430px 视口下仅元信息可临时用 11px
 - 不要用纯黑 `#000000` 做正文——用 `#0F1B3C`
 - 不要让 hover 动效超过 200ms
-- **❌ 不要在任何组件上加左侧装饰色条**——按钮 / 卡片 / Toast / Alert / Notification 一律禁用左侧 2~4px 色条（含 `border-left` 实色 / `box-shadow: inset Npx 0 0 ...` / 伪元素 `::before` 模拟竖条）。状态用图标和文字色区分，不靠侧边色条。**唯一例外**：左侧导航 Sidebar 一级菜单选中态的 3px 品牌色竖条（§11 Navigation 已明确）
+- **❌ 不要在任何组件上加左侧装饰色条**——按钮 / 卡片 / Toast / Alert / Notification 一律禁用左侧 2~4px 色条（含 `border-left` 实色 / `box-shadow: inset Npx 0 0 ...` / 伪元素 `::before` 模拟竖条）。状态用图标和文字色区分，不靠侧边色条。
+  - **合法例外（语义性 / 结构性，非装饰）**：
+    1. **Sidebar 一级菜单选中态** —— 3px 品牌色竖条贴侧栏左边缘（§11 Navigation 已明确，是项目签名设计）
+    2. **Blockquote / 引用块** —— `border-left: 3px solid var(--du-brand)` + `padding-left: 12px`（HTML5 / Markdown 通用约定，国际惯例：GitHub / Notion / Discord 都这样）
+    3. **Timeline / 时间轴垂直骨架** —— `border-left: 1~2px solid var(--du-line)` 用于纵向时间排列（结构线，不是状态指示）
+  - 其他场景一律禁用，特别是禁止把 sidebar 的 3px 品牌色竖条复用到二级菜单 / 列表项 / 卡片选中态（这会破坏"侧栏专属"语义层级）
 - **❌ 系统规范禁止使用 emoji 作为功能图标**——禁止在标题、按钮、状态、空状态、通知、问候语、欢迎语等任何 UI 位置使用 `👋 🎉 🚀 ✨ 🔥 ⭐` 等 emoji 替代图标。所有 UI 图标必须是**内联 SVG**（统一描边、可主题化、可访问性可控）。emoji 仅允许出现在用户输入内容里（聊天消息、富文本评论、用户昵称）
 - 不要用字体图标 CDN（国内加载不稳定，全部内联 SVG）
 - 不要在数字列用可变宽字体

@@ -361,7 +361,7 @@
     50% { opacity: .8; box-shadow: 0 0 0 4px rgba(54,98,236,0); }
   }
   .hero h2 {
-    font-size: 22px; font-weight: var(--du-fw-semibold);
+    font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold);
     color: var(--du-text-1);
     letter-spacing: -0.01em;
     margin-bottom: 6px;
@@ -380,7 +380,7 @@
   }
   .hero-stat .h-num {
     font-family: var(--du-font-mono);
-    font-size: 28px; font-weight: var(--du-fw-semibold);
+    font-size: var(--du-fs-3xl); font-weight: var(--du-fw-semibold);
     color: var(--du-text-1);
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
@@ -898,8 +898,8 @@
   }
   @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   @keyframes toastOut { to { transform: translateX(120%); opacity: 0; } }
-  .toast.success { border-left: 3px solid var(--du-success); }
-  .toast.info { border-left: 3px solid var(--du-brand); }
+  .toast.success { color: var(--du-text-1); }
+  .toast.info { color: var(--du-text-1); }
   .toast .t-icon {
     width: 22px; height: 22px;
     border-radius: 50%;

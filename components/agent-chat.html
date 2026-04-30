@@ -436,9 +436,9 @@
   }
   .conv-item:hover { background: var(--du-brand-tint); }
   .conv-item.active {
+    /* DESIGN.md §11/§18：3px 品牌竖条仅 Sidebar 一级专属；会话列表用纯高亮底色 */
     background: var(--du-brand-bg);
-    box-shadow: inset 3px 0 0 var(--du-brand);
-    border-radius: 0;
+    border-radius: var(--du-radius-md);
     margin: 0 -8px 2px;
     padding: 10px 18px;
   }
@@ -541,7 +541,7 @@
   }
   .chat-agent .info { min-width: 0; }
   .chat-agent .name {
-    font-size: 15px; font-weight: var(--du-fw-semibold);
+    font-size: var(--du-fs-md); font-weight: var(--du-fw-semibold);
     color: var(--du-text-1);
     display: flex; align-items: center; gap: 6px;
   }
@@ -1004,7 +1004,7 @@
     width: 56px; height: 56px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 22px; font-weight: var(--du-fw-semibold);
+    color: #fff; font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold);
     border: 3px solid var(--du-card-bg);
     box-shadow: 0 6px 18px rgba(54,98,236,.22);
     flex-shrink: 0;
@@ -1214,8 +1214,8 @@
   }
   @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   @keyframes toastOut { to { transform: translateX(120%); opacity: 0; } }
-  .toast.success { border-left: 3px solid var(--du-success); }
-  .toast.info { border-left: 3px solid var(--du-brand); }
+  .toast.success { color: var(--du-text-1); }
+  .toast.info { color: var(--du-text-1); }
   .toast .t-icon {
     width: 22px; height: 22px;
     border-radius: 50%;

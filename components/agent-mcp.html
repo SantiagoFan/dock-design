@@ -197,7 +197,7 @@
   .stat-icon.warning { background: var(--du-warning-bg); color: var(--du-warning); }
   .stat-icon svg { width: 20px; height: 20px; }
   .stat-meta { flex: 1; min-width: 0; position: relative; z-index: 1; }
-  .stat-num { font-family: var(--du-font-mono); font-size: 26px; font-weight: var(--du-fw-semibold); color: var(--du-text-1); line-height: 1.1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .stat-num { font-family: var(--du-font-mono); font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold); color: var(--du-text-1); line-height: 1.1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
   .stat-num .unit { font-size: var(--du-fs-sm); color: var(--du-text-3); margin-left: 3px; font-weight: var(--du-fw-regular); }
   .stat-label { font-size: var(--du-fs-xs); color: var(--du-text-3); margin-top: 4px; line-height: 1.4; }
 
@@ -509,8 +509,8 @@
   .toast { background: var(--du-card-bg); border: 1px solid var(--du-line); box-shadow: var(--du-sh-lg); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: var(--du-fs-sm); color: var(--du-text-1); min-width: 280px; animation: toastIn var(--du-dur-slow) var(--du-ease-spring), toastOut var(--du-dur-normal) var(--du-ease-default) 2.6s forwards; pointer-events: auto; }
   @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   @keyframes toastOut { to { transform: translateX(120%); opacity: 0; } }
-  .toast.success { border-left: 3px solid var(--du-success); }
-  .toast.info { border-left: 3px solid var(--du-brand); }
+  .toast.success { color: var(--du-text-1); }
+  .toast.info { color: var(--du-text-1); }
   .toast .t-icon { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .toast.success .t-icon { background: var(--du-success-bg); color: var(--du-success); }
   .toast.info .t-icon { background: var(--du-brand-bg); color: var(--du-brand); }

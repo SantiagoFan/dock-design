@@ -117,6 +117,22 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* DESIGN.md §6 · Native select 替代品 — 静态展示用，规范要求生产环境用 .du-select 或 <el-select> */
+  .form-select-mock {
+    width: 100%; height: 36px;
+    padding: 0 12px;
+    background: var(--du-card-bg);
+    border: 1px solid var(--du-line);
+    border-radius: var(--du-radius-lg);
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: inherit; font-size: var(--du-fs-base);
+    color: var(--du-text-1);
+    cursor: pointer;
+    transition: border-color var(--du-dur-fast) var(--du-ease-default), box-shadow var(--du-dur-fast) var(--du-ease-default);
+  }
+  .form-select-mock:hover { border-color: var(--du-text-4); }
+  .form-select-mock.placeholder .form-select-mock-value { color: var(--du-text-4); }
+  .form-select-mock svg { color: var(--du-text-3); flex-shrink: 0; }
   html, body { height: 100%; }
   body {
     background: var(--du-page-bg);
@@ -417,7 +433,7 @@
   .stat-meta { flex: 1; min-width: 0; position: relative; z-index: 1; }
   .stat-num {
     font-family: var(--du-font-mono);
-    font-size: 26px; font-weight: var(--du-fw-semibold);
+    font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold);
     color: var(--du-text-1);
     line-height: 1.1;
     letter-spacing: -0.01em;
@@ -613,7 +629,7 @@
     flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     color: #fff;
-    font-size: 17px; font-weight: var(--du-fw-semibold);
+    font-size: var(--du-fs-lg); font-weight: var(--du-fw-semibold);
     border: 2.5px solid var(--du-card-bg);
     box-shadow: 0 4px 12px rgba(54,98,236,.16);
     position: relative;
@@ -823,7 +839,7 @@
     width: 56px; height: 56px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 22px; font-weight: var(--du-fw-semibold);
+    color: #fff; font-size: var(--du-fs-2xl); font-weight: var(--du-fw-semibold);
     border: 3px solid var(--du-card-bg);
     box-shadow: 0 6px 18px rgba(54,98,236,.22);
     flex-shrink: 0;
@@ -1029,7 +1045,7 @@
     border-radius: 50%;
     background: #fff;
     transition: transform var(--du-dur-fast) var(--du-ease-default);
-    box-shadow: 0 2px 4px rgba(0,0,0,.15);
+    box-shadow: 0 2px 4px rgba(15,27,60,.15);
   }
   .switch.on { background: var(--du-brand); }
   .switch.on::after { transform: translateX(16px); }
@@ -1160,9 +1176,9 @@
   @keyframes toastOut {
     to { transform: translateX(120%); opacity: 0; }
   }
-  .toast.success { border-left: 3px solid var(--du-success); }
-  .toast.warning { border-left: 3px solid var(--du-warning); }
-  .toast.info { border-left: 3px solid var(--du-brand); }
+  .toast.success { color: var(--du-text-1); }
+  .toast.warning { color: var(--du-text-1); }
+  .toast.info { color: var(--du-text-1); }
   .toast .t-icon {
     width: 22px; height: 22px;
     border-radius: 50%;
@@ -1853,11 +1869,11 @@
       <div class="d-section">
         <h3>响应风格</h3>
         <div class="form-row">
-          <select>
-            <option>专业 · 结构化（默认）</option>
-            <option>简洁 · 直给结论</option>
-            <option>温度 · 关怀式</option>
-          </select>
+          <!-- DESIGN.md §6 禁用 native select；规范用 .du-select / <el-select> -->
+          <div class="form-select-mock" data-value="专业 · 结构化（默认）">
+            <span class="form-select-mock-value">专业 · 结构化（默认）</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
         </div>
       </div>
     </div>
@@ -1920,11 +1936,10 @@
       </div>
       <div class="form-row">
         <label>所属团队</label>
-        <select>
-          <option>新媒体团队</option>
-          <option>研发团队</option>
-          <option>+ 创建新团队</option>
-        </select>
+        <div class="form-select-mock" data-value="新媒体团队">
+          <span class="form-select-mock-value">新媒体团队</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
       </div>
       <div class="form-row">
         <label>系统提示词</label>
@@ -1932,9 +1947,10 @@
       </div>
       <div class="form-row">
         <label>挂载知识库（可多选）</label>
-        <select>
-          <option>+ 选择知识库</option>
-        </select>
+        <div class="form-select-mock placeholder" data-value="">
+          <span class="form-select-mock-value">+ 选择知识库</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
       </div>
     </div>
     <footer class="modal-foot">
