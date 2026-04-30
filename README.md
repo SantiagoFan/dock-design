@@ -156,7 +156,7 @@ document.documentElement.removeAttribute('data-theme');
 
 #### 邮件模板 / PDF 报表
 - 品牌色固定 `#3662EC`，不要用其他蓝
-- 字体优先 PingFang SC，fallback 到 sans-serif
+- 字体优先 Noto Sans SC（跨端一致），PingFang SC 兜底，fallback 到 sans-serif
 - 邮件不能用 CSS 变量（兼容性差），直接用色值
 
 #### 数据返回的状态枚举建议遵循设计语义
@@ -254,7 +254,7 @@ document.documentElement.style.setProperty('--du-brand', '#FF0000');
 
 | 版本 | 日期 | 关键改动 |
 |---|---|---|
-| v2.0 | 2026-04 | 14 张 Token 表 / `--du-` 命名空间 / 8 类缺省态 / Element Plus 适配层 / Geist Mono / PingFang 系统优先 |
+| v2.0 | 2026-04 | 14 张 Token 表 / `--du-` 命名空间 / 8 类缺省态 / Element Plus 适配层 / Geist Mono / Noto Sans SC Web 优先 |
 | v1.x | 2026-03 | 基础规范 + 6 张表 |
 
 ---
