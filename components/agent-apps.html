@@ -385,6 +385,13 @@
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
   }
+  .hero-stat .h-num .unit {
+    font-family: var(--du-font-sans);
+    font-size: var(--du-fs-lg);
+    color: var(--du-text-3);
+    margin-left: 3px;
+    font-weight: var(--du-fw-regular);
+  }
   .hero-stat .h-lbl {
     font-size: var(--du-fs-xs); color: var(--du-text-3);
     margin-top: 4px;
@@ -1038,11 +1045,11 @@
             <div class="h-lbl">本月调用</div>
           </div>
           <div>
-            <div class="h-num">12<span style="font-size: var(--du-fs-base); color: var(--du-text-3); font-weight: var(--du-fw-regular);">min</span></div>
+            <div class="h-num">12<span class="unit">min</span></div>
             <div class="h-lbl">平均生成</div>
           </div>
           <div>
-            <div class="h-num">96<span style="font-size: var(--du-fs-base); color: var(--du-text-3); font-weight: var(--du-fw-regular);">%</span></div>
+            <div class="h-num">96<span class="unit">%</span></div>
             <div class="h-lbl">满意度</div>
           </div>
         </div>
