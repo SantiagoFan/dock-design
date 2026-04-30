@@ -2728,6 +2728,35 @@
   [data-theme="dark"] .footer { background: #060A16; color: rgba(255,255,255,0.5); }
   [data-theme="dark"] .footer a { color: var(--du-brand); }
 
+  /* Sibling preview links · 跨预览页跳转 */
+  .preview-links {
+    display: flex; align-items: center; gap: 6px;
+    margin-left: var(--du-sp-3); padding-left: var(--du-sp-3);
+    border-left: 1px solid var(--du-line);
+  }
+  .preview-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    height: 28px; padding: 0 10px;
+    border-radius: var(--du-radius-md);
+    background: var(--du-page-bg);
+    border: 1px solid var(--du-line);
+    color: var(--du-text-2);
+    font-size: var(--du-fs-xs);
+    font-family: var(--du-font-mono);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all var(--du-dur-fast) var(--du-ease-default);
+  }
+  .preview-link:hover {
+    background: var(--du-brand-bg);
+    border-color: var(--du-brand);
+    color: var(--du-brand);
+  }
+  .preview-link svg { width: 12px; height: 12px; flex-shrink: 0; }
+  @media (max-width: 1100px) {
+    .preview-links { display: none; }
+  }
+
   /* Toggle button */
   .theme-toggle {
     width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--du-line);
@@ -2898,6 +2927,20 @@
     <li><a href="#responsive">响应</a></li>
     <li><a href="#motion-tokens">动效</a></li>
   </ul>
+  <div class="preview-links">
+    <a class="preview-link" href="./element-preview.html" title="Element Plus 主题预览">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
+      Element
+    </a>
+    <a class="preview-link" href="./motion-preview.html" title="动效手册">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+      Motion
+    </a>
+    <a class="preview-link" href="./font-preview.html" title="字体对比">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+      Font
+    </a>
+  </div>
   <button class="theme-toggle" onclick="toggleTheme()" title="切换深色模式">
     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
     <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>

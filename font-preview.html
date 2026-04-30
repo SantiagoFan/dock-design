@@ -255,8 +255,36 @@ body {
 
 <header class="topbar">
   <div class="brand">字体候选 A/B 实测<span class="badge">v1 · 2026-04-29</span></div>
-  <div style="font-size: 12px; color: var(--du-text-3);">点击卡片选择 · 滚到底部看搭配效果</div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span style="font-size: 12px; color: var(--du-text-3); margin-right:8px;">点击卡片选择 · 滚到底部看搭配效果</span>
+    <a href="./mindlink-preview.html" class="preview-link" title="MindLink 主预览">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      MindLink 主预览
+    </a>
+    <a href="./element-preview.html" class="preview-link">Element</a>
+    <a href="./motion-preview.html" class="preview-link">Motion</a>
+  </div>
 </header>
+<style>
+.preview-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 28px; padding: 0 10px;
+  border-radius: 6px;
+  background: var(--du-card-bg);
+  border: 1px solid var(--du-line);
+  color: var(--du-text-2);
+  font-size: 12px;
+  font-family: var(--f-jb);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 120ms ease;
+}
+.preview-link:hover {
+  background: var(--du-brand-bg);
+  border-color: var(--du-brand);
+  color: var(--du-brand);
+}
+</style>
 
 <section class="hero">
   <h1>选一对 <span class="accent">英文 + 数字</span> 字体</h1>
